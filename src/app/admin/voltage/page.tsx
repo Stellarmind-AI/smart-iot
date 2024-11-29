@@ -68,51 +68,51 @@ const MultiGaugeDashboard: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Initialize all gauges
-      createGauge(
-        refs.voltage,
-        { value: voltage, minValue: 0, maxValue: 300, units: 'V' },
-        'voltage'
-      );
-      createGauge(
-        refs.rpm,
-        { value: rpm, minValue: 0, maxValue: 200, units: 'RPM' },
-        'rpm'
-      );
-      createGauge(
-        refs.temperature,
-        { value: temperature, minValue: 0, maxValue: 260, units: '°C' },
-        'temperature'
-      );
-      createGauge(
-        refs.wind,
-        { value: windSpeed, minValue: 0, maxValue: 200, units: 'm/s' },
-        'wind'
-      );
-      createGauge(
-        refs.humidity,
-        { value: humidity, minValue: 0, maxValue: 350, units: '%' },
-        'humidity'
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     // Initialize all gauges
+  //     createGauge(
+  //       refs.voltage,
+  //       { value: voltage, minValue: 0, maxValue: 300, units: 'V' },
+  //       'voltage'
+  //     );
+  //     createGauge(
+  //       refs.rpm,
+  //       { value: rpm, minValue: 0, maxValue: 200, units: 'RPM' },
+  //       'rpm'
+  //     );
+  //     createGauge(
+  //       refs.temperature,
+  //       { value: temperature, minValue: 0, maxValue: 260, units: '°C' },
+  //       'temperature'
+  //     );
+  //     createGauge(
+  //       refs.wind,
+  //       { value: windSpeed, minValue: 0, maxValue: 200, units: 'm/s' },
+  //       'wind'
+  //     );
+  //     createGauge(
+  //       refs.humidity,
+  //       { value: humidity, minValue: 0, maxValue: 350, units: '%' },
+  //       'humidity'
+  //     );
+  //   }
+  // }, []);
 
-  // Update gauges when values change
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (gaugeInstances.current.voltage)
-        gaugeInstances.current.voltage.value = voltage;
-      if (gaugeInstances.current.rpm) gaugeInstances.current.rpm.value = rpm;
-      if (gaugeInstances.current.temperature)
-        gaugeInstances.current.temperature.value = temperature;
-      if (gaugeInstances.current.wind)
-        gaugeInstances.current.wind.value = windSpeed;
-      if (gaugeInstances.current.humidity)
-        gaugeInstances.current.humidity.value = humidity;
-    }
-  }, [voltage, rpm, temperature, windSpeed, humidity]);
+  // // Update gauges when values change
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     if (gaugeInstances.current.voltage)
+  //       gaugeInstances.current.voltage.value = voltage;
+  //     if (gaugeInstances.current.rpm) gaugeInstances.current.rpm.value = rpm;
+  //     if (gaugeInstances.current.temperature)
+  //       gaugeInstances.current.temperature.value = temperature;
+  //     if (gaugeInstances.current.wind)
+  //       gaugeInstances.current.wind.value = windSpeed;
+  //     if (gaugeInstances.current.humidity)
+  //       gaugeInstances.current.humidity.value = humidity;
+  //   }
+  // }, [voltage, rpm, temperature, windSpeed, humidity]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
