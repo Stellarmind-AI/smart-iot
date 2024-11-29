@@ -75,7 +75,7 @@ function SidebarHorizon(props: { variant?: string; [x: string]: any }) {
               <div className="mb-7 mt-[58px] h-px bg-gray-200 dark:bg-white/10" />
               {/* Nav item */}
               <ul>
-                <Links routes={routes} />
+                <Links />
               </ul>
             </div>
             {/* Free Horizon Card    */}
