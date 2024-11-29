@@ -10,7 +10,8 @@ const MultiGaugeDashboard: React.FC = () => {
   const [temperature, setTemperature] = useState<number>(26.9);
   const [windSpeed, setWindSpeed] = useState<number>(4);
   const [humidity, setHumidity] = useState<number>(19.9);
-  const [louverValue, setLouverValue] = useState<number>();
+  const [louverValue, setLouverValue] = useState<number>(50); // Set an initial value
+
   // Refs for gauges
   const refs = {
     voltage: useRef<HTMLCanvasElement>(null),
@@ -31,7 +32,7 @@ const MultiGaugeDashboard: React.FC = () => {
   const createGauge = (
     ref: React.RefObject<HTMLCanvasElement>,
     options: Partial<RadialGauge>,
-    key: string,
+    key: string
   ) => {
     if (ref.current && !gaugeInstances.current[key]) {
       gaugeInstances.current[key] = new RadialGauge({
@@ -68,45 +69,49 @@ const MultiGaugeDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    // Initialize all gauges
-    createGauge(
-      refs.voltage,
-      { value: voltage, minValue: 0, maxValue: 300, units: 'V' },
-      'voltage',
-    );
-    createGauge(
-      refs.rpm,
-      { value: rpm, minValue: 0, maxValue: 200, units: 'RPM' },
-      'rpm',
-    );
-    createGauge(
-      refs.temperature,
-      { value: temperature, minValue: 0, maxValue: 260, units: '°C' },
-      'temperature',
-    );
-    createGauge(
-      refs.wind,
-      { value: windSpeed, minValue: 0, maxValue: 200, units: 'm/s' },
-      'wind',
-    );
-    createGauge(
-      refs.humidity,
-      { value: humidity, minValue: 0, maxValue: 350, units: '%' },
-      'humidity',
-    );
+    if (typeof window !== 'undefined') {
+      // Initialize all gauges
+      createGauge(
+        refs.voltage,
+        { value: voltage, minValue: 0, maxValue: 300, units: 'V' },
+        'voltage'
+      );
+      createGauge(
+        refs.rpm,
+        { value: rpm, minValue: 0, maxValue: 200, units: 'RPM' },
+        'rpm'
+      );
+      createGauge(
+        refs.temperature,
+        { value: temperature, minValue: 0, maxValue: 260, units: '°C' },
+        'temperature'
+      );
+      createGauge(
+        refs.wind,
+        { value: windSpeed, minValue: 0, maxValue: 200, units: 'm/s' },
+        'wind'
+      );
+      createGauge(
+        refs.humidity,
+        { value: humidity, minValue: 0, maxValue: 350, units: '%' },
+        'humidity'
+      );
+    }
   }, []);
 
   // Update gauges when values change
   useEffect(() => {
-    if (gaugeInstances.current.voltage)
-      gaugeInstances.current.voltage.value = voltage;
-    if (gaugeInstances.current.rpm) gaugeInstances.current.rpm.value = rpm;
-    if (gaugeInstances.current.temperature)
-      gaugeInstances.current.temperature.value = temperature;
-    if (gaugeInstances.current.wind)
-      gaugeInstances.current.wind.value = windSpeed;
-    if (gaugeInstances.current.humidity)
-      gaugeInstances.current.humidity.value = humidity;
+    if (typeof window !== 'undefined') {
+      if (gaugeInstances.current.voltage)
+        gaugeInstances.current.voltage.value = voltage;
+      if (gaugeInstances.current.rpm) gaugeInstances.current.rpm.value = rpm;
+      if (gaugeInstances.current.temperature)
+        gaugeInstances.current.temperature.value = temperature;
+      if (gaugeInstances.current.wind)
+        gaugeInstances.current.wind.value = windSpeed;
+      if (gaugeInstances.current.humidity)
+        gaugeInstances.current.humidity.value = humidity;
+    }
   }, [voltage, rpm, temperature, windSpeed, humidity]);
 
   return (
