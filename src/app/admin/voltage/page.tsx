@@ -1,5 +1,7 @@
 'use client';
-import React, { useRef, useState } from 'react';
+
+import React, { useEffect, useRef, useState } from 'react';
+import { RadialGauge } from 'canvas-gauges';
 import 'tailwindcss/tailwind.css';
 
 const MultiGaugeDashboard: React.FC = () => {
@@ -19,6 +21,97 @@ const MultiGaugeDashboard: React.FC = () => {
     humidity: useRef<HTMLCanvasElement>(null),
   };
 
+  const gaugeInstances = useRef<Record<string, RadialGauge | null>>({
+    voltage: null,
+    rpm: null,
+    temperature: null,
+    wind: null,
+    humidity: null,
+  });
+
+  const createGauge = (
+    ref: React.RefObject<HTMLCanvasElement>,
+    options: Partial<RadialGauge>,
+    key: string
+  ) => {
+    if (ref.current && !gaugeInstances.current[key]) {
+      gaugeInstances.current[key] = new RadialGauge({
+        renderTo: ref.current,
+        width: 300,
+        height: 200, // Half-circle appearance
+        colorPlate: '#ffffff', // Light background for gauge plate
+        borderShadowWidth: 0,
+        borders: false,
+        borderOuterWidth: 8,
+        borderOuterColor: '#4A5568', // Border color
+        colorNeedle: '#4A5568', // Needle color
+        needleType: 'arrow',
+        needleWidth: 3,
+        needleCircleSize: 10,
+        needleCircleOuter: true,
+        units: ' ',
+        majorTicks: [0, 50, 100, 150, 200],
+        minorTicks: 5,
+        strokeTicks: true,
+        ticksAngle: 180, // Half circle (180 degrees)
+        startAngle: 90, // Start from 90 degrees for the half-circle
+        valueBox: false,
+        fontValueSize: 24,
+        highlights: [
+          { from: 0, to: 50, color: '#F56565' }, // Red for lower range
+          { from: 50, to: 100, color: '#FBBF24' }, // Yellow for middle range
+          { from: 100, to: 200, color: '#48BB78' }, // Green for upper range
+        ],
+        ...options,
+      });
+      gaugeInstances.current[key]?.draw();
+    }
+  };
+
+  useEffect(() => {
+      // Initialize all gauges
+      createGauge(
+        refs.voltage,
+        { value: voltage, minValue: 0, maxValue: 300, units: 'V' },
+        'voltage'
+      );
+      createGauge(
+        refs.rpm,
+        { value: rpm, minValue: 0, maxValue: 200, units: 'RPM' },
+        'rpm'
+      );
+      createGauge(
+        refs.temperature,
+        { value: temperature, minValue: 0, maxValue: 260, units: '°C' },
+        'temperature'
+      );
+      createGauge(
+        refs.wind,
+        { value: windSpeed, minValue: 0, maxValue: 200, units: 'm/s' },
+        'wind'
+      );
+      createGauge(
+        refs.humidity,
+        { value: humidity, minValue: 0, maxValue: 350, units: '%' },
+        'humidity'
+      );
+    
+  }, []);
+
+  // Update gauges when values change
+  useEffect(() => {
+  
+      if (gaugeInstances.current.voltage)
+        gaugeInstances.current.voltage.value = voltage;
+      if (gaugeInstances.current.rpm) gaugeInstances.current.rpm.value = rpm;
+      if (gaugeInstances.current.temperature)
+        gaugeInstances.current.temperature.value = temperature;
+      if (gaugeInstances.current.wind)
+        gaugeInstances.current.wind.value = windSpeed;
+      if (gaugeInstances.current.humidity)
+        gaugeInstances.current.humidity.value = humidity;
+    
+  }, [voltage, rpm, temperature, windSpeed, humidity]);
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="mb-6 text-center text-3xl font-bold text-gray-800">
