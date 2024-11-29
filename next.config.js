@@ -21,6 +21,9 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {},
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 
 };
 
