@@ -1,10 +1,18 @@
 /* eslint-disable */
 import { HiX } from 'react-icons/hi';
 import SidebarLinks from './components/Links'; // Import SidebarLinks component
+import { ReactNode } from 'react';
 
 interface SidebarHorizonProps {
   open: boolean; // Indicates whether the sidebar is open or not
   setOpen: (open: boolean) => void; // Function to set the sidebar open state
+  routes: Array<{
+    name: string;
+    layout: string;
+    path: string;
+    icon: ReactNode;
+    secondary?: boolean;
+  }>; // Add routes prop
 }
 
 function SidebarHorizon({ open, setOpen }: SidebarHorizonProps) {

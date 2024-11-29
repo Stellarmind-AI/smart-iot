@@ -22,7 +22,7 @@ export default function Admin({ children }: { children: React.ReactNode }) {
   
   return (
     <div className="flex h-full w-full bg-background-100 dark:bg-background-900">
-      <Sidebar routes={routes} open={open} setOpen={setOpen} variant="admin" />
+      <Sidebar routes={routes} open={open} setOpen={setOpen} />
       {/* Navbar & Main Content */}
       <div className="h-full w-full font-dm dark:bg-navy-900">
         {/* Main Content */}
