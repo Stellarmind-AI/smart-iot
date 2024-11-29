@@ -11,15 +11,9 @@ const WeeklyRevenueWithMap = () => {
             src="/img/map-img.jpg" // Replace this URL with the actual image URL
             alt="Location"
             style={{
-<<<<<<< HEAD
-              borderRadius: '20px',
-              width: '100%',
-              height: '100%',
-=======
               borderRadius: "20px",
               width: "100%",
               height: "100%",
->>>>>>> 259cde749b10f3c7226ac0ae8382d20f32e1f4b7
             }}
           />
         </div>
