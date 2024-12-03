@@ -2,6 +2,8 @@
 import React, { useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import NavLink from 'components/link/NavLink';
+import Image from 'next/image';
+
 import {
   FaTachometerAlt,
   FaCogs,
@@ -26,25 +28,58 @@ export const SidebarLinks = (): JSX.Element => {
       layout: '/admin',
       path: 'default',
       name: 'Dashboard',
-      icon: <FaTachometerAlt />,
+      icon: (
+        <Image
+          src="/img/dashboards/Dashboard Icon Blue.png" // Path to your image
+          alt="Dashboard Icon"
+          width={24} // Set the width of the image (adjust as needed)
+          height={24} // Set the height of the image (adjust as needed)
+        />
+      ),
+    },
+    {
+      layout: '/admin',
+      path: 'overview',
+      name: 'Station Overview',
     },
     {
       layout: '/admin',
       path: 'voltage',
-      name: 'Analytics/Reporting',
-      icon: <FaChartLine />,
+      name: 'Assets',
+      icon: (
+        <Image
+          src="/img/dashboards/DAKET Icon Blue.png" // Path to your image
+          alt="Dashboard Icon"
+          width={24} // Set the width of the image (adjust as needed)
+          height={24} // Set the height of the image (adjust as needed)
+        />
+      ),
+    },
+    {
+      layout: '/admin',
+      path: 'voltage',
+      name: 'Buisness',
+      icon: (
+        <Image
+          src="/img/dashboards/Bussines Icon Blue.png" // Path to your image
+          alt="Dashboard Icon"
+          width={24} // Set the width of the image (adjust as needed)
+          height={24} // Set the height of the image (adjust as needed)
+        />
+      ),
     },
     {
       layout: '/admin',
       path: 'users',
       name: 'Administration',
-      icon: <FaCogs />,
-    },
-    {
-      layout: '/login',
-      path: '.',
-      name: 'Logout',
-      icon: <FaDesktop />,
+      icon: (
+        <Image
+          src="/img/dashboards/Administration Icon Blue.png" // Path to your image
+          alt="Dashboard Icon"
+          width={24} // Set the width of the image (adjust as needed)
+          height={24} // Set the height of the image (adjust as needed)
+        />
+      ),
     },
   ];
 
@@ -55,22 +90,24 @@ export const SidebarLinks = (): JSX.Element => {
 
       return (
         <NavLink key={index} href={route.layout + '/' + route.path}>
-          <div className="relative mb-3 flex hover:cursor-pointer">
-            <li className="my-[3px] flex cursor-pointer items-center px-8">
-              <span
-                className={`${isActive ? 'text-[#156082]' : 'text-gray-600'}`}
-              >
-                {route.icon}
-              </span>
-              <p
-                className={`leading-1 ml-4 flex ${
-                  isActive
-                    ? 'font-bold text-[#156082]'
-                    : 'font-medium text-gray-600'
-                } hover:text-[#156082]`}
-              >
-                {route.name}
-              </p>
+          <div className="relative mb-3 flex cursor-pointer">
+            <li className="my-[3px] flex cursor-pointer items-center px-4 lg:px-6"> {/* Adjusted padding for large screens */} 
+            <span
+  className={`${isActive ? 'text-[#156082] transform scale-110 shadow-xl' : 'text-[#156082]'}`}
+>
+  {route.icon}
+</span>
+
+<p
+  className={`leading-1 ml-6 text-[16px] flex ${
+    isActive
+      ? 'font-bold text-[#156082] transform scale-105'
+      : 'font-medium text-[#156082] '
+  }`}
+>
+  {route.name}
+</p>
+
             </li>
             {isActive ? (
               <div className="absolute right-0 top-px h-9 w-1 rounded-lg bg-[#156082]" />
