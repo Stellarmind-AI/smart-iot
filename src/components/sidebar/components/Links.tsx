@@ -58,7 +58,7 @@ export const SidebarLinks = (): JSX.Element => {
     {
       layout: '/admin',
       path: 'voltage',
-      name: 'Buisness',
+      name: 'Businesses',
       icon: (
         <Image
           src="/img/dashboards/Bussines Icon Blue.png" // Path to your image
