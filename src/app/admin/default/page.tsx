@@ -156,7 +156,7 @@ const PieChartWidget = ({
 
 const Dashboard = () => {
   return (
-    <div className="rounded-lg bg-gray-50 p-5 dark:bg-navy-800 dark:text-white">
+    <div className="rounded-lg  p-5 dark:bg-navy-800 dark:text-white">
       {/* Widgets Section */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
         {chartData?.map((chart, index) => (
