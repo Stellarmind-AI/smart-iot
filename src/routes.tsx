@@ -1,4 +1,9 @@
-import { FaTachometerAlt, FaCogs, FaChartLine, FaDesktop } from 'react-icons/fa';
+import {
+  FaTachometerAlt,
+  FaCogs,
+  FaChartLine,
+  FaDesktop,
+} from 'react-icons/fa';
 
 const routes = [
   {

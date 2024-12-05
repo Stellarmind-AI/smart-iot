@@ -110,13 +110,14 @@ const StaticContentTable: React.FC = () => {
 
   return (
     <Card extra="w-full h-full sm:overflow-auto px-6">
-      <header className="relative flex items-center justify-between pt-4">
+      <header className="relative z-10 flex items-center justify-between pt-4">
         <div className="text-xl font-bold text-navy-900 dark:text-white">
           User Table
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="absolute right-4 top-4 flex items-center gap-2 rounded-lg bg-cyan-800 px-4 py-2 text-white"
+          className="absolute right-4 top-12 flex items-center gap-2 rounded-lg bg-cyan-800 px-4 py-2 text-white hover:bg-cyan-700 focus:outline-none"
+          style={{ zIndex: 20 }}
         >
           <FaPlus /> Add User
         </button>
@@ -190,7 +191,7 @@ const StaticContentTable: React.FC = () => {
             <h2 className="mb-4 text-xl font-bold">Add New User</h2>
             <form>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="text-black block text-sm font-medium">
                   Username
                 </label>
                 <input
@@ -202,7 +203,7 @@ const StaticContentTable: React.FC = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="text-black block text-sm font-medium">
                   Email
                 </label>
                 <input
@@ -214,7 +215,7 @@ const StaticContentTable: React.FC = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="text-black block text-sm font-medium">
                   Role
                 </label>
                 <select

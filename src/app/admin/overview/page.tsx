@@ -1,9 +1,12 @@
 'use client';
-
 import React from 'react';
-import { FaWind, FaBatteryFull, FaPlug, FaThermometerHalf } from 'react-icons/fa';
+import {
+  FaWind,
+  FaBatteryFull,
+  FaPlug,
+  FaThermometerHalf,
+} from 'react-icons/fa';
 import { MdOutlineBolt } from 'react-icons/md';
-
 const stationOverviewData = [
   {
     title: 'IESO Sault Site',
@@ -14,12 +17,11 @@ const stationOverviewData = [
     ],
     icon: (
       <img
-        src="/img/dashboards/DAKET Icon Blue.png" // Replace with your image URL
+        src="/img/dashboards/DAKETIconBlue.png" // Replace with your image URL
         alt="Wind Turbine Icon"
-        className="w-12 h-12 object-contain" // Adjust size with Tailwind classes
+        className="h-12 w-12 object-contain" // Adjust size with Tailwind classes
       />
     ),
-
   },
   {
     title: 'Real Time Power-Battery',
@@ -28,8 +30,13 @@ const stationOverviewData = [
       { label: 'BAT Voltage', value: '379 Vac' },
       { label: 'BAT Temp.', value: '25°C' },
     ],
-    icon: <MdOutlineBolt className="text-4xl text-[#156082]" />,
-
+    icon: (
+      <img
+        src="/img/dashboards/BatteryIconBlue.png" // Replace with your image URL
+        alt="Wind Turbine Icon"
+        className="h-12 w-12 object-contain" // Adjust size with Tailwind classes
+      />
+    ),
   },
   {
     title: 'Real Time Power-Inverter',
@@ -40,12 +47,11 @@ const stationOverviewData = [
     ],
     icon: (
       <img
-        src="/img/dashboards/Battery EV Charger Icon Blue.png" // Replace with your image URL
+        src="/img/dashboards/InverterIconBlue.png" // Replace wit   h your image URL
         alt="Wind Turbine Icon"
-        className="w-12 h-12 object-contain" // Adjust size with Tailwind classes
+        className="h-12 w-12 object-contain" // Adjust size with Tailwind classes
       />
     ),
-
   },
   {
     title: 'Environment',
@@ -56,66 +62,67 @@ const stationOverviewData = [
     ],
     icon: (
       <img
-        src="/img/dashboards/Nature.webp" // Replace with your image URL
+        src="/img/dashboards/Nature.png" // Replace with your image URL
         alt="Wind Turbine Icon"
-        className="w-12 h-12 object-contain" // Adjust size with Tailwind classes
+        className="h-12 w-12 object-contain" // Adjust size with Tailwind classes
       />
-    ),  },
+    ),
+  },
 ];
-
 const Dashboard = () => {
   return (
     <div className="min-h-screen">
       {/* Sidebar Section */}
-
       {/* Main Content */}
       <main className="p-4">
         {/* Header */}
-
-
         {/* Station Overview Cards */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-  {stationOverviewData.map((section, index) => (
-    <div
-      key={index}
-      className="flex flex-col gap-3 rounded-lg bg-white p-5 shadow-lg h-auto" // Adjusts dynamically
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between pb-3"> {/* Added padding bottom */}
-        <div className="flex items-center gap-2">
-          <div className="text-6xl lg:text-6xl text-[#156082]">{section.icon}</div> {/* Bigger icon */}
-          <h2 className="text-xl lg:text-xl font-bold text-[#156082]"> {/* Larger font */}
-            {section.title}
-          </h2>
+          {stationOverviewData.map((section, index) => (
+            <div
+              key={index}
+              className="flex h-auto flex-col gap-3 rounded-lg bg-white p-5 shadow-lg" // Adjusts dynamically
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between pb-3">
+                {' '}
+                {/* Added padding bottom */}
+                <div className="flex items-center gap-2">
+                  <div className="text-6xl text-[#156082] lg:text-6xl">
+                    {section.icon}
+                  </div>{' '}
+                  {/* Bigger icon */}
+                  <h2 className="text-xl font-bold text-[#156082] lg:text-xl">
+                    {' '}
+                    {/* Larger font */}
+                    {section.title}
+                  </h2>
+                </div>
+              </div>
+              {/* Metrics */}
+              <div className="mt-3">
+                {section.metrics.map((metric, i) => (
+                  <div
+                    key={i}
+                    className="flex justify-between py-6 text-[18px] font-bold"
+                  >
+                    <span className="text-[#156082]">
+                      {' '}
+                      {/* Responsive font */}
+                      {metric.label}
+                    </span>
+                    <span className="text-[#156082]">{metric.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-
-      {/* Metrics */}
-      <div className="mt-3">
-        {section.metrics.map((metric, i) => (
-          <div
-            key={i}
-            className="flex justify-between py-6 font-bold text-[18px]"
-          >
-            <span className="text-[#156082]"> {/* Responsive font */}
-              {metric.label}
-            </span>
-            <span className="text-[#156082]">
-              {metric.value}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  ))}
-</div>
-
-
         {/* Architecture Diagram */}
         <div className="mt-10">
           <div className="rounded-lg bg-white p-6 shadow-md">
             <img
-              src="/img/dashboards/station1.webp" // Replace with your uploaded image link
+              src="/img/dashboards/station_overview.png" // Replace with your uploaded image link
               alt="Station Architecture"
               className="w-full rounded-md"
             />
@@ -125,5 +132,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;

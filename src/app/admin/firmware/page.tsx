@@ -1,8 +1,11 @@
 'use client';
 import React from 'react';
+
 const ComingSoon = () => {
   return (
     <div className="flex h-screen bg-[#f0f4f8]">
+      {/* Sidebar */}
+
       {/* Main Content */}
       <div className="flex flex-1 items-center justify-center bg-[#f0f4f8]">
         <div className="text-center">
@@ -17,4 +20,5 @@ const ComingSoon = () => {
     </div>
   );
 };
+
 export default ComingSoon;

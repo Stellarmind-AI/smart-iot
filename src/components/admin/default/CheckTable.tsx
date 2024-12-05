@@ -1,9 +1,6 @@
 import React from 'react';
 import CardMenu from 'components/card/CardMenu';
-import Checkbox from 'components/checkbox';
 import Card from 'components/card';
-import { FaCircle, FaCircleNotch } from 'react-icons/fa'; // Import icons for online/offline status
-
 import {
   createColumnHelper,
   flexRender,
@@ -12,15 +9,17 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import Link from 'next/link'; // Import Link from Next.js
+import Link from 'next/link';
 
 type RowObj = {
-  turbine: string; // Change deviceName to turbine
+  turbine: string;
   location: string;
   Serialnumber: string;
   chargerPoint: string;
   status: 'online' | 'offline';
 };
+
+const columnHelper = createColumnHelper<RowObj>();
 
 function CheckTable(props: { tableData: any }) {
   const { tableData } = props;
@@ -29,7 +28,6 @@ function CheckTable(props: { tableData: any }) {
     'all' | 'online' | 'offline'
   >('all');
 
-  // Static data for devices (10 entries), change deviceName to turbine
   const staticData: RowObj[] = [
     {
       turbine: 'IESO',
@@ -75,16 +73,15 @@ function CheckTable(props: { tableData: any }) {
 
   const columns = [
     columnHelper.accessor('turbine', {
-      // Change deviceName to turbine
       id: 'turbine',
       header: () => (
         <p className="text-sm font-bold text-gray-600 dark:text-white">
           TURBINE
-        </p> // Change header to TURBINE
+        </p>
       ),
       cell: (info) => (
-        <Link href={`/admin/voltage?name=${info.getValue()}`}>
-          <p className="cursor-pointer text-sm font-bold text-navy-700 dark:text-white">
+        <Link href={`/admin/overview?name=${info.getValue()}`}>
+          <p className="cursor-pointer text-sm font-bold text-navy-700 hover:underline dark:text-white">
             {info.getValue()}
           </p>
         </Link>
@@ -116,7 +113,6 @@ function CheckTable(props: { tableData: any }) {
         </p>
       ),
     }),
-
     columnHelper.accessor('status', {
       id: 'status',
       header: () => (
@@ -141,9 +137,7 @@ function CheckTable(props: { tableData: any }) {
   const table = useReactTable({
     data,
     columns,
-    state: {
-      sorting,
-    },
+    state: { sorting },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -154,12 +148,11 @@ function CheckTable(props: { tableData: any }) {
     <Card extra={'w-full h-full sm:overflow-auto px-6'}>
       <header className="relative flex items-center justify-between pt-4">
         <div className="text-xl font-bold text-navy-700 dark:text-white">
-          Turbine Table {/* Change table name to Turbine Table */}
+          Turbine Table
         </div>
         <CardMenu />
       </header>
 
-      {/* Filter Buttons centered with no background and gray border */}
       <div className="mt-4 flex justify-center space-x-4">
         <button
           className="rounded-md border border-gray-400 px-6 py-2 text-gray-600 hover:bg-gray-100"
@@ -186,23 +179,21 @@ function CheckTable(props: { tableData: any }) {
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} className="!border-px !border-gray-400">
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      onClick={header.column.getToggleSortingHandler()}
-                      className="cursor-pointer border-b-[1px] border-gray-200 pb-2 pr-4 pt-4 text-start"
-                    >
-                      <div className="items-center justify-between text-xs text-gray-200">
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                      </div>
-                    </th>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className="cursor-pointer border-b-[1px] border-gray-200 pb-2 pr-4 pt-4 text-start"
+                  >
+                    <div className="items-center justify-between text-xs text-gray-200">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                    </div>
+                  </th>
+                ))}
               </tr>
             ))}
           </thead>
@@ -210,25 +201,21 @@ function CheckTable(props: { tableData: any }) {
             {table
               .getRowModel()
               .rows.slice(0, 5)
-              .map((row) => {
-                return (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <td
-                          key={cell.id}
-                          className="min-w-[150px] border-white/0 py-3 pr-4"
-                        >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
+              .map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="min-w-[150px] border-white/0 py-3 pr-4"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -237,5 +224,3 @@ function CheckTable(props: { tableData: any }) {
 }
 
 export default CheckTable;
-
-const columnHelper = createColumnHelper<RowObj>();

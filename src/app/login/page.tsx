@@ -93,7 +93,7 @@ const Login = () => {
             className={`w-full rounded-md py-2 font-semibold text-white ${
               isLoading
                 ? 'cursor-not-allowed bg-gray-400'
-                : 'bg-cyan-800 hover:bg-cyan-900'
+                : 'bg-daketBlue hover:bg-daketBlue'
             }`}
             disabled={isLoading}
           >
@@ -104,7 +104,7 @@ const Login = () => {
         <p className="mt-4 text-center text-sm text-gray-600">
           <a
             href="/login"
-            className="font-semibold text-cyan-800 hover:underline"
+            className="font-semibold text-daketBlue hover:underline"
           >
             Forgot Password?
           </a>

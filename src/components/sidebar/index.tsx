@@ -28,17 +28,14 @@ function SidebarHorizon({ open, setOpen }: SidebarHorizonProps) {
           <img
             src="/Enercea-logo.webp"
             alt="Enercea Logo"
-            className="md:h-[100px] h-[70px] rounded-xl" // Logo size increased
+            className="h-[70px] rounded-xl md:h-[100px]" // Logo size increased
           />
         </div>
-       
       </div>
 
-      <ul className="pt-6 px-5 md:px-7 max-w-[310px] w-full">
+      <ul className="w-full max-w-[310px] px-5 pt-6 md:px-7">
         <SidebarLinks />
       </ul>
-
-
     </div>
   );
 }

@@ -1,83 +1,110 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import NavLink from 'components/link/NavLink';
 import Image from 'next/image';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid'; // v2 path
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 
 export const SidebarLinks = (): JSX.Element => {
   const pathname = usePathname();
+  const router = useRouter();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [activeSubpage, setActiveSubpage] = useState<string | null>(null); // Track active subpage
 
-  // Callback to determine if a route is active
   const activeRoute = useCallback(
     (routeName: string) => pathname === routeName,
-    [pathname]
+    [pathname],
   );
 
-  // Automatically close dropdowns when route changes
-  useEffect(() => {
-    setOpenDropdown(null); // Close all dropdowns when route changes
-  }, [pathname]);
-
+  // Routes definition
   const routes = [
     {
       layout: '/admin',
       path: 'default',
       name: 'Dashboard',
+      hasPage: true,
       whiteImg: '/img/dashboards/Dashboard Icon white.png',
       blueImg: '/img/dashboards/Dashboard Icon Blue.png',
       subpages: [
         { name: 'Stations Overview', path: '/admin/overview' },
-        { name: 'Stations Downtime', path: '/comingsoon' },
-        { name: 'Reporting', path: '/comingsoon' },
-        { name: 'Alerts & Notifications', path: '/comingsoon' },
-        { name: 'Abnormal Events', path: '/comingsoon' },
+        { name: 'Stations Downtime', path: '/admin/downtime' },
+        { name: 'Reporting', path: '/admin/reporting' },
+        { name: 'Alerts & Notifications', path: '/admin/notification' },
+        { name: 'Abnormal Events', path: '/admin/abnormal' },
       ],
     },
     {
       layout: '/admin',
       path: 'voltage',
       name: 'Assets',
+      hasPage: false, // No route for the parent
       whiteImg: '/img/dashboards/DAKET Icon white.png',
       blueImg: '/img/dashboards/DAKET Icon Blue.png',
       subpages: [
-        { name: 'Location Management', path: '/comingsoon' },
-        { name: 'Station Management', path: '/comingsoon' },
-        { name: 'Add New Location', path: '/comingsoon' },
-        { name: 'Add New Stations', path: '/comingsoon' },
-        { name: 'Asset Settings', path: '/comingsoon' },
-        { name: 'Firmware Management ', path: '/comingsoon' },
+        { name: 'Location Management', path: '/admin/location' },
+        { name: 'Station Management', path: '/admin/station' },
+        { name: 'Add New Location', path: '/admin/newlocation' },
+        { name: 'Add New Stations', path: '/admin/newstation' },
+        { name: 'Asset Settings', path: '/admin/assets' },
+        { name: 'Firmware Management ', path: '/admin/firmware' },
       ],
     },
     {
       layout: '/admin',
       path: 'Business',
       name: 'Businesses',
+      hasPage: false,
       whiteImg: '/img/dashboards/Bussines Icon White.png',
       blueImg: '/img/dashboards/Bussines Icon Blue.png',
       subpages: [
-        { name: 'Manage Businesses', path: '/comingsoon' },
-        { name: 'Add new Business', path: '/comingsoon' },
+        { name: 'Manage Businesses', path: '/admin/managebusiness' },
+        { name: 'Add new Business', path: '/admin/newbusiness' },
       ],
     },
     {
       layout: '/admin',
       path: 'users',
       name: 'Administration',
-      whiteImg: '/img/dashboards/Administration Icon white.png',
+      hasPage: false,
+      whiteImg: '/img/dashboards/Administration Icon White.png',
       blueImg: '/img/dashboards/Administration Icon Blue.png',
       subpages: [
-        { name: 'User Management', path: '/comingsoon' },
-        { name: 'Roles & Permission', path: '/comingsoon' },
-        { name: 'Add New User', path: '/comingsoon' },
-        { name: 'Add New Role', path: '/comingsoon' },
-        { name: 'Global Settings', path: '/comingsoon' },
+        { name: 'User Management', path: '/admin/usermanagement' },
+        { name: 'Roles & Permission', path: '/admin/roles' },
+        { name: 'Add New User', path: '/admin/newuser' },
+        { name: 'Add New Role', path: '/admin/newrole' },
+        { name: 'Global Settings', path: '/admin/globalpage' },
       ],
     },
   ];
 
+  // Handle dropdown toggle and automatic activation of the first subpage
   const toggleDropdown = (index: number) => {
     setOpenDropdown(openDropdown === index ? null : index);
+    const route = routes[index];
+
+    // If the dropdown is opened and it's for Assets, Businesses, or Administration
+    if (!route.hasPage && route.subpages.length > 0) {
+      // Always activate the first subpage by default
+      setActiveSubpage(route.subpages[0].path);
+      router.push(route.subpages[0].path); // Navigate to the first subpage
+    }
+  };
+
+  const handleSubpageClick = (subpagePath: string) => {
+    // When clicking on a subpage, activate it and deactivate others
+    setActiveSubpage(subpagePath);
+    router.push(subpagePath); // Navigate to the selected subpage
+  };
+
+  const handleParentClick = (index: number, hasPage: boolean) => {
+    if (!hasPage) {
+      toggleDropdown(index); // If no route path, toggle the dropdown
+    } else {
+      // If it has a route (like Dashboard), navigate to the route page
+      router.push(routes[index].layout + '/' + routes[index].path);
+      toggleDropdown(index); // Toggle dropdown for Dashboard
+    }
   };
 
   return (
@@ -85,11 +112,13 @@ export const SidebarLinks = (): JSX.Element => {
       {routes.map((route, index) => {
         const isActive =
           activeRoute(route.layout + '/' + route.path) ||
-          route.subpages.some(subpage => activeRoute(subpage.path));
+          route.subpages.some((subpage) => activeRoute(subpage.path)) ||
+          openDropdown === index;
 
         let borderRadiusClass = '';
         if (index === 0) borderRadiusClass = 'rounded-tl-xl rounded-tr-xl';
-        if (index === routes.length - 1) borderRadiusClass = 'rounded-bl-xl rounded-br-xl';
+        if (index === routes.length - 1)
+          borderRadiusClass = 'rounded-bl-xl rounded-br-xl';
 
         return (
           <div key={index}>
@@ -97,51 +126,79 @@ export const SidebarLinks = (): JSX.Element => {
               className={`group relative flex items-center px-4 py-4 transition-all duration-200 ${borderRadiusClass} ${
                 isActive
                   ? 'bg-[#ECF2FF] text-[#156082]'
-                  : 'bg-[#156082] text-white hover:bg-[#ECF2FF] hover:text-[#156082] hover:font-bold'
-              }`}
+                  : 'bg-[#156082] text-white hover:bg-[#ECF2FF] hover:font-bold hover:text-[#156082]'
+              } cursor-pointer`}
+              onClick={() => handleParentClick(index, route.hasPage)}
+              onMouseEnter={() => setHoverIndex(index)}
+              onMouseLeave={() => setHoverIndex(null)}
             >
-              <NavLink href={`${route.layout}/${route.path}`} className="flex items-center flex-1">
-                <span className="relative flex items-center">
-                  {!isActive && (
+              {route.hasPage ? (
+                <NavLink
+                  href={`${route.layout}/${route.path}`}
+                  className="flex flex-1 items-center"
+                >
+                  <span className="relative flex items-center">
                     <Image
-                      src={route.whiteImg}
-                      alt={`${route.name} Icon Inactive`}
+                      src={
+                        isActive || hoverIndex === index
+                          ? route.blueImg
+                          : route.whiteImg
+                      }
+                      alt={`${route.name} Icon`}
                       width={24}
                       height={24}
-                      className="absolute transition-opacity duration-200 group-hover:opacity-0"
                     />
-                  )}
-                  <Image
-                    src={route.blueImg}
-                    alt={`${route.name} Icon Hover/Active`}
-                    width={24}
-                    height={24}
-                    className={`transition-opacity duration-200 ${
-                      isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                  </span>
+                  <p
+                    className={`leading-1 ml-4 text-[18px] ${
+                      isActive ? 'font-bold' : 'font-medium'
                     }`}
-                  />
-                </span>
-                <p className={`ml-4 leading-1 text-[18px] ${isActive ? 'font-bold' : 'font-medium'}`}>
-                  {route.name}
-                </p>
-              </NavLink>
+                  >
+                    {route.name}
+                  </p>
+                </NavLink>
+              ) : (
+                <div className="flex flex-1 items-center cursor-pointer">
+                  <span className="relative flex items-center">
+                    <Image
+                      src={
+                        isActive || hoverIndex === index
+                          ? route.blueImg
+                          : route.whiteImg
+                      }
+                      alt={`${route.name} Icon`}
+                      width={24}
+                      height={24}
+                    />
+                  </span>
+                  <p
+                    className={`leading-1 ml-4 text-[18px] ${
+                      isActive ? 'font-bold' : 'font-medium'
+                    }`}
+                  >
+                    {route.name}
+                  </p>
+                </div>
+              )}
 
               {route.subpages.length > 0 && (
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering NavLink navigation
+                    e.stopPropagation();
                     toggleDropdown(index);
                   }}
-                  className={`ml-auto text-white group hover:text-[#156082] ${
+                  className={`group ml-auto text-white hover:text-[#156082] ${
                     isActive ? 'text-[#156082]' : ''
                   }`}
                 >
                   {openDropdown === index ? (
-                    <ChevronUpIcon className="w-5 h-5 text-[#156082]" />
+                    <ChevronUpIcon className="h-5 w-5 text-[#156082]" />
                   ) : (
                     <ChevronDownIcon
-                      className={`w-5 h-5 ${
-                        isActive ? 'text-[#156082]' : 'text-white group-hover:text-[#156082]'
+                      className={`h-5 w-5 ${
+                        isActive
+                          ? 'text-[#156082]'
+                          : 'text-white group-hover:text-[#156082]'
                       }`}
                     />
                   )}
@@ -152,24 +209,20 @@ export const SidebarLinks = (): JSX.Element => {
             {openDropdown === index && route.subpages.length > 0 && (
               <div className="mt-2 text-center">
                 {route.subpages.map((subpage, subIndex) => {
-                  const isSubActive = activeRoute(subpage.path);
+                  const isSubActive = activeSubpage === subpage.path;
 
                   return (
-                    <NavLink
+                    <div
                       key={subIndex}
-                      href={subpage.path}
-                      className={`hover:text-[#156082]`}
+                      className={`mb-2 w-full rounded-lg px-4 py-2 transition-all duration-200 ease-in-out ${
+                        isSubActive
+                          ? 'bg-[#ECF2FF] font-bold text-[#156082]'
+                          : 'bg-[#F9F9F9] text-[#505759]'
+                      } hover:bg-[#ECF2FF] hover:font-bold hover:text-[#156082]`}
+                      onClick={() => handleSubpageClick(subpage.path)}
                     >
-                      <div
-                        className={`px-4 py-2 rounded-lg w-full mb-2 transition-all ease-in-out duration-200 ${
-                          isSubActive
-                            ? 'bg-[#ECF2FF] text-[#156082] font-bold'
-                            : 'bg-[#F9F9F9] text-[#505759]'
-                        } hover:bg-[#ECF2FF] hover:text-[#156082] hover:font-bold`}
-                      >
-                        {subpage.name}
-                      </div>
-                    </NavLink>
+                      {subpage.name}
+                    </div>
                   );
                 })}
               </div>

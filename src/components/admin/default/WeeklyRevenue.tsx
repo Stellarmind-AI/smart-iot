@@ -1,4 +1,5 @@
 import Card from 'components/card';
+import Image from 'next/image';
 import { MdMap } from 'react-icons/md';
 
 const WeeklyRevenueWithMap = () => {
@@ -7,13 +8,15 @@ const WeeklyRevenueWithMap = () => {
       <div className="md:mt-16 lg:mt-0">
         <div className="h-[250px] w-full xl:h-[350px]">
           {/* Image from a URL */}
-          <img
-            src="/img/map-img.jpg" // Replace this URL with the actual image URL
+          <Image
+            src="/img/Maps_1.png"
             alt="Location"
+            width={500} // Replace with the desired width
+            height={500} // Replace with the desired height
             style={{
-              borderRadius: "20px",
-              width: "100%",
-              height: "100%",
+              borderRadius: '20px',
+              width: '100%',
+              height: 'auto',
             }}
           />
         </div>
