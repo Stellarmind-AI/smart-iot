@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import NavLink from 'components/link/NavLink';
 import Image from 'next/image';
@@ -8,10 +8,16 @@ export const SidebarLinks = (): JSX.Element => {
   const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 
+  // Callback to determine if a route is active
   const activeRoute = useCallback(
     (routeName: string) => pathname === routeName,
     [pathname]
   );
+
+  // Automatically close dropdowns when route changes
+  useEffect(() => {
+    setOpenDropdown(null); // Close all dropdowns when route changes
+  }, [pathname]);
 
   const routes = [
     {
@@ -25,7 +31,7 @@ export const SidebarLinks = (): JSX.Element => {
         { name: 'Stations Downtime', path: '/comingsoon' },
         { name: 'Reporting', path: '/comingsoon' },
         { name: 'Alerts & Notifications', path: '/comingsoon' },
-        { name: 'Abnormal Events', path: '/comingsoon' }, // 5 pages for the first route
+        { name: 'Abnormal Events', path: '/comingsoon' },
       ],
     },
     {
@@ -52,7 +58,7 @@ export const SidebarLinks = (): JSX.Element => {
       subpages: [
         { name: 'Manage Businesses', path: '/comingsoon' },
         { name: 'Add new Business', path: '/comingsoon' },
-      ], // No subpages, just a regular nav item
+      ],
     },
     {
       layout: '/admin',
