@@ -16,12 +16,17 @@ const AddNewUser = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+    
+    // Check if the target is a checkbox, and safely access `checked` if it is.
+    const updatedValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+  
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: updatedValue,
     }));
   };
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +50,7 @@ const AddNewUser = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white text-black">
       <div className="w-full max-w-2xl p-6 border rounded-md shadow-md">
-        <h1 className="text-4xl font-semibold mb-6 text-center text-[#505759]">
+        <h1 className="text-4xl font-semibold mb-6 text-center text-daketBlue">
           Add New User
         </h1>
 

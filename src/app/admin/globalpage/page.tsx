@@ -44,7 +44,7 @@ const GlobalSettings = () => {
 
   return (
     <div className="min-h-screen p-6 font-sans bg-white text-black">
-      <h1 className="text-4xl font-semibold mb-6" style={{ color: '#505759' }}>
+      <h1 className="text-4xl font-semibold mb-6 text-daketBlue">
         Global Settings
       </h1>
 

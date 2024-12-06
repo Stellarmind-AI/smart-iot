@@ -45,7 +45,7 @@ export const SidebarLinks = (): JSX.Element => {
         { name: 'Station Management', path: '/admin/station' },
         { name: 'Add New Location', path: '/admin/newlocation' },
         { name: 'Add New Stations', path: '/admin/newstation' },
-        { name: 'Asset Settings', path: '/admin/assets' },
+        { name: 'Asset Settings', path: '/admin/Assetssetting' },
         { name: 'Firmware Management ', path: '/admin/firmware' },
       ],
     },

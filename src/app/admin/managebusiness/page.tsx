@@ -58,7 +58,6 @@ const ManageBusinesses = () => {
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Close the modal when clicking outside
   const handleClickOutside = (e: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       setIsModalOpen(false);
@@ -91,7 +90,7 @@ const ManageBusinesses = () => {
     setFormData({ name: '', email: '', contact: '', website: '' });
     setIsModalOpen(false);
     setAlertMessage('Your business has been added successfully!');
-    setTimeout(() => setAlertMessage(''), 2000); // Hide the alert after 2 seconds
+    setTimeout(() => setAlertMessage(''), 2000);
   };
 
   const filteredBusinesses = businesses.filter((business) => {
@@ -119,18 +118,15 @@ const ManageBusinesses = () => {
 
   return (
     <div className="relative min-h-screen p-6 font-sans bg-white text-black">
-      {/* Main Content */}
       <div
-        className={`${
-          isModalOpen ? 'blur-md' : ''
-        } transition-all duration-300`}
+        className={`${isModalOpen ? 'blur-md' : ''} transition-all duration-300`}
       >
-        {/* Header and Search Bar in One Row */}
         <div className="mb-6 flex justify-between items-center">
-          <h1 className="text-4xl font-semibold">Manage Businesses</h1>
+          <h1 className="text-4xl font-semibold text-center text-daketBlue" >
+            Manage Businesses
+          </h1>
 
           <div className="flex items-center space-x-4">
-            {/* Dropdown for available businesses */}
             <select
               className="rounded-lg bg-white px-4 py-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-300"
               value={selectedBusiness}
@@ -153,19 +149,17 @@ const ManageBusinesses = () => {
           </div>
         </div>
 
-        {/* Search Bar */}
         <div className="mb-6 relative">
           <input
             type="text"
             placeholder="Search businesses..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-md border border-gray-300 p-3 pl-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-black bg-white"
+            className="w-full sm:w-80 md:w-96 lg:w-[500px] rounded-md border border-gray-300 p-3 pl-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-black bg-white"
           />
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
 
-        {/* Businesses Table */}
         <div className="mb-8 p-6">
           <h2 className="mb-4 text-2xl font-semibold text-[#156082]">Businesses</h2>
           <div className="overflow-x-auto">
@@ -222,13 +216,9 @@ const ManageBusinesses = () => {
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-80 backdrop-blur-sm bg-horizonBlue-950">
-          <div
-            ref={modalRef}
-            className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl"
-          >
+          <div ref={modalRef} className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl">
             <h2 className="text-2xl font-semibold mb-4">Add New Business</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -295,20 +285,13 @@ const ManageBusinesses = () => {
         </div>
       )}
 
-          {/* Alert Message */}
-    {alertMessage && (
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-3 rounded-md shadow-lg">
-        {alertMessage}
-      </div>
-    )}
+      {alertMessage && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-3 rounded-md shadow-lg">
+          {alertMessage}
+        </div>
+      )}
     </div>
-
-    
-      
   );
-
-
-
 };
 
 export default ManageBusinesses;

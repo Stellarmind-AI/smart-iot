@@ -36,7 +36,7 @@ const AddNewBusiness = () => {
   return (
     <div className="min-h-screen p-6 bg-white text-black">
       <div className="w-full max-w-lg mx-auto p-6 border rounded-md shadow-md">
-        <h1 className="text-4xl font-semibold mb-6 text-center" style={{ color: '#505759' }}>
+        <h1 className="text-4xl font-semibold mb-6 text-center text-daketBlue" >
           Add New Business
         </h1>
 
