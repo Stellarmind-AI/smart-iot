@@ -10,8 +10,7 @@ const ManageUsers = () => {
     { id: 3, fullName: 'Bob Williams', accountStatus: 'Active', email: 'bob.williams@example.com', contact: '654-321-0987', role: 'Designer', reportingManager: 'Alice Johnson', network: 'Network A', isTwoFactorEnabled: true },
     { id: 4, fullName: 'Eve Smith', accountStatus: 'Inactive', email: 'eve.smith@example.com', contact: '456-789-0123', role: 'QA', reportingManager: 'Bob Williams', network: 'Network C', isTwoFactorEnabled: false },
     { id: 5, fullName: 'Mark Lee', accountStatus: 'Active', email: 'mark.lee@example.com', contact: '321-654-9870', role: 'Project Manager', reportingManager: 'Eve Smith', network: 'Network A', isTwoFactorEnabled: true },
-    { id: 6, fullName: 'Rachel Adams', accountStatus: 'Active', email: 'rachel.adams@example.com', contact: '789-123-4560', role: 'HR', reportingManager: 'Mark Lee', network: 'Network B', isTwoFactorEnabled: true },
-    { id: 7, fullName: 'Tom Brown', accountStatus: 'Inactive', email: 'tom.brown@example.com', contact: '234-567-8901', role: 'Developer', reportingManager: 'John Doe', network: 'Network C', isTwoFactorEnabled: false },
+
 
   ]);
 
@@ -104,7 +103,7 @@ const ManageUsers = () => {
 
       {/* Header */}
       <div className="mb-6 flex justify-between items-center">
-        <h1 className="text-4xl font-semibold" style={{ color: '#505759' }}>
+        <h1 className="text-4xl font-semibold text-daketBlue" >
           Manage Users
         </h1>
 
