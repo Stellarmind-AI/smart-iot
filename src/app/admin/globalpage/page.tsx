@@ -109,13 +109,13 @@ const GlobalSettings = () => {
                       <>
                         <button
                           onClick={handleTariffSave}
-                          className="mr-2 rounded-md bg-green-500 px-3 py-1 text-white"
+                          className="mr-2 rounded-md bg-[#156082] px-3 py-1 text-white"
                         >
                           Save
                         </button>
                         <button
                           onClick={() => setEditTariffId(null)}
-                          className="rounded-md bg-red-500 px-3 py-1 text-white"
+                          className="rounded-md bg-gray-200 px-3 py-1 text-black"
                         >
                           Cancel
                         </button>
@@ -123,7 +123,7 @@ const GlobalSettings = () => {
                     ) : (
                       <button
                         onClick={() => handleTariffEdit(item.id, item.time)}
-                        className="rounded-md bg-blue-500 px-3 py-1 text-white"
+                        className="rounded-md bg-[#156082] px-3 py-1 text-white"
                       >
                         Edit
                       </button>

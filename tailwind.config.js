@@ -284,6 +284,7 @@ module.exports = {
         800: '#344e86',
         900: '#00007d',
       },
+      daketBlue:'#156082',
       indigo: {
         50: '#eef2ff',
         100: '#e0e7ff',
