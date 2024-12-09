@@ -118,7 +118,7 @@ const chartData = [
     data: [207.3],
     icon: (
       <img
-        src="/img/dashboards/BatteryEVChargerIconBlue.png"
+        src="/img/dashboards/Realtime.png"
         alt="Assets Icon"
         className="h-12 w-12 object-contain"
       />
