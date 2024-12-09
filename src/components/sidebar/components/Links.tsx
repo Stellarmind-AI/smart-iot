@@ -26,11 +26,8 @@ export const SidebarLinks = (): JSX.Element => {
       whiteImg: '/img/dashboards/Dashboard Icon white.png',
       blueImg: '/img/dashboards/Dashboard Icon Blue.png',
       subpages: [
-        { name: 'Stations Overview', path: '/admin/overview' },
-        { name: 'Stations Downtime', path: '/admin/downtime' },
         { name: 'Reporting', path: '/admin/reporting' },
         { name: 'Alerts & Notifications', path: '/admin/notification' },
-        { name: 'Abnormal Events', path: '/admin/abnormal' },
       ],
     },
     {
@@ -45,7 +42,6 @@ export const SidebarLinks = (): JSX.Element => {
         { name: 'Station Management', path: '/admin/station' },
         { name: 'Add New Location', path: '/admin/newlocation' },
         { name: 'Add New Stations', path: '/admin/newstation' },
-        { name: 'Asset Settings', path: '/admin/Assetssetting' },
         { name: 'Firmware Management ', path: '/admin/firmware' },
       ],
     },
@@ -158,7 +154,7 @@ export const SidebarLinks = (): JSX.Element => {
                   </p>
                 </NavLink>
               ) : (
-                <div className="flex flex-1 items-center cursor-pointer">
+                <div className="flex flex-1 cursor-pointer items-center">
                   <span className="relative flex items-center">
                     <Image
                       src={
@@ -218,7 +214,7 @@ export const SidebarLinks = (): JSX.Element => {
                         isSubActive
                           ? 'bg-[#ECF2FF] font-bold text-[#156082]'
                           : 'bg-[#F9F9F9] text-[#505759]'
-                      } hover:bg-[#ECF2FF] hover:font-bold hover:text-[#156082] cursor-pointer `}
+                      } cursor-pointer hover:bg-[#ECF2FF] hover:font-bold hover:text-[#156082] `}
                       onClick={() => handleSubpageClick(subpage.path)}
                     >
                       {subpage.name}

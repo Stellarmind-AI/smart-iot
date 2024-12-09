@@ -20,9 +20,6 @@ interface LocationFormInputs {
   contactEmail: string;
   contactNumber: string;
   countryCode: string;
-  paymentType: string;
-  caNumber?: string;
-  reservable: boolean;
 }
 
 const AddLocationForm: React.FC = () => {
@@ -93,6 +90,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('locationName', { required: true })}
                 className="border-lg mt-1 block w-full rounded-md border border-gray-300 bg-white p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -102,6 +100,7 @@ const AddLocationForm: React.FC = () => {
                 Timezone*
               </label>
               <select
+                required
                 {...register('timezone', { required: true })}
                 className="focus:border-gra mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:ring-indigo-500 sm:text-sm"
               >
@@ -118,6 +117,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('latitude', { required: true })}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -132,6 +132,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('longitude')}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -141,6 +142,7 @@ const AddLocationForm: React.FC = () => {
                 Country*
               </label>
               <select
+                required
                 {...register('country', { required: true })}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               >
@@ -156,6 +158,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('stateProvince', { required: true })}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -170,6 +173,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('city', { required: true })}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -180,6 +184,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('addressLine1', { required: true })}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -190,6 +195,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('addressLine2')}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -205,6 +211,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('postalCode', { required: true })}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -215,6 +222,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="text"
+                required
                 {...register('businessOwner')}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -225,6 +233,7 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="email"
+                required
                 {...register('contactEmail', { required: true })}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -238,46 +247,9 @@ const AddLocationForm: React.FC = () => {
               </label>
               <input
                 type="tel"
+                required
                 {...register('contactNumber')}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Payment Type*
-              </label>
-              <select
-                {...register('paymentType', { required: true })}
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              >
-                <option value="">Select Payment Type</option>
-                <option value="Credit Card">Credit Card</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-                <option value="PayPal">PayPal</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-900">
-                CA Number (Optional)
-              </label>
-              <input
-                type="text"
-                {...register('caNumber')}
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-
-          {/* Reservable Toggle */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="flex items-center">
-              <label className="block text-sm font-medium text-gray-900">
-                Reservable
-              </label>
-              <input
-                type="checkbox"
-                {...register('reservable')}
-                className="ml-2 h-6 w-6"
               />
             </div>
           </div>

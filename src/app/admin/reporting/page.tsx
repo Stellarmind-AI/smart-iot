@@ -6,41 +6,73 @@ const ReportingPage = () => {
     stationName: '',
     startDate: '',
     endDate: '',
-    reason: '',
+    reportingType: '',
   });
 
-  const [reportData, setReportData] = useState([]); // Filtered report data
-
+  const [reportData, setReportData] = useState([]);
   const mockData = [
     {
       stationName: 'IESO',
       downtime: '3 hours',
-      reason: 'Maintenance',
+      reportingType: 'Energy Report',
       startTime: '2024-12-01 10:00',
       endTime: '2024-12-01 13:00',
     },
     {
       stationName: 'IESO',
-      downtime: '1 hours',
-      reason: 'Technical Issue',
+      downtime: '1 hour',
+      reportingType: 'Energy Report',
       startTime: '2024-12-01 17:00',
       endTime: '2024-12-01 18:00',
     },
     {
       stationName: 'Collectdev LP',
       downtime: '2 hours',
-      reason: 'Technical Issue',
+      reportingType: 'Weather Report',
       startTime: '2024-12-02 15:00',
       endTime: '2024-12-02 17:00',
     },
     {
       stationName: '33 Isabella Street',
       downtime: '7 hours',
-      reason: 'Weather',
+      reportingType: 'Performance Report',
       startTime: '2024-12-04 18:00',
       endTime: '2024-12-05 01:00',
     },
+    {
+      stationName: 'Central Park Station',
+      downtime: '5 hours',
+      reportingType: 'Traffic Update',
+      startTime: '2024-12-06 09:00',
+      endTime: '2024-12-06 14:00',
+    },
+    {
+      stationName: 'Downtown Hub',
+      downtime: '3 hours',
+      reportingType: 'Emergency Maintenance Report',
+      startTime: '2024-12-07 12:00',
+      endTime: '2024-12-07 15:00',
+    },
+    {
+      stationName: 'Main Street Station',
+      downtime: '6 hours',
+      reportingType: 'Weather Report',
+      startTime: '2024-12-08 08:00',
+      endTime: '2024-12-08 14:00',
+    },
+    {
+      stationName: 'Westside Station',
+      downtime: '4 hours',
+      reportingType: 'Traffic Report',
+      startTime: '2024-12-09 16:00',
+      endTime: '2024-12-09 20:00',
+    },
   ];
+
+  // Extract unique station names for the dropdown
+  const stationNames = Array.from(
+    new Set(mockData.map((item) => item.stationName)),
+  );
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -51,40 +83,33 @@ const ReportingPage = () => {
 
   const handleGenerateReport = () => {
     const filteredData = mockData.filter((item) => {
-      // Check if station name matches (case-insensitive)
       const matchesStationName = filters.stationName
-        ? item.stationName
-            .toLowerCase()
-            .includes(filters.stationName.toLowerCase())
+        ? item.stationName === filters.stationName
         : true;
 
-      // Check if reason matches (case-insensitive)
-      const matchesReason = filters.reason
-        ? item.reason.toLowerCase() === filters.reason.toLowerCase()
+      const matchesReportingType = filters.reportingType
+        ? item.reportingType === filters.reportingType
         : true;
 
-      // Check if start date matches
       const matchesStartDate = filters.startDate
         ? new Date(item.startTime).toDateString() ===
           new Date(filters.startDate).toDateString()
         : true;
 
-      // Check if end date matches
       const matchesEndDate = filters.endDate
         ? new Date(item.endTime).toDateString() ===
           new Date(filters.endDate).toDateString()
         : true;
 
-      // Return true if all conditions are met
       return (
         matchesStationName &&
-        matchesReason &&
+        matchesReportingType &&
         matchesStartDate &&
         matchesEndDate
       );
     });
 
-    setReportData(filteredData); // Update state with filtered data
+    setReportData(filteredData);
   };
 
   return (
@@ -101,14 +126,19 @@ const ReportingPage = () => {
             <label className="block text-sm font-medium text-gray-900">
               Station Name
             </label>
-            <input
-              type="text"
+            <select
               name="stationName"
               value={filters.stationName}
               onChange={handleFilterChange}
               className="w-full rounded-lg border border-gray-300 p-2 text-sm"
-              placeholder="Enter station name"
-            />
+            >
+              <option value="">All Stations</option>
+              {stationNames.map((name, index) => (
+                <option key={index} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-900">
@@ -136,19 +166,22 @@ const ReportingPage = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-900">
-              Downtime Reason
+              Reporting Type
             </label>
             <select
-              name="reason"
-              value={filters.reason}
+              name="reportingType"
+              value={filters.reportingType}
               onChange={handleFilterChange}
               className="w-full rounded-lg border border-gray-300 p-2 text-sm"
             >
-              <option value="">All Reasons</option>
-              <option value="Maintenance">Maintenance</option>
-              <option value="Technical Issue">Technical Issue</option>
-              <option value="Weather">Weather</option>
-              <option value="Other">Other</option>
+              <option value="">All Types</option>
+              <option value="Energy Report">Energy Report</option>
+              <option value="Weather Report">Weather Report</option>
+              <option value="Performance Report">Performance Report</option>
+              <option value="Traffic Report">Traffic Report</option>
+              <option value="Emergency Maintenance Report">
+                Emergency Maintenance Report
+              </option>
             </select>
           </div>
         </div>
@@ -180,7 +213,7 @@ const ReportingPage = () => {
                   Downtime
                 </th>
                 <th className="border border-gray-300 px-4 py-2 text-left">
-                  Reason
+                  Reporting Type
                 </th>
                 <th className="border border-gray-300 px-4 py-2 text-left">
                   Start Time
@@ -200,7 +233,7 @@ const ReportingPage = () => {
                     {data.downtime}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {data.reason}
+                    {data.reportingType}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     {data.startTime}

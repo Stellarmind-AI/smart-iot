@@ -12,6 +12,22 @@ const NotificationPage = () => {
       status: 'Maintenance',
       downtime: '7 hours',
     },
+    {
+      stationName: 'Central Park Station',
+      status: 'Normal',
+      downtime: '2 hours',
+    },
+    { stationName: 'Downtown Hub', status: 'Weather', downtime: '9 hours' },
+    {
+      stationName: 'Main Street Station',
+      status: 'Normal',
+      downtime: '7 hours',
+    },
+    {
+      stationName: 'Westside Station',
+      status: 'Maintenance',
+      downtime: '2 hours',
+    },
   ]);
 
   const addAlert = (alertMessage: string) => {
@@ -70,7 +86,7 @@ const NotificationPage = () => {
       </div>
 
       {/* Station Overview Section */}
-      <div className="mb-6 rounded-lg bg-white p-6 shadow-xl">
+      <div className="mb-6 rounded-lg bg-white p-6 shadow-2xl">
         <h2 className="mb-4 text-xl font-semibold text-gray-900">
           Station Overview
         </h2>

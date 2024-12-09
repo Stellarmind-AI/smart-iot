@@ -4,11 +4,11 @@ import React from 'react';
 const AddNewStation = () => {
   return (
     <div className="flex h-screen bg-[#f0f4f8]">
-
-
       {/* Main Content */}
       <div className="flex-1 bg-white p-10">
-        <h1 className="mb-6 text-3xl font-bold text-[#156082]">Add New Station</h1>
+        <h1 className="mb-6 text-3xl font-bold text-[#156082]">
+          Add New Station
+        </h1>
         <div className="rounded-lg bg-[#f9f9f9] p-6 shadow-md">
           <form className="space-y-6">
             {/* Form Row 1 */}
@@ -18,13 +18,14 @@ const AddNewStation = () => {
                   htmlFor="chargePointID"
                   className="block text-sm font-medium text-[#505759]"
                 >
-                  Charge Point ID*
+                  Station ID*
                 </label>
                 <input
                   id="chargePointID"
                   type="text"
+                  required
                   placeholder="Enter Charge Point ID"
-                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-[#156082] focus:ring-2"
+                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-[#156082]"
                 />
               </div>
               <div>
@@ -32,13 +33,14 @@ const AddNewStation = () => {
                   htmlFor="serialNumber"
                   className="block text-sm font-medium text-[#505759]"
                 >
-                  Serial Number (Optional)
+                  Serial Number*
                 </label>
                 <input
                   id="serialNumber"
                   type="text"
+                  required
                   placeholder="Enter Serial Number"
-                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-[#156082] focus:ring-2"
+                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-[#156082]"
                 />
               </div>
             </div>
@@ -54,7 +56,8 @@ const AddNewStation = () => {
                 </label>
                 <select
                   id="location"
-                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-[#156082] focus:ring-2"
+                  required
+                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-[#156082]"
                 >
                   <option>Select Location</option>
                   <option>Location A</option>
@@ -71,8 +74,9 @@ const AddNewStation = () => {
                 <input
                   id="stationName"
                   type="text"
+                  required
                   placeholder="Enter Station Name"
-                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-[#156082] focus:ring-2"
+                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-[#156082]"
                 />
               </div>
             </div>
@@ -88,7 +92,8 @@ const AddNewStation = () => {
                 </label>
                 <select
                   id="make"
-                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-[#156082] focus:ring-2"
+                  required
+                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-[#156082]"
                 >
                   <option>Select Make</option>
                   <option>Make A</option>
@@ -104,7 +109,8 @@ const AddNewStation = () => {
                 </label>
                 <select
                   id="model"
-                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-[#156082] focus:ring-2"
+                  required
+                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-[#156082]"
                 >
                   <option>Select Model</option>
                   <option>Model A</option>
@@ -124,7 +130,8 @@ const AddNewStation = () => {
                 </label>
                 <select
                   id="securityProfile"
-                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-[#156082] focus:ring-2"
+                  required
+                  className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-[#156082]"
                 >
                   <option>Select Security Profile</option>
                   <option>Profile A</option>
@@ -135,6 +142,7 @@ const AddNewStation = () => {
                 <input
                   id="isRationed"
                   type="checkbox"
+                  required
                   className="h-5 w-5 rounded border-gray-300 focus:ring-[#156082]"
                 />
                 <label
@@ -160,6 +168,7 @@ const AddNewStation = () => {
                     id="planned"
                     type="radio"
                     name="installationState"
+                    required
                     className="h-5 w-5 border-gray-300 focus:ring-[#156082]"
                   />
                   <label

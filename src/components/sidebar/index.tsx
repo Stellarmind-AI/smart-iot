@@ -25,11 +25,13 @@ function SidebarHorizon({ open, setOpen }: SidebarHorizonProps) {
     >
       <div className="mx-6 mt-8 flex items-center justify-between md:justify-center">
         <div className="mr-3">
-          <img
-            src="/Enercea-logo.webp"
-            alt="Enercea Logo"
-            className="h-[70px] rounded-xl md:h-[100px]" // Logo size increased
-          />
+          <a href="/admin/default">
+            <img
+              src="/Enercea-logo.webp"
+              alt="Enercea Logo"
+              className="h-[70px] rounded-xl md:h-[100px]" // Logo size increased
+            />
+          </a>
         </div>
       </div>
 

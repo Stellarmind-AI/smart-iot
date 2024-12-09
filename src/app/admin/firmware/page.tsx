@@ -153,8 +153,8 @@ const FirmwareManagement: React.FC = () => {
             <tr className="bg-gray-100">
               <th className="border p-2">Firmware Version</th>
               <th className="border p-2">Firmware Name</th>
-              <th className="border p-2">EVSE Make</th>
-              <th className="border p-2">EVSE Model</th>
+              <th className="border p-2">Station Make</th>
+              <th className="border p-2">Station Model</th>
               <th className="border p-2">Date</th>
               <th className="border p-2">Description</th>
             </tr>
