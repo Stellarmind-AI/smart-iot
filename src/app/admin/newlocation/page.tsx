@@ -1,9 +1,25 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import dynamic from 'next/dynamic';
+
+// Dynamically import React-Leaflet components to avoid SSR issues
+const MapContainer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.MapContainer),
+  { ssr: false },
+);
+const TileLayer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.TileLayer),
+  { ssr: false },
+);
+const Marker = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Marker),
+  { ssr: false },
+);
+const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
+  ssr: false,
+});
 
 interface LocationFormInputs {
   locationName: string;
@@ -26,6 +42,10 @@ const AddLocationForm: React.FC = () => {
   const { register, handleSubmit, reset } = useForm<LocationFormInputs>();
   const [formSubmitted, setFormSubmitted] = useState(false);
   const position: [number, number] = [51.505, -0.09];
+
+  // Inside your component
+  const [shouldScroll, setShouldScroll] = useState(false);
+
   const onSubmit: SubmitHandler<LocationFormInputs> = (
     data: LocationFormInputs,
   ) => {
@@ -37,16 +57,22 @@ const AddLocationForm: React.FC = () => {
     // Reset form fields after submission
     reset();
 
+    // Trigger scroll after form submission
+    setShouldScroll(true);
+
     // Show success notification for 4 seconds
     setTimeout(() => {
       setFormSubmitted(false);
     }, 4000);
-
-    // Scroll to the top of the page after submission
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 500);
   };
+
+  // UseEffect to handle window.scrollTo safely
+  useEffect(() => {
+    if (shouldScroll && typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setShouldScroll(false); // Reset the scroll trigger
+    }
+  }, [shouldScroll]);
 
   return (
     <div className="w-full bg-gray-100 p-6">
