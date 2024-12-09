@@ -1,134 +1,89 @@
 'use client';
 import React, { useState } from 'react';
 
+const energyData = [
+  { day: 'Monday', energy: '120 kWh' },
+  { day: 'Tuesday', energy: '135 kWh' },
+  { day: 'Wednesday', energy: '128 kWh' },
+  { day: 'Thursday', energy: '140 kWh' },
+  { day: 'Friday', energy: '130 kWh' },
+];
+
 const GlobalSettings = () => {
-  const [activeTab, setActiveTab] = useState<'tariff' | 'reservation'>('tariff');
-  const [tariffData, setTariffData] = useState([
-    { id: 1, time: '9:00 AM - 6:00 PM', current: true },
-    { id: 2, time: '6:00 PM - 9:00 PM', current: false },
-  ]);
-  const [reservationData, setReservationData] = useState({
-    minTime: '',
-    maxTime: '',
-    paymentType: '',
-    reservationCount: '',
-  });
+  const [activeTab, setActiveTab] = useState<'analytics' | 'optimization'>('analytics');
+  const [efficiencyGoal, setEfficiencyGoal] = useState(95); // Example efficiency goal
+  const [successAlert, setSuccessAlert] = useState(false); // State for the success alert
 
-  const [editTariffId, setEditTariffId] = useState<number | null>(null);
-
-  // Form Data for editing
-  const [editTariffTime, setEditTariffTime] = useState('');
-
-  const handleTabChange = (tab: 'tariff' | 'reservation') => {
+  const handleTabChange = (tab: 'analytics' | 'optimization') => {
     setActiveTab(tab);
   };
 
-  const handleTariffEdit = (id: number, time: string) => {
-    setEditTariffId(id);
-    setEditTariffTime(time);
+  const handleEfficiencyGoalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEfficiencyGoal(Number(e.target.value));
   };
 
-  const handleTariffSave = () => {
-    setTariffData((prev) =>
-      prev.map((item) =>
-        item.id === editTariffId ? { ...item, time: editTariffTime } : item
-      )
-    );
-    setEditTariffId(null);
-  };
+  const handleSaveGoal = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSuccessAlert(true); // Show the success alert when the form is submitted
 
-  const handleReservationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setReservationData((prev) => ({ ...prev, [name]: value }));
+    // Hide the alert after 3 seconds
+    setTimeout(() => setSuccessAlert(false), 3000);
   };
 
   return (
-    <div className="min-h-screen p-6 font-sans bg-white text-black">
-      <h1 className="text-4xl font-semibold mb-6 text-daketBlue">
+    <div className="min-h-screen p-6 font-sans bg-gray-50 text-black">
+      <h1 className="text-4xl font-semibold mb-6  text-[#156082]">
         Global Settings
       </h1>
 
       {/* Tabs */}
-      <div className="flex space-x-4 mb-6">
+      <div className="flex space-x-4  mb-6">
         <button
-          onClick={() => handleTabChange('tariff')}
+          onClick={() => handleTabChange('analytics')}
           className={`rounded-md px-6 py-2 text-sm ${
-            activeTab === 'tariff'
+            activeTab === 'analytics'
               ? 'bg-[#156082] text-white'
               : 'bg-gray-200 text-black'
           }`}
         >
-          Tariff Settings
+          Energy Analytics
         </button>
         <button
-          onClick={() => handleTabChange('reservation')}
+          onClick={() => handleTabChange('optimization')}
           className={`rounded-md px-6 py-2 text-sm ${
-            activeTab === 'reservation'
+            activeTab === 'optimization'
               ? 'bg-[#156082] text-white'
               : 'bg-gray-200 text-black'
           }`}
         >
-          Reservation Settings
+          Efficiency Optimization
         </button>
       </div>
 
-      {/* Tariff Settings Section */}
-      {activeTab === 'tariff' && (
-        <div className="p-4 border rounded-md">
-          <h2 className="text-2xl font-semibold mb-4" style={{ color: '#363636' }}>
-            Tariff Settings
+      {/* Energy Analytics Section */}
+      {activeTab === 'analytics' && (
+        <div className="p-6 border rounded-md ">
+          <h2 className="text-2xl font-semibold mb-4 text-[#156082] text-center">
+            Energy Analytics
           </h2>
-          <table className="w-full border-collapse text-left text-sm">
+        
+          <table className="w-full border-collapse border border-gray-200 bg-white rounded-md shadow-md">
             <thead>
-              <tr className="bg-gray-200">
-                <th className="px-4 py-2 font-semibold">ID</th>
-                <th className="px-4 py-2 font-semibold">Current Time</th>
-                <th className="px-4 py-2 font-semibold">Status</th>
-                <th className="px-4 py-2 font-semibold">Actions</th>
+              <tr className="bg-[#156082] text-white">
+                <th className="px-4 py-2 text-left">Day</th>
+                <th className="px-4 py-2 text-left">Energy Usage</th>
               </tr>
             </thead>
             <tbody>
-              {tariffData.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-100">
-                  <td className="px-4 py-2">{item.id}</td>
-                  <td className="px-4 py-2">
-                    {editTariffId === item.id ? (
-                      <input
-                        type="text"
-                        value={editTariffTime}
-                        onChange={(e) => setEditTariffTime(e.target.value)}
-                        className="rounded-md border p-1"
-                      />
-                    ) : (
-                      item.time
-                    )}
-                  </td>
-                  <td className="px-4 py-2">{item.current ? 'Current' : 'Inactive'}</td>
-                  <td className="px-4 py-2">
-                    {editTariffId === item.id ? (
-                      <>
-                        <button
-                          onClick={handleTariffSave}
-                          className="mr-2 rounded-md bg-[#156082] px-3 py-1 text-white"
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={() => setEditTariffId(null)}
-                          className="rounded-md bg-gray-200 px-3 py-1 text-black"
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        onClick={() => handleTariffEdit(item.id, item.time)}
-                        className="rounded-md bg-[#156082] px-3 py-1 text-white"
-                      >
-                        Edit
-                      </button>
-                    )}
-                  </td>
+              {energyData.map((entry, index) => (
+                <tr
+                  key={index}
+                  className={`hover:bg-gray-100 ${
+                    index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                  }`}
+                >
+                  <td className="px-4 py-2">{entry.day}</td>
+                  <td className="px-4 py-2">{entry.energy}</td>
                 </tr>
               ))}
             </tbody>
@@ -136,68 +91,42 @@ const GlobalSettings = () => {
         </div>
       )}
 
-      {/* Reservation Settings Section */}
-      {activeTab === 'reservation' && (
-        <div className="p-4 border rounded-md">
-          <h2 className="text-2xl font-semibold mb-4" style={{ color: '#363636' }}>
-            Reservation Settings
+      {/* Efficiency Optimization Section */}
+      {activeTab === 'optimization' && (
+        <div className="p-6 border rounded-md bg-white shadow-md">
+          <h2 className="text-2xl font-semibold mb-4 text-center text-[#156082]">
+            Efficiency Optimization
           </h2>
-          <form>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-black">
-                Minimum Time
-              </label>
-              <input
-                type="text"
-                name="minTime"
-                value={reservationData.minTime}
-                onChange={handleReservationChange}
-                className="mt-1 block w-full rounded-md border p-2 shadow-sm"
-              />
+
+          {/* Success Alert */}
+          {successAlert && (
+            <div className="mb-4 rounded-md bg-green-500 p-4 text-white">
+              Efficiency goal saved successfully!
             </div>
+          )}
+
+          <form onSubmit={handleSaveGoal}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-black">
-                Maximum Time
-              </label>
-              <input
-                type="text"
-                name="maxTime"
-                value={reservationData.maxTime}
-                onChange={handleReservationChange}
-                className="mt-1 block w-full rounded-md border p-2 shadow-sm"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-black">
-                Payment Type
-              </label>
-              <input
-                type="text"
-                name="paymentType"
-                value={reservationData.paymentType}
-                onChange={handleReservationChange}
-                className="mt-1 block w-full rounded-md border p-2 shadow-sm"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-black">
-                Reservation Count
+                Efficiency Goal (%)
               </label>
               <input
                 type="number"
-                name="reservationCount"
-                value={reservationData.reservationCount}
-                onChange={handleReservationChange}
+                value={efficiencyGoal}
+                onChange={handleEfficiencyGoalChange}
                 className="mt-1 block w-full rounded-md border p-2 shadow-sm"
               />
             </div>
             <button
               type="submit"
-              className="rounded-md px-6 py-2 border border-[#156082] bg-[#156082] text-white"
+              className="rounded-md px-6 py-2 border border-[#156082] bg-[#156082] text-white hover:bg-[#134b6e]"
             >
-              Save Changes
+              Save Goal
             </button>
           </form>
+          <p className="mt-4 text-sm text-gray-600">
+            * Set your efficiency goals to maintain optimal turbine performance.
+          </p>
         </div>
       )}
     </div>
