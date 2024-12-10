@@ -79,13 +79,26 @@ function CheckTable(props: { tableData: any }) {
           TURBINE
         </p>
       ),
-      cell: (info) => (
-        <Link href={`/admin/overview?name=${info.getValue()}`}>
-          <p className="cursor-pointer text-sm font-bold text-navy-700 hover:underline dark:text-white">
-            {info.getValue()}
-          </p>
-        </Link>
-      ),
+      cell: (info) => {
+        const row = info.row.original;
+        return (
+          <Link
+            href={{
+              pathname: '/admin/overview',
+              query: {
+                turbine: row.turbine,
+                location: row.location,
+                Serialnumber: row.Serialnumber,
+                status: row.status,
+              },
+            }}
+          >
+            <p className="cursor-pointer text-sm font-bold text-navy-700 hover:underline dark:text-white">
+              {info.getValue()}
+            </p>
+          </Link>
+        );
+      },
     }),
     columnHelper.accessor('location', {
       id: 'location',
@@ -94,11 +107,26 @@ function CheckTable(props: { tableData: any }) {
           LOCATION
         </p>
       ),
-      cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
-          {info.getValue()}
-        </p>
-      ),
+      cell: (info) => {
+        const row = info.row.original;
+        return (
+          <Link
+            href={{
+              pathname: '/admin/overview',
+              query: {
+                turbine: row.turbine,
+                location: row.location,
+                Serialnumber: row.Serialnumber,
+                status: row.status,
+              },
+            }}
+          >
+            <p className="cursor-pointer text-sm font-bold text-navy-700 hover:underline dark:text-white">
+              {info.getValue()}
+            </p>
+          </Link>
+        );
+      },
     }),
     columnHelper.accessor('Serialnumber', {
       id: 'Serialnumber',
@@ -107,11 +135,26 @@ function CheckTable(props: { tableData: any }) {
           SERIALNUMBER
         </p>
       ),
-      cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
-          {info.getValue()}
-        </p>
-      ),
+      cell: (info) => {
+        const row = info.row.original;
+        return (
+          <Link
+            href={{
+              pathname: '/admin/overview',
+              query: {
+                turbine: row.turbine,
+                location: row.location,
+                Serialnumber: row.Serialnumber,
+                status: row.status,
+              },
+            }}
+          >
+            <p className="cursor-pointer text-sm font-bold text-navy-700 hover:underline dark:text-white">
+              {info.getValue()}
+            </p>
+          </Link>
+        );
+      },
     }),
     columnHelper.accessor('status', {
       id: 'status',
@@ -120,15 +163,30 @@ function CheckTable(props: { tableData: any }) {
           STATUS
         </p>
       ),
-      cell: (info) => (
-        <div className="flex items-center text-center">
-          {info.getValue() === 'online' ? (
-            <button className="h-3 w-3 rounded-full bg-green-500" />
-          ) : (
-            <button className="h-3 w-3 rounded-full bg-red-500" />
-          )}
-        </div>
-      ),
+      cell: (info) => {
+        const row = info.row.original;
+        return (
+          <Link
+            href={{
+              pathname: '/admin/overview',
+              query: {
+                turbine: row.turbine,
+                location: row.location,
+                Serialnumber: row.Serialnumber,
+                status: row.status,
+              },
+            }}
+          >
+            <div className="flex items-center text-center">
+              {info.getValue() === 'online' ? (
+                <button className="h-3 w-3 rounded-full bg-green-500" />
+              ) : (
+                <button className="h-3 w-3 rounded-full bg-red-500" />
+              )}
+            </div>
+          </Link>
+        );
+      },
     }),
   ];
 
