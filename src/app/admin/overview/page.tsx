@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FaWind,
   FaBatteryFull,
@@ -7,6 +7,8 @@ import {
   FaThermometerHalf,
 } from 'react-icons/fa';
 import { MdOutlineBolt } from 'react-icons/md';
+import { useRouter } from 'next/navigation';
+
 const stationOverviewData = [
   {
     title: 'IESO Sault Site',
@@ -71,63 +73,317 @@ const stationOverviewData = [
   },
 ];
 const Dashboard = () => {
+  const [louverValue, setLouverValue] = useState(40);
+  const [gearValue, setGearValue] = useState('1');
+  const gears = [
+    { label: '1', position: 'left-0' },
+    { label: '3', position: 'left-2/4' },
+    { label: '6', position: 'left-4/2' },
+    { label: '18', position: 'left-6/4' },
+  ];
+
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertAction, setAlertAction] = useState(() => () => {});
+
+  const [isGearAlertVisible, setIsGearAlertVisible] = useState(false);
+  const [gearAlertMessage, setGearAlertMessage] = useState('');
+  const [gearAlertAction, setGearAlertAction] = useState(() => () => {});
+
+  const handleLouverChange = (e) => {
+    const newValue = e.target.value;
+    setAlertMessage(
+      `Are you sure you want to update the Louver Control to ${newValue}?`,
+    );
+    setAlertAction(() => () => setLouverValue(newValue));
+    setIsAlertVisible(true);
+  };
+
+  const confirmAction = () => {
+    alertAction();
+    setIsAlertVisible(false);
+  };
+
+  const cancelAction = () => {
+    setIsAlertVisible(false);
+  };
+
+  const handleGearChange = (value: any) => {
+    setGearAlertMessage(
+      `Are you sure you want to update the Gear Selection to ${value}?`,
+    );
+    setGearAlertAction(() => () => setGearValue(value));
+    setIsGearAlertVisible(true);
+  };
+
+  const confirmGearChange = () => {
+    gearAlertAction();
+    setIsGearAlertVisible(false);
+  };
+
+  const cancelGearChange = () => {
+    setIsGearAlertVisible(false);
+  };
+
+  //----------------------------------------------------------------
+  const router = useRouter();
+  const navigateToDashboard = () => {
+    router.push('/admin/default'); // Replace with the actual route for the add-location page
+  };
+
+  const navigateToAssets = () => {
+    router.push('/admin/location');
+  };
+
+  const navigateToBusinesses = () => {
+    router.push('/admin/managebusiness');
+  };
+
+  const navigateToAdministration = () => {
+    router.push('/admin/usermanagement');
+  };
   return (
-    <div className="min-h-screen">
+    <div className=" min-h-screen">
       {/* Sidebar Section */}
       {/* Main Content */}
       <main className="p-4">
+        {/* Navigation Buttons */}
+        <div className="mb-4 flex items-center gap-4">
+          {/* Back to Dashboard Button */}
+          <div className="flex items-center">
+            <button
+              onClick={navigateToDashboard} // Replace with your navigation logic
+              className="group flex h-12 w-12 items-center justify-center rounded-full bg-daketBlue text-white shadow-lg hover:bg-daketBlue"
+              title="Back to Dashboard"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="h-6 w-6 transform transition-transform duration-300 group-hover:scale-150"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <span className="ml-4 text-lg font-bold text-gray-800">Back</span>
+          </div>
+
+          {/* Additional Buttons */}
+          {[
+            { label: 'Assets', onClick: navigateToAssets },
+            { label: 'Businesses', onClick: navigateToBusinesses },
+            { label: 'Administration', onClick: navigateToAdministration },
+          ].map((btn, index) => (
+            <button
+              key={index}
+              onClick={btn.onClick} // Replace with the respective navigation logic
+              className="rounded-full bg-daketBlue px-6 py-2 font-bold text-white shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-daketBlue"
+              title={btn.label}
+            >
+              {btn.label}
+            </button>
+          ))}
+        </div>
+
         {/* Header */}
         {/* Station Overview Cards */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 pb-8 md:grid-cols-2 lg:grid-cols-4">
           {stationOverviewData.map((section, index) => (
             <div
               key={index}
-              className="flex h-auto flex-col rounded-lg bg-white p-5 shadow-lg" // Adjusts dynamically
+              className="flex h-full flex-col justify-between rounded-lg bg-white p-5 shadow-lg"
             >
               {/* Header */}
               <div className="flex items-center justify-between pb-3">
-                {' '}
-                {/* Added padding bottom */}
                 <div className="flex items-center gap-2">
                   <div className="text-6xl text-[#156082] lg:text-6xl">
                     {section.icon}
-                  </div>{' '}
-                  {/* Bigger icon */}
+                  </div>
                   <h2 className="text-xl font-bold text-[#156082] lg:text-xl">
-                    {' '}
-                    {/* Larger font */}
                     {section.title}
                   </h2>
                 </div>
               </div>
+              {/* Horizontal Line
+              <hr className="my-2 border-t border-gray-300" /> */}
               {/* Metrics */}
-              <div className="mt-1">
-                {section.metrics.map((metric, i) => (
+              <div className="mt-2">
+                {Array.from({ length: 4 }).map((_, i) => (
                   <div
                     key={i}
-                    className="flex justify-between py-6 text-[18px] font-bold"
+                    className={`flex justify-between text-[18px] font-bold ${
+                      section.title === 'Environment'
+                        ? 'py-4' // Smaller padding for Environment box
+                        : section.metrics.length === 3 && i === 3
+                        ? 'hidden' // Hide the fourth row for boxes with only 3 metrics
+                        : 'py-6' // Standard padding for other boxes
+                    } ${section.metrics[i] ? '' : 'invisible'}`}
                   >
                     <span className="text-[#156082]">
-                      {' '}
-                      {/* Responsive font */}
-                      {metric.label}
+                      {section.metrics[i]?.label || ''}
                     </span>
-                    <span className="text-[#156082]">{metric.value}</span>
+                    <span className="text-[#156082]">
+                      {section.metrics[i]?.value || ''}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
           ))}
         </div>
+
         {/* Architecture Diagram */}
-        <div className="mt-10">
-          <div className="rounded-lg bg-white p-6 shadow-md">
-            <img
-              src="/img/dashboards/station_overview.png" // Replace with your uploaded image link
-              alt="Station Architecture"
-              className="w-full rounded-md"
-            />
+        <div className="flex items-center justify-center rounded-sm border-2 border-blue-500 bg-white pt-10 shadow-xl">
+          {/* Combined Section */}
+          <div className="w-full max-w-7xl rounded-lg  bg-white p-6">
+            <div className="flex flex-wrap gap-6  lg:flex-nowrap">
+              {/* Controls Section */}
+              <div className="flex w-full flex-col gap-20 border-r border-gray-500 pr-6 lg:w-1/3">
+                <p className="text-darkBlue font-extrabold">Controls</p>
+
+                {/* Louver Control */}
+                <div className="space-y-4">
+                  <label
+                    htmlFor="louver-control"
+                    className="block text-sm font-semibold text-daketBlue "
+                  >
+                    Louver Control
+                  </label>
+                  <div className="relative w-full">
+                    <input
+                      id="louver-control"
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={louverValue}
+                      onChange={handleLouverChange}
+                      className="absolute inset-0 h-2 w-full appearance-none rounded-full bg-gray-300
+      [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full 
+      [&::-moz-range-thumb]:bg-[#1A3955] [&::-webkit-slider-thumb]:h-4 
+      [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full 
+      [&::-webkit-slider-thumb]:bg-[#1A3955]"
+                    />
+                    <div
+                      className="pointer-events-none absolute top-0 h-2 rounded-full bg-[#1A3955]"
+                      style={{
+                        width: `${louverValue}%`,
+                      }}
+                    ></div>
+                  </div>
+
+                  <div className="pt-7 text-center text-sm font-medium text-gray-900">
+                    Current Value:
+                    <span className="font-bold"> {louverValue} </span>
+                  </div>
+                </div>
+
+                {/* Gear Selection */}
+                <div className="space-y-4">
+                  <label className="block text-sm  font-semibold text-daketBlue">
+                    Gear Selection
+                  </label>
+                  <div className=" relative mt-6 flex h-16 w-full items-center rounded-lg border border-gray-500 bg-white px-4">
+                    {/* Gear positions */}
+                    {gears.map((gear, index) => (
+                      <button
+                        key={gear.label}
+                        onClick={() => handleGearChange(gear.label)}
+                        className={`absolute p-2 transition-transform ${
+                          gearValue === gear.label
+                            ? 'scale-125 rounded-full bg-daketBlue text-white' // Active button styles
+                            : 'rounded-full bg-gray-100 text-gray-900' // Inactive button styles
+                        }`}
+                        style={{
+                          left: `calc(${index * 25}% + 2rem)`, // Add padding at the start
+                          width: '2.5rem', // Ensure width is equal to height
+                          height: '2.5rem', // Set height explicitly to make it a circle
+                        }}
+                      >
+                        {gear.label}
+                      </button>
+                    ))}
+
+                    {/* Shifter handle */}
+                    <div
+                      className="absolute top-1/2 h-10 w-4 -translate-y-1/2 transform rounded-full"
+                      style={{
+                        left: `calc(${
+                          gears.findIndex((gear) => gear.label === gearValue) *
+                          25
+                        }% + 2rem)`, // Match the padding offset
+                      }}
+                    ></div>
+                  </div>
+
+                  <p className="mt-4 text-center text-sm text-gray-900">
+                    Current Gear: <span className="font-bold">{gearValue}</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Station Architecture Section */}
+              <div className="w-full lg:w-2/3">
+                <img
+                  src="/img/dashboards/Overview_Frame.png"
+                  alt="Station Architecture"
+                  className="h-[500px] w-full rounded-lg object-contain"
+                />
+              </div>
+            </div>
           </div>
+          {/* Alert Modal */}
+          {isAlertVisible && (
+            <div className="bg-black fixed inset-0 flex items-center justify-center bg-opacity-50 pt-20">
+              <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+                <h4 className="text-lg font-bold">{alertMessage}</h4>
+                <div className="mt-4 flex justify-end gap-4">
+                  <button
+                    onClick={cancelAction}
+                    className="rounded bg-gray-200 px-4 py-2 text-gray-800"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={confirmAction}
+                    className="rounded bg-daketBlue px-4 py-2 text-white"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Gear Selection Alert Modal */}
+          {isGearAlertVisible && (
+            <div className="bg-black fixed inset-0 flex items-center justify-center bg-opacity-50">
+              <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+                <h4 className="text-lg font-bold text-gray-900">
+                  {gearAlertMessage}
+                </h4>
+                <div className="mt-4 flex justify-end gap-4">
+                  <button
+                    onClick={cancelGearChange}
+                    className="rounded bg-gray-200 px-4 py-2 text-gray-900 hover:bg-gray-300"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={confirmGearChange}
+                    className="hover:bg-daketBlue-dark rounded bg-daketBlue px-4 py-2 text-white"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
