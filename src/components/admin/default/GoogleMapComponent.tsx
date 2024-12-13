@@ -17,12 +17,38 @@ const center = {
 
 // Canadian station locations
 const stations = [
-  { id: '1', name: 'IESO', position: { lat: 43.651070, lng: -79.347015 } }, // Toronto, Ontario
-  { id: '2', name: 'Collectdev LP', position: { lat: 45.421532, lng: -75.697189 } }, // Ottawa, Ontario
-  { id: '3', name: '33 Isabella Street', position: { lat: 49.282729, lng: -83.697189 } }, // Vancouver, British Columbia
-  { id: '4', name: 'IESO', position: { lat: 53.546124, lng: -74.697189 } }, // Edmonton, Alberta
-  { id: '5', name: 'IESO', position: { lat: 45.501689, lng: -86.697189 } }, // Montreal, Quebec
+  { 
+    id: '1', 
+    name: 'IESO', 
+    position: { lat: 43.651070, lng: -79.347015 }, // Toronto, Ontario
+    location: 'Sault Site' 
+  },
+  { 
+    id: '2', 
+    name: 'Collectdev LP', 
+    position: { lat: 45.421532, lng: -75.697189 }, // Ottawa, Ontario
+    location: 'Toronto Street' 
+  },
+  { 
+    id: '3', 
+    name: '33 Isabella Street', 
+    position: { lat: 49.282729, lng: -83.697189 }, // Vancouver, British Columbia
+    location: 'Isabella Street' 
+  },
+  { 
+    id: '4', 
+    name: 'IESO', 
+    position: { lat: 53.546124, lng: -74.697189 }, // Edmonton, Alberta
+    location: 'Coalex Street' 
+  },
+  { 
+    id: '5', 
+    name: 'IESO', 
+    position: { lat: 45.501689, lng: -86.697189 }, // Montreal, Quebec
+    location: 'Green Park' 
+  },
 ];
+
 
 const GoogleMapComponentWithoutRouter: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
@@ -68,7 +94,9 @@ const GoogleMapComponentWithoutRouter: React.FC = () => {
             onCloseClick={() => setSelectedStation(null)}
           >
             <div>
-              <h3 className="text-lg font-bold mb-2">{selectedStation.name}</h3>
+              <h3 className="text-lg font-bold">{selectedStation.name}</h3>
+              <p className="text-md font-semibold mb-2">{selectedStation.location}</p>
+
               <button
                 onClick={redirectToOverview}
                 className="bg-daketBlue text-white px-3 py-2 rounded-lg hover:bg-bg-daketBlue"
