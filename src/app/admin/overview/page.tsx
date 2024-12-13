@@ -56,6 +56,7 @@ const stationOverviewData = [
   {
     title: 'Environment',
     metrics: [
+      { label: 'Air Pressure', value: '1013 hPa' },
       { label: 'Temperature', value: '25°C' },
       { label: 'Humidity', value: '50% RH' },
       { label: 'Air Velocity', value: '8.5 m/s' },
@@ -81,7 +82,7 @@ const Dashboard = () => {
           {stationOverviewData.map((section, index) => (
             <div
               key={index}
-              className="flex h-auto flex-col gap-3 rounded-lg bg-white p-5 shadow-lg" // Adjusts dynamically
+              className="flex h-auto flex-col rounded-lg bg-white p-5 shadow-lg" // Adjusts dynamically
             >
               {/* Header */}
               <div className="flex items-center justify-between pb-3">
@@ -100,7 +101,7 @@ const Dashboard = () => {
                 </div>
               </div>
               {/* Metrics */}
-              <div className="mt-3">
+              <div className="mt-1">
                 {section.metrics.map((metric, i) => (
                   <div
                     key={i}

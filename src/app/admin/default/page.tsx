@@ -10,7 +10,6 @@ import {
   FaInfoCircle,
 } from 'react-icons/fa';
 
-import WeeklyRevenue from 'components/admin/default/WeeklyRevenue';
 import CheckTable from 'components/admin/default/CheckTable';
 import tableDataCheck from 'variables/data-tables/tableDataCheck';
 
@@ -18,6 +17,12 @@ import tableDataCheck from 'variables/data-tables/tableDataCheck';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { MdHeight, MdPadding } from 'react-icons/md';
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+
+// Dynamically import the OpenLayers map component with SSR disabled
+import dynamic from 'next/dynamic';
+const OpenLayersMap = dynamic(() => import('components/admin/default/GoogleMapComponent'), { 
+  ssr: false 
+});
 
 // Custom plugin for center text
 const centerTextPlugin = {
@@ -232,7 +237,7 @@ const PieChartWidget = ({
 // Dashboard Component
 const Dashboard = () => {
   return (
-    <div className="rounded-lg  p-5 dark:bg-navy-800 dark:text-white">
+    <div className="rounded-lg p-5 dark:bg-navy-800 dark:text-white">
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
         {chartData?.map((chart, index) => (
           <PieChartWidget
@@ -245,11 +250,19 @@ const Dashboard = () => {
           />
         ))}
       </div>
-
-      <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-        <CheckTable tableData={tableDataCheck} />
-        <WeeklyRevenue />
+      <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="w-full">
+          {/* Make sure the container for CheckTable is flexible */}
+          <CheckTable tableData={tableDataCheck} />
+        </div>
+        <div className="w-full">
+          {/* Same for WeeklyRevenue */}
+          <OpenLayersMap />
+        </div>
       </div>
+
+      {/* Dynamically rendered OpenLayers map */}
+   
     </div>
   );
 };
