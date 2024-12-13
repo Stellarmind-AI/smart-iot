@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import 'leaflet/dist/leaflet.css';
 import dynamic from 'next/dynamic';
-
+import { useRouter } from 'next/navigation';
 // Dynamically import React-Leaflet components to avoid SSR issues
 const MapContainer = dynamic(
   () => import('react-leaflet').then((mod) => mod.MapContainer),
@@ -74,8 +74,69 @@ const AddLocationForm: React.FC = () => {
     }
   }, [shouldScroll]);
 
+  const router = useRouter();
+  const navigateToDashboard = () => {
+    router.push('/admin/default'); // Replace with the actual route for the add-location page
+  };
+
+  const navigateToAssets = () => {
+    router.push('/admin/location');
+  };
+
+  const navigateToBusinesses = () => {
+    router.push('/admin/managebusiness');
+  };
+
+  const navigateToAdministration = () => {
+    router.push('/admin/usermanagement');
+  };
+
   return (
     <div className="w-full bg-gray-100 p-6">
+      {/* Navigation Buttons */}
+      <div className="mb-4 flex items-center gap-4">
+        {/* Back to Dashboard Button */}
+        <div className="flex items-center">
+          <button
+            onClick={navigateToDashboard} // Replace with your navigation logic
+            className="group flex h-12 w-12 items-center justify-center rounded-full bg-daketBlue text-white shadow-lg hover:bg-daketBlue"
+            title="Back to Dashboard"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              className="h-6 w-6 transform transition-transform duration-300 group-hover:scale-150"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <span className="ml-4 text-lg font-bold text-gray-800">Back</span>
+        </div>
+
+        {/* Additional Buttons */}
+        {[
+          { label: 'Assets', onClick: navigateToAssets },
+          { label: 'Businesses', onClick: navigateToBusinesses },
+          { label: 'Administration', onClick: navigateToAdministration },
+        ].map((btn, index) => (
+          <button
+            key={index}
+            onClick={btn.onClick} // Replace with the respective navigation logic
+            className="rounded-full bg-daketBlue px-6 py-2 font-bold text-white shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-daketBlue"
+            title={btn.label}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
+
       {/* Success Message */}
       {formSubmitted && (
         <div className="fixed bottom-5 right-5 rounded-lg bg-green-500 p-4 text-white shadow-lg">

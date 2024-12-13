@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 interface FirmwareData {
   version: string;
   name: string;
@@ -19,7 +19,7 @@ const FirmwareManagement: React.FC = () => {
     {
       version: '1.0.0',
       name: 'Firmware A',
-      make: 'EVSE Co.',
+      make: 'Station 1',
       model: 'Model X',
       date: '2024-12-01',
       description: 'Initial version',
@@ -27,7 +27,7 @@ const FirmwareManagement: React.FC = () => {
     {
       version: '1.1.0',
       name: 'Firmware B',
-      make: 'EVSE Co.',
+      make: 'Station 2',
       model: 'Model Y',
       date: '2024-12-02',
       description: 'Bug fixes',
@@ -56,8 +56,68 @@ const FirmwareManagement: React.FC = () => {
     console.log('Table refreshed');
   };
 
+  const router = useRouter();
+  const navigateToDashboard = () => {
+    router.push('/admin/default'); // Replace with the actual route for the add-location page
+  };
+
+  const navigateToAssets = () => {
+    router.push('/admin/location');
+  };
+
+  const navigateToBusinesses = () => {
+    router.push('/admin/managebusiness');
+  };
+
+  const navigateToAdministration = () => {
+    router.push('/admin/usermanagement');
+  };
+
   return (
     <div className="space-y-4 p-6">
+      {/* Navigation Buttons */}
+      <div className="mb-4 flex items-center gap-4">
+        {/* Back to Dashboard Button */}
+        <div className="flex items-center">
+          <button
+            onClick={navigateToDashboard} // Replace with your navigation logic
+            className="group flex h-12 w-12 items-center justify-center rounded-full bg-daketBlue text-white shadow-lg hover:bg-daketBlue"
+            title="Back to Dashboard"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              className="h-6 w-6 transform transition-transform duration-300 group-hover:scale-150"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <span className="ml-4 text-lg font-bold text-gray-800">Back</span>
+        </div>
+
+        {/* Additional Buttons */}
+        {[
+          { label: 'Assets', onClick: navigateToAssets },
+          { label: 'Businesses', onClick: navigateToBusinesses },
+          { label: 'Administration', onClick: navigateToAdministration },
+        ].map((btn, index) => (
+          <button
+            key={index}
+            onClick={btn.onClick} // Replace with the respective navigation logic
+            className="rounded-full bg-daketBlue px-6 py-2 font-bold text-white shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-daketBlue"
+            title={btn.label}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
       {/* Action Buttons */}
       <div className="flex space-x-4">
         <button
@@ -150,24 +210,48 @@ const FirmwareManagement: React.FC = () => {
       <div className="overflow-x-auto rounded border">
         <table className="min-w-full border-collapse">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2">Firmware Version</th>
-              <th className="border p-2">Firmware Name</th>
-              <th className="border p-2">Station Make</th>
-              <th className="border p-2">Station Model</th>
-              <th className="border p-2">Date</th>
-              <th className="border p-2">Description</th>
+            <tr className="bg-gray-500">
+              <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
+                Firmware Version
+              </th>
+              <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
+                Firmware Name
+              </th>
+              <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
+                Station Make
+              </th>
+              <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
+                Station Model
+              </th>
+              <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
+                Date
+              </th>
+              <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
+                Description
+              </th>
             </tr>
           </thead>
           <tbody>
             {tableData.map((item, index) => (
               <tr key={index}>
-                <td className="border p-2">{item.version}</td>
-                <td className="border p-2">{item.name}</td>
-                <td className="border p-2">{item.make}</td>
-                <td className="border p-2">{item.model}</td>
-                <td className="border p-2">{item.date}</td>
-                <td className="border p-2">{item.description}</td>
+                <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
+                  {item.version}
+                </td>
+                <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
+                  {item.name}
+                </td>
+                <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
+                  {item.make}
+                </td>
+                <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
+                  {item.model}
+                </td>
+                <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
+                  {item.date}
+                </td>
+                <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
+                  {item.description}
+                </td>
               </tr>
             ))}
           </tbody>
