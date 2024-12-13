@@ -239,7 +239,7 @@ const Dashboard = () => {
         </div>
 
         {/* Architecture Diagram */}
-        <div className="flex items-center justify-center rounded-sm border-2 border-blue-500 bg-white pt-10 shadow-xl">
+        <div className="flex items-center justify-center rounded-xl bg-white pt-10 shadow-xl">
           {/* Combined Section */}
           <div className="w-full max-w-7xl rounded-lg  bg-white p-6">
             <div className="flex flex-wrap gap-6  lg:flex-nowrap">
