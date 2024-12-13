@@ -194,7 +194,7 @@ export default function AddNewRole() {
                         type="checkbox"
                         checked={permissions[section][action]}
                         onChange={() => handlePermissionChange(section, action)}
-                        className="form-checkbox h-5 w-5 text-[#156082] focus:ring focus:ring-[#156082] focus:ring-offset-0"
+                        className="form-checkbox h-5 w-5 accent-[#156082] focus:ring focus:ring-[#ffffff] focus:ring-offset-0"
                       />
                       <span>{action}</span>
                     </label>
@@ -210,7 +210,7 @@ export default function AddNewRole() {
               type="checkbox"
               checked={locked}
               onChange={() => setLocked(!locked)}
-              className="form-checkbox h-5 w-5 text-[#156082] focus:ring focus:ring-[#156082] focus:ring-offset-0"
+              className="form-checkbox h-5 w-5 accent-[#156082] focus:ring focus:ring-[#156082] focus:ring-offset-0"
             />
             <label className="text-lg text-[#156082]">Lock this role</label>
           </div>
@@ -256,7 +256,7 @@ export default function AddNewRole() {
                           <input
                             type="checkbox"
                             checked={createdRole.permissions[section][action]}
-                            className="form-checkbox mr-2 h-5 w-5 text-[#156082]"
+                            className="form-checkbox h-5 w-5 accent-[#156082] focus:ring focus:ring-[#156082] focus:ring-offset-0"
                             readOnly
                           />
                           {action}:{' '}
