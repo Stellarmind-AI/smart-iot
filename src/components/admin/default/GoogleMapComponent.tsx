@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
@@ -71,7 +71,7 @@ const GoogleMapComponentWithoutRouter: React.FC = () => {
               <h3 className="text-lg font-bold mb-2">{selectedStation.name}</h3>
               <button
                 onClick={redirectToOverview}
-                className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600"
+                className="bg-daketBlue text-white px-3 py-2 rounded-lg hover:bg-bg-daketBlue"
               >
                 Go to Overview
               </button>
