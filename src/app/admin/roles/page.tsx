@@ -287,7 +287,7 @@ export default function RolesPermissions() {
                 >
                   <input
                     type="checkbox"
-                    className="form-checkbox h-5 w-5 text-[#156082] focus:ring focus:ring-[#156082] focus:ring-offset-0"
+                    className="form-checkbox h-5 w-5 accent-[#156082] focus:ring focus:ring-[#156082] focus:ring-offset-0"
                     checked={selectedRole.permissions[section][action]}
                     readOnly
                   />
