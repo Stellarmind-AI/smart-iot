@@ -136,7 +136,7 @@ const ReportingPage = () => {
         <div className="flex items-center">
           <button
             onClick={navigateToDashboard} // Replace with your navigation logic
-            className="group flex h-12 w-12 items-center justify-center rounded-full bg-daketBlue text-white shadow-lg hover:bg-daketBlue"
+            className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#ECF2FF] text-[#5D90A7] shadow-sm hover:bg-daketBlue hover:text-white"
             title="Back to Dashboard"
           >
             <svg
@@ -145,7 +145,7 @@ const ReportingPage = () => {
               viewBox="0 0 24 24"
               strokeWidth="2"
               stroke="currentColor"
-              className="h-6 w-6 transform transition-transform duration-300 group-hover:scale-150"
+              className="h-6 w-6 transform transition-transform duration-300 group-hover:scale-125"
             >
               <path
                 strokeLinecap="round"
@@ -154,7 +154,7 @@ const ReportingPage = () => {
               />
             </svg>
           </button>
-          <span className="ml-4 text-lg font-bold text-gray-800">Back</span>
+          {/* <span className="ml-4 text-lg font-bold text-gray-800">Back</span> */}
         </div>
 
         {/* Additional Buttons */}
@@ -166,7 +166,7 @@ const ReportingPage = () => {
           <button
             key={index}
             onClick={btn.onClick} // Replace with the respective navigation logic
-            className="rounded-full bg-daketBlue px-6 py-2 font-bold text-white shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-daketBlue"
+            className="rounded-full bg-[#ECF2FF] px-6 py-2 font-bold text-[#5D90A7] shadow-sm transition-transform duration-300 hover:scale-105 hover:bg-daketBlue hover:text-white"
             title={btn.label}
           >
             {btn.label}
@@ -175,7 +175,7 @@ const ReportingPage = () => {
       </div>
 
       <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold text-gray-800">Station Reporting</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Reporting</h1>
       </div>
 
       {/* Filters Section */}

@@ -13,7 +13,7 @@ const SidebarLinks = (): JSX.Element => {
 
   const activeRoute = useCallback(
     (routeName: string) => pathname === routeName,
-    [pathname]
+    [pathname],
   );
 
   // Routes definition
@@ -73,7 +73,7 @@ const SidebarLinks = (): JSX.Element => {
         ],
       },
     ],
-    []
+    [],
   );
 
   const toggleDropdown = (index: number) => {
@@ -101,7 +101,10 @@ const SidebarLinks = (): JSX.Element => {
   };
 
   const MemoizedNavLink = React.memo(({ route, isActive, isHovered }: any) => (
-    <NavLink href={`${route.layout}/${route.path}`} className="flex flex-1 items-center">
+    <NavLink
+      href={`${route.layout}/${route.path}`}
+      className="flex flex-1 items-center"
+    >
       <span className="relative flex items-center">
         <Image
           src={isHovered || isActive ? route.blueImg : route.whiteImg}
@@ -111,7 +114,11 @@ const SidebarLinks = (): JSX.Element => {
           priority
         />
       </span>
-      <p className={`leading-1 ml-4 text-[18px] ${isActive ? 'font-bold' : 'font-medium'}`}>
+      <p
+        className={`leading-1 ml-4 text-[18px] ${
+          isActive ? 'font-bold' : 'font-medium'
+        }`}
+      >
         {route.name}
       </p>
     </NavLink>
@@ -125,7 +132,7 @@ const SidebarLinks = (): JSX.Element => {
             activeRoute(route.layout + '/' + route.path) ||
             route.subpages.some((subpage) => activeRoute(subpage.path)) ||
             openDropdown === index,
-          [activeRoute, route, openDropdown]
+          [activeRoute, route, openDropdown],
         );
 
         const borderRadiusClass =
@@ -147,7 +154,11 @@ const SidebarLinks = (): JSX.Element => {
               onMouseEnter={() => setHoverIndex(index)}
               onMouseLeave={() => setHoverIndex(null)}
             >
-              <MemoizedNavLink route={route} isActive={isActive} isHovered={hoverIndex === index} />
+              <MemoizedNavLink
+                route={route}
+                isActive={isActive}
+                isHovered={hoverIndex === index}
+              />
 
               {route.subpages.length > 0 && (
                 <button

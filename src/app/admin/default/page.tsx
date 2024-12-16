@@ -20,9 +20,12 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 // Dynamically import the OpenLayers map component with SSR disabled
 import dynamic from 'next/dynamic';
-const OpenLayersMap = dynamic(() => import('components/admin/default/GoogleMapComponent'), { 
-  ssr: false 
-});
+const OpenLayersMap = dynamic(
+  () => import('components/admin/default/GoogleMapComponent'),
+  {
+    ssr: false,
+  },
+);
 
 // Custom plugin for center text
 const centerTextPlugin = {
@@ -250,7 +253,7 @@ const Dashboard = () => {
           />
         ))}
       </div>
-      <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="w-full">
           {/* Make sure the container for CheckTable is flexible */}
           <CheckTable tableData={tableDataCheck} />
@@ -262,7 +265,6 @@ const Dashboard = () => {
       </div>
 
       {/* Dynamically rendered OpenLayers map */}
-   
     </div>
   );
 };

@@ -35,7 +35,7 @@ const Login = () => {
           <Image
             src="/img/layout/Enercea_logo.png"
             alt="Company Logo"
-            className="h-25 w-25 object-contain"
+            className="h-25 w-25 rounded-xl object-contain"
             width={400}
             height={400}
           />

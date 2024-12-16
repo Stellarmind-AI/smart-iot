@@ -7,7 +7,7 @@ const StationManagement: React.FC = () => {
   );
   const [filters, setFilters] = useState({
     location: '',
-    charger: '',
+    station: '',
     model: '',
     connector: '',
     connectorStatus: '',
@@ -19,7 +19,7 @@ const StationManagement: React.FC = () => {
     setActiveTab(tab);
     setFilters({
       location: '',
-      charger: '',
+      station: '',
       model: '',
       connector: '',
       connectorStatus: '',
@@ -39,14 +39,14 @@ const StationManagement: React.FC = () => {
   };
 
   const handleApply = () => {
-    // Mock data for tables
+    // Mock data for tables , , , Street, Park
     const mockData =
       activeTab === 'Active'
         ? [
             {
               onlineOffline: 'Online',
-              station: 'Station A',
-              location: 'Location 1',
+              station: 'D60',
+              location: 'Sault Site',
               connectorStatus: 'Connected',
               model: 'Model X',
               cpId: '12345',
@@ -57,8 +57,8 @@ const StationManagement: React.FC = () => {
             },
             {
               onlineOffline: 'Offline',
-              station: 'Station B',
-              location: 'Location 2',
+              station: 'D90',
+              location: 'Toronto Street',
               connectorStatus: 'Disconnected',
               model: 'Model Y',
               cpId: '67890',
@@ -69,8 +69,8 @@ const StationManagement: React.FC = () => {
             },
             {
               onlineOffline: 'Online',
-              station: 'Station E',
-              location: 'Location 5',
+              station: 'D120',
+              location: 'Isabella Street',
               connectorStatus: 'Charging',
               model: 'Model A',
               cpId: '22334',
@@ -81,8 +81,8 @@ const StationManagement: React.FC = () => {
             },
             {
               onlineOffline: 'Offline',
-              station: 'Station F',
-              location: 'Location 6',
+              station: 'D90x',
+              location: 'Coalex Street',
               connectorStatus: 'Error',
               model: 'Model B',
               cpId: '55678',
@@ -93,8 +93,8 @@ const StationManagement: React.FC = () => {
             },
             {
               onlineOffline: 'Online',
-              station: 'Station G',
-              location: 'Location 7',
+              station: 'A10 kilowatt',
+              location: 'Green Park',
               connectorStatus: 'Ready',
               model: 'Model C',
               cpId: '66789',
@@ -105,8 +105,8 @@ const StationManagement: React.FC = () => {
             },
             {
               onlineOffline: 'Offline',
-              station: 'Station H',
-              location: 'Location 8',
+              station: 'A25 kilowatt',
+              location: 'Coalex Street',
               connectorStatus: 'Disconnected',
               model: 'Model D',
               cpId: '77890',
@@ -117,8 +117,8 @@ const StationManagement: React.FC = () => {
             },
             {
               onlineOffline: 'Online',
-              station: 'Station I',
-              location: 'Location 9',
+              station: 'A50 kilowatt',
+              location: 'Toronto Street',
               connectorStatus: 'Connected',
               model: 'Model E',
               cpId: '88901',
@@ -130,8 +130,8 @@ const StationManagement: React.FC = () => {
           ]
         : [
             {
-              station: 'Station C',
-              location: 'Location 3',
+              station: 'D60',
+              location: 'Sault Site',
               model: 'Model Z',
               cpId: '11223',
               firmwareVersion: '3.4.5',
@@ -139,8 +139,8 @@ const StationManagement: React.FC = () => {
               lastOnline: '2024-11-28 01:00 PM',
             },
             {
-              station: 'Station D',
-              location: 'Location 4',
+              station: 'D90',
+              location: 'Toronto Street',
               model: 'Model W',
               cpId: '44556',
               firmwareVersion: '4.5.6',
@@ -148,8 +148,8 @@ const StationManagement: React.FC = () => {
               lastOnline: '2024-11-20 08:00 AM',
             },
             {
-              station: 'Station J',
-              location: 'Location 10',
+              station: 'D120',
+              location: 'Isabella Street',
               model: 'Model F',
               cpId: '99112',
               firmwareVersion: '6.0.1',
@@ -157,8 +157,8 @@ const StationManagement: React.FC = () => {
               lastOnline: '2024-11-25 06:30 PM',
             },
             {
-              station: 'Station K',
-              location: 'Location 11',
+              station: 'D90x',
+              location: 'Coalex Street',
               model: 'Model G',
               cpId: '99223',
               firmwareVersion: '7.1.3',
@@ -166,8 +166,8 @@ const StationManagement: React.FC = () => {
               lastOnline: '2024-11-22 04:00 PM',
             },
             {
-              station: 'Station L',
-              location: 'Location 12',
+              station: 'A10 kilowatt',
+              location: 'Green Park',
               model: 'Model H',
               cpId: '99334',
               firmwareVersion: '8.2.4',
@@ -175,8 +175,8 @@ const StationManagement: React.FC = () => {
               lastOnline: '2024-11-18 10:15 AM',
             },
             {
-              station: 'Station M',
-              location: 'Location 13',
+              station: 'A25 kilowatt',
+              location: 'Toronto Street',
               model: 'Model I',
               cpId: '99445',
               firmwareVersion: '9.3.5',
@@ -184,8 +184,8 @@ const StationManagement: React.FC = () => {
               lastOnline: '2024-11-15 03:45 PM',
             },
             {
-              station: 'Station N',
-              location: 'Location 14',
+              station: 'A50 kilowatt',
+              location: 'Coalex Street',
               model: 'Model J',
               cpId: '99556',
               firmwareVersion: '10.0.0',
@@ -200,7 +200,7 @@ const StationManagement: React.FC = () => {
   const handleReset = () => {
     setFilters({
       location: '',
-      charger: '',
+      station: '',
       model: '',
       connector: '',
       connectorStatus: '',
@@ -234,7 +234,7 @@ const StationManagement: React.FC = () => {
         <div className="flex items-center">
           <button
             onClick={navigateToDashboard} // Replace with your navigation logic
-            className="group flex h-12 w-12 items-center justify-center rounded-full bg-daketBlue text-white shadow-lg hover:bg-daketBlue"
+            className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#ECF2FF] text-[#5D90A7] shadow-sm hover:bg-daketBlue hover:text-white"
             title="Back to Dashboard"
           >
             <svg
@@ -243,7 +243,7 @@ const StationManagement: React.FC = () => {
               viewBox="0 0 24 24"
               strokeWidth="2"
               stroke="currentColor"
-              className="h-6 w-6 transform transition-transform duration-300 group-hover:scale-150"
+              className="h-6 w-6 transform transition-transform duration-300 group-hover:scale-125"
             >
               <path
                 strokeLinecap="round"
@@ -252,7 +252,7 @@ const StationManagement: React.FC = () => {
               />
             </svg>
           </button>
-          <span className="ml-4 text-lg font-bold text-gray-800">Back</span>
+          {/* <span className="ml-4 text-lg font-bold text-gray-800">Back</span> */}
         </div>
 
         {/* Additional Buttons */}
@@ -264,12 +264,16 @@ const StationManagement: React.FC = () => {
           <button
             key={index}
             onClick={btn.onClick} // Replace with the respective navigation logic
-            className="rounded-full bg-daketBlue px-6 py-2 font-bold text-white shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-daketBlue"
+            className="rounded-full bg-[#ECF2FF] px-6 py-2 font-bold text-[#5D90A7] shadow-sm transition-transform duration-300 hover:scale-105 hover:bg-daketBlue hover:text-white"
             title={btn.label}
           >
             {btn.label}
           </button>
         ))}
+      </div>
+
+      <div className="mb-6 text-center">
+        <h1 className="text-3xl font-bold text-gray-800">Station Management</h1>
       </div>
 
       {/* Tabs */}
@@ -305,20 +309,29 @@ const StationManagement: React.FC = () => {
           className="rounded border p-2"
         >
           <option value="">All Locations</option>
-          <option value="Location 1">Location 1</option>
-          <option value="Location 2">Location 2</option>
+          <option value="Sault Site">Sault Site</option>
+          <option value="Toronto Street">Toronto Street</option>
+          <option value="Isabella Street">Isabella Street</option>
+          <option value="Coalex Street">Coalex Street</option>
+          <option value="Green Park">Green Park</option>
         </select>
         <select
-          name="charger"
-          value={filters.charger}
+          name="station"
+          value={filters.station}
           onChange={handleFilterChange}
           className="rounded border p-2"
         >
-          <option value="">All Chargers</option>
-          <option value="Charger 1">Charger 1</option>
-          <option value="Charger 2">Charger 2</option>
+          <option value="">All Station</option>
+          <option value="D60">D60</option>
+          <option value="D90">D90</option>
+          <option value="D120">D120</option>
+          <option value="D90x">D90x</option>
+          <option value="A10 kilowatt">A10 kilowatt</option>
+          <option value="A25 kilowatt">A25 kilowatt</option>
+          <option value="A50 kilowatt">A50 kilowatt</option>
+          <option value="A100 kilowatt">A100 kilowatt</option>
         </select>
-        <select
+        {/* <select
           name="model"
           value={filters.model}
           onChange={handleFilterChange}
@@ -349,7 +362,7 @@ const StationManagement: React.FC = () => {
             <option value="Connected">Connected</option>
             <option value="Disconnected">Disconnected</option>
           </select>
-        )}
+        )} */}
 
         {/* Actions */}
         <div className="mt-4 space-x-4">
@@ -416,19 +429,10 @@ const StationManagement: React.FC = () => {
                     Location
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                    Connector(s) Status
-                  </th>
-                  <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                    Model
-                  </th>
-                  <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                     CP ID
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                     QR Code
-                  </th>
-                  <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                    Firmware Version
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                     Serial Number
@@ -447,13 +451,7 @@ const StationManagement: React.FC = () => {
                     Location
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                    Model
-                  </th>
-                  <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                     CP ID
-                  </th>
-                  <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                    Firmware Version
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                     Serial Number
@@ -480,19 +478,10 @@ const StationManagement: React.FC = () => {
                       {row.location}
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
-                      {row.connectorStatus}
-                    </td>
-                    <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
-                      {row.model}
-                    </td>
-                    <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
                       {row.cpId}
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
                       {row.qrCode}
-                    </td>
-                    <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
-                      {row.firmwareVersion}
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
                       {row.serialNumber}
@@ -511,13 +500,7 @@ const StationManagement: React.FC = () => {
                       {row.location}
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
-                      {row.model}
-                    </td>
-                    <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
                       {row.cpId}
-                    </td>
-                    <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
-                      {row.firmwareVersion}
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
                       {row.serialNumber}
