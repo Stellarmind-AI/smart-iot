@@ -221,7 +221,7 @@ export default function AddNewRole() {
               type="submit"
               className="rounded-lg bg-[#156082] px-6 py-2 text-white hover:bg-[#0f4e5e] focus:outline-none focus:ring-2 focus:ring-[#156082]"
             >
-              Create Role
+             Submit Role
             </button>
           </div>
           {alertMessage && (

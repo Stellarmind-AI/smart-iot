@@ -70,7 +70,6 @@ const SidebarLinks = (): JSX.Element => {
           { name: 'Roles & Permission', path: '/admin/roles' },
           { name: 'Add New User', path: '/admin/newuser' },
           { name: 'Add New Role', path: '/admin/newrole' },
-          { name: 'Global Settings', path: '/admin/globalpage' },
         ],
       },
     ],
