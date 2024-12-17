@@ -71,7 +71,7 @@ const GoogleMapComponentWithoutRouter: React.FC = () => {
   }
 
   return (
-    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}>
+    <LoadScript googleMapsApiKey={`AIzaSyDVoweyAAxiBHwR9WGA-ZxDStTMXxnoo8s`}>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={center}

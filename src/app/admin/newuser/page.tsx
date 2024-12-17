@@ -184,18 +184,26 @@ const AddNewUser = () => {
 
             {/* Role */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-[#363636]">
-                Role
-              </label>
-              <input
-                type="text"
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border p-2 shadow-sm"
-              />
-            </div>
+  <label className="block text-sm font-medium text-[#363636]">
+    Role
+  </label>
+  <select
+    name="role"
+    value={formData.role}
+    onChange={handleChange}
+    required
+    className="mt-1 block w-full rounded-md border p-2 shadow-sm"
+  >
+    <option value="" disabled>
+      Select a role
+    </option>
+    <option value="Administration">Administration</option>
+    <option value="Site Manager">Site Manager</option>
+    <option value="Manager">Manager</option>
+    <option value="Technician">Technician</option>
+  </select>
+</div>
+
 
             {/* Reporting Manager */}
             <div className="mb-4">
