@@ -1,7 +1,7 @@
-"use client";
+'use client';
 import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { useRouter } from 'next/navigation';
 
 interface LocationFormInputs {
@@ -20,150 +20,74 @@ interface LocationFormInputs {
   countryCode: string;
 }
 
-declare global {
-  interface Window {
-    google: any;
-  }
-}
-
 const AddLocationForm: React.FC = () => {
   const { register, handleSubmit, setValue, reset, watch } = useForm<LocationFormInputs>();
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
-
   const [locationName, setLocationName] = useState<string>('');
   const [addressLine1, setAddressLine1] = useState<string>('');
   const [city, setCity] = useState<string>('');
   const [stateProvince, setStateProvince] = useState<string>('');
   const [country, setCountry] = useState<string>('');
   const [postalCode, setPostalCode] = useState<string>('');
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [markerPosition, setMarkerPosition] = useState<{ lat: number, lng: number }>({ lat: 40.7128, lng: -74.0060 });
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
 
-  const defaultLocation = { lat: 40.7128, lng: -74.006 }; // Default location (New York City)
+  const defaultLocation = { lat: 40.7128, lng: -74.0060 }; // Default location (New York City)
 
-  const initializeMap = (center: { lat: number; lng: number }) => {
-    const mapInstance = new window.google.maps.Map(
-      document.getElementById('google-map') as HTMLElement,
-      {
-        center,
-        zoom: 13,
-      },
-    );
+  const fetchLocationName = (latitude: number, longitude: number) => {
+    if (window.google && window.google.maps) {
+      const geocoder = new window.google.maps.Geocoder();
+      const latLng = { lat: latitude, lng: longitude };
 
-    const initialMarker = new window.google.maps.Marker({
-      position: center,
-      map: mapInstance,
-      draggable: true,
-    });
+      geocoder.geocode({ location: latLng }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+          const result = results[0];
 
-    // Set initial latitude and longitude
-    setValue('latitude', center.lat.toFixed(6));
-    setValue('longitude', center.lng.toFixed(6));
+          setLocationName(result.formatted_address);
+          setValue('locationName', result.formatted_address);
 
-   // Update on marker drag
-   initialMarker.addListener('dragend', () => {
-    const position = initialMarker.getPosition();
-    if (position) {
-      const lat = position.lat().toFixed(6);
-      const lng = position.lng().toFixed(6);
+          const lat = result.geometry.location.lat();
+          const lng = result.geometry.location.lng();
 
-      setValue('latitude', lat);
-      setValue('longitude', lng);
-      fetchLocationName(position.lat(), position.lng());
-    }
-  });
+          setValue('latitude', lat.toFixed(6));
+          setValue('longitude', lng.toFixed(6));
 
-  // Update on map click
-  mapInstance.addListener('click', (event: google.maps.MapMouseEvent) => {
-    if (event.latLng) {
-      const lat = event.latLng.lat().toFixed(6);
-      const lng = event.latLng.lng().toFixed(6);
-
-      initialMarker.setPosition(event.latLng);
-      setValue('latitude', lat);
-      setValue('longitude', lng);
-      fetchLocationName(event.latLng.lat(), event.latLng.lng());
-    }
-  });
-
-  // Set map and marker state
-  setMap(mapInstance);
-  setMarker(initialMarker);
-};
-
-// Fetch location details using Geocoding API
-const fetchLocationName = (latitude: number, longitude: number) => {
-  const geocoder = new window.google.maps.Geocoder();
-  const latLng = { lat: latitude, lng: longitude };
-
-  geocoder.geocode({ location: latLng }, (results, status) => {
-    if (status === 'OK' && results[0]) {
-      const result = results[0];
-      
-      // Set locationName and latitude/longitude
-      setLocationName(result.formatted_address);
-      setValue('locationName', result.formatted_address);
-
-      // Update latitude and longitude based on the marker position
-      const lat = result.geometry.location.lat();
-      const lng = result.geometry.location.lng();
-
-      setValue('latitude', lat.toFixed(6));  // Set latitude
-      setValue('longitude', lng.toFixed(6));  // Set longitude
-
-      // Allow manual input for other fields
-      setAddressLine1('');  // Allow manual input
-      setCity('');  // Allow manual input
-      setStateProvince('');  // Allow manual input
-      setCountry('');  // Allow manual input
-      setPostalCode('');  // Allow manual input
-    } else {
-      console.error('Geocoder failed due to: ' + status);
-    }
-  });
-}
-const getCurrentLocation = () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-
-        // Center map and update marker
-        const currentLocation = { lat: latitude, lng: longitude };
-        if (map && marker) {
-          map.setCenter(currentLocation);
-          marker.setPosition(currentLocation);
+          setAddressLine1('');
+          setCity('');
+          setStateProvince('');
+          setCountry('');
+          setPostalCode('');
         } else {
-          initializeMap(currentLocation);
+          console.error('Geocoder failed due to: ' + status);
         }
+      });
+    }
+  };
 
-        setValue('latitude', latitude.toFixed(6));
-        setValue('longitude', longitude.toFixed(6));
-        fetchLocationName(latitude, longitude);
-      },
-      (error) => {
-        console.error('Error fetching location:', error);
-        alert('Could not fetch current location.');
-      },
-    );
-  } else {
-    alert('Geolocation is not supported by your browser.');
-  }
-};
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setMarkerPosition({ lat: latitude, lng: longitude });
+          setValue('latitude', latitude.toFixed(6));
+          setValue('longitude', longitude.toFixed(6));
+          fetchLocationName(latitude, longitude);
+        },
+        (error) => {
+          console.error('Error fetching location:', error);
+          alert('Could not fetch current location.');
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by your browser.');
+    }
+  };
 
-useEffect(() => {
-  if (typeof window !== 'undefined' && window.google) {
-    // Load map with the default location
-    initializeMap(defaultLocation);
-    fetchLocationName(defaultLocation.lat, defaultLocation.lng);
-  }
-}, []);
-
-const onSubmit: SubmitHandler<LocationFormInputs> = (data) => {
-  console.log('Form submitted with data:', data);
-  // Submit the form data (you can send it to your API here)
-};
-
-
+  const onSubmit: SubmitHandler<LocationFormInputs> = (data) => {
+    console.log('Form submitted with data:', data);
+    // Submit the form data (you can send it to your API here)
+  };
 
   const router = useRouter();
   const navigateToDashboard = () => {
@@ -182,9 +106,72 @@ const onSubmit: SubmitHandler<LocationFormInputs> = (data) => {
     router.push('/admin/usermanagement');
   };
 
+  const initializeMap = (mapInstance: google.maps.Map) => {
+    setMap(mapInstance);
+    const initialMarkerInstance = new google.maps.Marker({
+      position: markerPosition,
+      map: mapInstance,
+      draggable: true,
+    });
+
+    google.maps.event.addListener(initialMarkerInstance, 'dragend', () => {
+      const position = initialMarkerInstance.getPosition();
+      if (position) {
+        const lat = parseFloat(position.lat().toFixed(6));
+        const lng = parseFloat(position.lng().toFixed(6));
+        setValue('latitude', lat.toFixed(6));
+        setValue('longitude', lng.toFixed(6));
+        fetchLocationName(lat, lng);
+      }
+    });
+
+    mapInstance.addListener('click', (event: google.maps.MapMouseEvent) => {
+      if (event.latLng) {
+        const lat = parseFloat(event.latLng.lat().toFixed(6));
+        const lng = parseFloat(event.latLng.lng().toFixed(6));
+        setMarkerPosition({ lat, lng });
+        initialMarkerInstance.setPosition(event.latLng);
+        setValue('latitude', lat.toFixed(6));
+        setValue('longitude', lng.toFixed(6));
+        fetchLocationName(lat, lng);
+      }
+    });
+  };
+
+  // Load Google Maps API script manually
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !window.google) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDVoweyAAxiBHwR9WGA-ZxDStTMXxnoo8s&callback=initMap`;
+      script.async = true;
+      document.head.appendChild(script);
+
+      script.onload = () => {
+        setIsGoogleMapsLoaded(true);
+      };
+
+      window.initMap = () => {
+        if (map) {
+          initializeMap(map);
+        }
+      };
+    }
+
+    return () => {
+      // Cleanup script from the DOM when the component is unmounted
+      const script = document.querySelector(`script[src^="https://maps.googleapis.com/maps/api/js"]`);
+      if (script) {
+        script.remove();
+      }
+    };
+  }, [map]);
+
+  if (!isGoogleMapsLoaded) {
+    return <div>Loading Google Maps...</div>;
+  }
+
   return (
     <div className="w-full p-6">
-      {/* Navigation Buttons */}
       <div className="mb-4 flex items-center gap-4">
         <div className="flex items-center">
           <button
@@ -208,7 +195,6 @@ const onSubmit: SubmitHandler<LocationFormInputs> = (data) => {
             </svg>
           </button>
         </div>
-
         {[{ label: 'Assets', onClick: navigateToAssets },
           { label: 'Businesses', onClick: navigateToBusinesses },
           { label: 'Administration', onClick: navigateToAdministration }].map((btn, index) => (
@@ -225,27 +211,22 @@ const onSubmit: SubmitHandler<LocationFormInputs> = (data) => {
 
       <h2 className="text-2xl font-semibold text-gray-900 mb-6">Add New Location</h2>
 
-      {/* Google Map */}
       <div id="google-map" className="h-64 w-full sm:h-96 mb-4">
-      <LoadScript googleMapsApiKey={`AIzaSyDVoweyAAxiBHwR9WGA-ZxDStTMXxnoo8s`}>
-      <GoogleMap
+        <GoogleMap
           mapContainerStyle={{ height: "400px", width: "100%" }}
-          center={defaultLocation}
+          center={markerPosition}
           zoom={13}
+          onLoad={initializeMap} // Ensure map is initialized properly
         >
-          <Marker position={defaultLocation} draggable={true} />
+          <Marker position={markerPosition} draggable={true} />
         </GoogleMap>
-
-      </LoadScript>
-
       </div>
 
-      {/* Use Current Location Button */}
       <div className="mb-4">
         <button
           type="button"
           onClick={getCurrentLocation}
-          className="w-full rounded-md bg-daketBlue px-4 py-2 text-white hover:bg-daketBlue"
+          className="w-full rounded-md bg-daketBlue my-2 px-4 py-2 text-white hover:bg-daketBlue"
         >
           Use Current Location
         </button>
@@ -349,8 +330,9 @@ const onSubmit: SubmitHandler<LocationFormInputs> = (data) => {
           Submit
         </button>
       </form>
+
     </div>
   );
-}
+};
 
 export default AddLocationForm;
