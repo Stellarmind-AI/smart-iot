@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   FaWind,
   FaBatteryFull,
@@ -8,6 +8,9 @@ import {
 } from 'react-icons/fa';
 import { MdOutlineBolt } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
+import mqtt from 'mqtt';
+
+const client = mqtt.connect('ws://broker.emqx.io:8083/mqtt');
 
 const stationOverviewData = [
   {
@@ -90,12 +93,53 @@ const Dashboard = () => {
   const [gearAlertMessage, setGearAlertMessage] = useState('');
   const [gearAlertAction, setGearAlertAction] = useState(() => () => {});
 
+  // const client = useRef(null);
+  // Track previous values to avoid unnecessary publishing
+  const [mqttClient, setMqttClient] = useState(null);
+  const prevLouverValue = useRef(null);
+  const prevGearValue = useRef(null);
+
+  // MQTT client initialization
+  useEffect(() => {
+    // Initialize MQTT client inside useEffect
+    const client = mqtt.connect('ws://broker.emqx.io:8083/mqtt');
+    setMqttClient(client); // Store client in state for later use
+
+    client.on('connect', () => {
+      console.log('Connected to MQTT Broker');
+      client.subscribe('esp32/lovers');
+      client.subscribe('esp32/gears');
+    });
+
+    client.on('message', (topic, message) => {
+      const value = message.toString();
+      console.log(`Received message from topic: ${topic}`);
+      console.log(`Message value: ${value}`);
+    });
+
+    return () => {
+      if (client) {
+        client.end(); // Cleanup on component unmount
+      }
+    };
+  }, []);
+
   const handleLouverChange = (e) => {
     const newValue = e.target.value;
     setAlertMessage(
       `Are you sure you want to update the Louver Control to ${newValue}?`,
     );
-    setAlertAction(() => () => setLouverValue(newValue));
+    setAlertAction(() => () => {
+      setLouverValue(newValue);
+
+      // Publish only if the value has changed
+      if (prevLouverValue.current !== newValue) {
+        prevLouverValue.current = newValue;
+        if (mqttClient) {
+          mqttClient.publish('esp32/lovers', newValue);
+        }
+      }
+    });
     setIsAlertVisible(true);
   };
 
@@ -108,11 +152,22 @@ const Dashboard = () => {
     setIsAlertVisible(false);
   };
 
-  const handleGearChange = (value: any) => {
+  // Handle gear change and send to MQTT broker
+  const handleGearChange = (value) => {
     setGearAlertMessage(
       `Are you sure you want to update the Gear Selection to ${value}?`,
     );
-    setGearAlertAction(() => () => setGearValue(value));
+    setGearAlertAction(() => () => {
+      setGearValue(value);
+
+      // Publish only if the value has changed
+      if (prevGearValue.current !== value) {
+        prevGearValue.current = value;
+        if (mqttClient) {
+          mqttClient.publish('esp32/gears', value);
+        }
+      }
+    });
     setIsGearAlertVisible(true);
   };
 
