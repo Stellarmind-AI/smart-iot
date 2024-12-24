@@ -10,7 +10,7 @@ import { MdOutlineBolt } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import mqtt from 'mqtt';
 
-const client = mqtt.connect('ws://broker.emqx.io:8083/mqtt');
+const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
 
 const stationOverviewData = [
   {
@@ -102,7 +102,7 @@ const Dashboard = () => {
   // MQTT client initialization
   useEffect(() => {
     // Initialize MQTT client inside useEffect
-    const client = mqtt.connect('ws://broker.emqx.io:8083/mqtt');
+    const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
     setMqttClient(client); // Store client in state for later use
 
     client.on('connect', () => {
