@@ -45,7 +45,7 @@ function AddTurbineForm() {
             </button>
 
             <h3 className="mb-6 text-center text-2xl font-bold text-gray-800">
-              Add Turbine Station
+              Add Station
             </h3>
             <form>
               {/* Turbine Name */}
@@ -54,7 +54,7 @@ function AddTurbineForm() {
                   htmlFor="turbineName"
                   className="text-black mb-1 block text-lg font-medium"
                 >
-                  Turbine Name
+                  Station Name
                 </label>
                 <input
                   id="turbineName"
