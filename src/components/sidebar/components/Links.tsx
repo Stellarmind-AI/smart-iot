@@ -72,6 +72,15 @@ const SidebarLinks = (): JSX.Element => {
           { name: 'Add New Role', path: '/admin/newrole' },
         ],
       },
+      {
+        layout: '/admin/logout',
+        path: '/',
+        name: 'Logout',
+        hasPage: false,
+        whiteImg: '/img/dashboards/log-out-1.png',
+        blueImg: '/img/dashboards/log-out-2.png',
+        subpages: [],
+      },
     ],
     [],
   );
@@ -130,7 +139,8 @@ const SidebarLinks = (): JSX.Element => {
         const isActive = useMemo(
           () =>
             activeRoute(route.layout + '/' + route.path) ||
-            route.subpages.some((subpage) => activeRoute(subpage.path)) ||
+            (route.subpages?.some((subpage) => activeRoute(subpage.path)) ??
+              false) ||
             openDropdown === index,
           [activeRoute, route, openDropdown],
         );
@@ -150,7 +160,13 @@ const SidebarLinks = (): JSX.Element => {
                   ? 'bg-[#ECF2FF] text-[#156082]'
                   : 'bg-[#156082] text-white hover:bg-[#ECF2FF] hover:font-bold hover:text-[#156082]'
               } cursor-pointer`}
-              onClick={() => handleParentClick(index, route.hasPage)}
+              onClick={() => {
+                if (route.name === 'Logout') {
+                  router.push(route.subpages[0].path); // Directly navigate to logout
+                } else {
+                  handleParentClick(index, route.hasPage);
+                }
+              }}
               onMouseEnter={() => setHoverIndex(index)}
               onMouseLeave={() => setHoverIndex(null)}
             >
@@ -160,52 +176,54 @@ const SidebarLinks = (): JSX.Element => {
                 isHovered={hoverIndex === index}
               />
 
-              {route.subpages.length > 0 && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleDropdown(index);
-                  }}
-                  className={`group ml-auto text-white hover:text-[#156082] ${
-                    isActive ? 'text-[#156082]' : ''
-                  }`}
-                >
-                  {openDropdown === index ? (
-                    <ChevronUpIcon className="h-5 w-5 text-[#156082]" />
-                  ) : (
-                    <ChevronDownIcon
-                      className={`h-5 w-5 ${
-                        isActive
-                          ? 'text-[#156082]'
-                          : 'text-white group-hover:text-[#156082]'
-                      }`}
-                    />
-                  )}
-                </button>
-              )}
+              {route.subpages.length > 0 &&
+                route.name !== 'Logout' && ( // Skip submenu for Logout
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleDropdown(index);
+                    }}
+                    className={`group ml-auto text-white hover:text-[#156082] ${
+                      isActive ? 'text-[#156082]' : ''
+                    }`}
+                  >
+                    {openDropdown === index ? (
+                      <ChevronUpIcon className="h-5 w-5 text-[#156082]" />
+                    ) : (
+                      <ChevronDownIcon
+                        className={`h-5 w-5 ${
+                          isActive
+                            ? 'text-[#156082]'
+                            : 'text-white group-hover:text-[#156082]'
+                        }`}
+                      />
+                    )}
+                  </button>
+                )}
             </div>
 
-            {openDropdown === index && route.subpages.length > 0 && (
-              <div className="mt-2 text-center">
-                {route.subpages.map((subpage, subIndex) => {
-                  const isSubActive = activeSubpage === subpage.path;
-
-                  return (
-                    <div
-                      key={subIndex}
-                      className={`mb-2 w-full rounded-lg px-4 py-2 transition-all duration-200 ease-in-out ${
-                        isSubActive
-                          ? 'bg-[#ECF2FF] font-bold text-[#156082]'
-                          : 'bg-[#F9F9F9] text-[#505759]'
-                      } cursor-pointer hover:bg-[#ECF2FF] hover:font-bold hover:text-[#156082]`}
-                      onClick={() => handleSubpageClick(subpage.path)}
-                    >
-                      {subpage.name}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+            {openDropdown === index &&
+              route.subpages.length > 0 &&
+              route.name !== 'Logout' && ( // Skip rendering subpages for Logout
+                <div className="mt-2 text-center">
+                  {route.subpages.map((subpage, subIndex) => {
+                    const isSubActive = activeSubpage === subpage.path;
+                    return (
+                      <div
+                        key={subIndex}
+                        className={`mb-2 w-full rounded-lg px-4 py-2 transition-all duration-200 ease-in-out ${
+                          isSubActive
+                            ? 'bg-[#ECF2FF] font-bold text-[#156082]'
+                            : 'bg-[#F9F9F9] text-[#505759]'
+                        } cursor-pointer hover:bg-[#ECF2FF] hover:font-bold hover:text-[#156082]`}
+                        onClick={() => handleSubpageClick(subpage.path)}
+                      >
+                        {subpage.name}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
           </div>
         );
       })}

@@ -96,7 +96,7 @@ ChartJS.register(centerTextPlugin);
 // Chart data configuration
 const chartData = [
   {
-    title: `Active Stations\n DAKET`,
+    title: `Active STATIONS\n DAKET`,
     data: [657],
     icon: (
       <img

@@ -49,8 +49,6 @@ const StationManagement: React.FC = () => {
               location: 'Sault Site',
               connectorStatus: 'Connected',
               model: 'Model X',
-              cpId: '12345',
-              qrCode: 'QR123',
               firmwareVersion: '1.2.3',
               serialNumber: 'SN12345',
               lastOnline: '2024-12-05 10:00 AM',
@@ -61,8 +59,6 @@ const StationManagement: React.FC = () => {
               location: 'Toronto Street',
               connectorStatus: 'Disconnected',
               model: 'Model Y',
-              cpId: '67890',
-              qrCode: 'QR456',
               firmwareVersion: '2.3.4',
               serialNumber: 'SN67890',
               lastOnline: '2024-12-01 03:00 PM',
@@ -73,8 +69,6 @@ const StationManagement: React.FC = () => {
               location: 'Isabella Street',
               connectorStatus: 'Charging',
               model: 'Model A',
-              cpId: '22334',
-              qrCode: 'QR789',
               firmwareVersion: '1.0.0',
               serialNumber: 'SN22334',
               lastOnline: '2024-12-04 05:00 PM',
@@ -85,8 +79,6 @@ const StationManagement: React.FC = () => {
               location: 'Coalex Street',
               connectorStatus: 'Error',
               model: 'Model B',
-              cpId: '55678',
-              qrCode: 'QR012',
               firmwareVersion: '2.1.5',
               serialNumber: 'SN55678',
               lastOnline: '2024-12-03 11:30 AM',
@@ -97,8 +89,6 @@ const StationManagement: React.FC = () => {
               location: 'Green Park',
               connectorStatus: 'Ready',
               model: 'Model C',
-              cpId: '66789',
-              qrCode: 'QR345',
               firmwareVersion: '3.0.7',
               serialNumber: 'SN66789',
               lastOnline: '2024-12-05 08:00 AM',
@@ -109,8 +99,6 @@ const StationManagement: React.FC = () => {
               location: 'Coalex Street',
               connectorStatus: 'Disconnected',
               model: 'Model D',
-              cpId: '77890',
-              qrCode: 'QR678',
               firmwareVersion: '4.0.9',
               serialNumber: 'SN77890',
               lastOnline: '2024-11-30 02:00 PM',
@@ -121,8 +109,6 @@ const StationManagement: React.FC = () => {
               location: 'Toronto Street',
               connectorStatus: 'Connected',
               model: 'Model E',
-              cpId: '88901',
-              qrCode: 'QR901',
               firmwareVersion: '5.1.2',
               serialNumber: 'SN88901',
               lastOnline: '2024-12-05 09:30 AM',
@@ -133,7 +119,6 @@ const StationManagement: React.FC = () => {
               station: 'D60',
               location: 'Sault Site',
               model: 'Model Z',
-              cpId: '11223',
               firmwareVersion: '3.4.5',
               serialNumber: 'SN11223',
               lastOnline: '2024-11-28 01:00 PM',
@@ -142,7 +127,6 @@ const StationManagement: React.FC = () => {
               station: 'D90',
               location: 'Toronto Street',
               model: 'Model W',
-              cpId: '44556',
               firmwareVersion: '4.5.6',
               serialNumber: 'SN44556',
               lastOnline: '2024-11-20 08:00 AM',
@@ -151,7 +135,6 @@ const StationManagement: React.FC = () => {
               station: 'D120',
               location: 'Isabella Street',
               model: 'Model F',
-              cpId: '99112',
               firmwareVersion: '6.0.1',
               serialNumber: 'SN99112',
               lastOnline: '2024-11-25 06:30 PM',
@@ -160,7 +143,6 @@ const StationManagement: React.FC = () => {
               station: 'D90x',
               location: 'Coalex Street',
               model: 'Model G',
-              cpId: '99223',
               firmwareVersion: '7.1.3',
               serialNumber: 'SN99223',
               lastOnline: '2024-11-22 04:00 PM',
@@ -169,7 +151,6 @@ const StationManagement: React.FC = () => {
               station: 'A10 kilowatt',
               location: 'Green Park',
               model: 'Model H',
-              cpId: '99334',
               firmwareVersion: '8.2.4',
               serialNumber: 'SN99334',
               lastOnline: '2024-11-18 10:15 AM',
@@ -178,7 +159,6 @@ const StationManagement: React.FC = () => {
               station: 'A25 kilowatt',
               location: 'Toronto Street',
               model: 'Model I',
-              cpId: '99445',
               firmwareVersion: '9.3.5',
               serialNumber: 'SN99445',
               lastOnline: '2024-11-15 03:45 PM',
@@ -187,7 +167,6 @@ const StationManagement: React.FC = () => {
               station: 'A50 kilowatt',
               location: 'Coalex Street',
               model: 'Model J',
-              cpId: '99556',
               firmwareVersion: '10.0.0',
               serialNumber: 'SN99556',
               lastOnline: '2024-11-10 07:00 AM',
@@ -429,12 +408,6 @@ const StationManagement: React.FC = () => {
                     Location
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                    CP ID
-                  </th>
-                  <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                    QR Code
-                  </th>
-                  <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                     Serial Number
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
@@ -449,9 +422,6 @@ const StationManagement: React.FC = () => {
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                     Location
-                  </th>
-                  <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                    CP ID
                   </th>
                   <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                     Serial Number
@@ -478,12 +448,6 @@ const StationManagement: React.FC = () => {
                       {row.location}
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
-                      {row.cpId}
-                    </td>
-                    <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
-                      {row.qrCode}
-                    </td>
-                    <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
                       {row.serialNumber}
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
@@ -498,9 +462,6 @@ const StationManagement: React.FC = () => {
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
                       {row.location}
-                    </td>
-                    <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
-                      {row.cpId}
                     </td>
                     <td className="overflow-hidden text-ellipsis whitespace-nowrap border-b px-6 py-4 text-sm text-gray-800">
                       {row.serialNumber}
