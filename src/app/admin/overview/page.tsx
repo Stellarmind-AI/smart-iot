@@ -385,7 +385,7 @@ const Dashboard = () => {
               {/* Station Architecture Section */}
               <div className="w-full lg:w-2/3">
                 <img
-                  src="/img/dashboards/Overview_Frame1.png"
+                  src="/img/dashboards/Overview_Frame.png"
                   alt="Station Architecture"
                   className="h-[500px] w-full rounded-lg object-contain"
                 />
