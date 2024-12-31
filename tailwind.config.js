@@ -3,6 +3,7 @@ module.exports = {
   darkMode: 'class',
   mode: 'jit',
   content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     // Or if using `src` directory:
@@ -284,7 +285,7 @@ module.exports = {
         800: '#344e86',
         900: '#00007d',
       },
-      daketBlue:'#156082',
+      daketBlue: '#156082',
       indigo: {
         50: '#eef2ff',
         100: '#e0e7ff',

@@ -1,6 +1,11 @@
-"use client"
+'use client';
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  InfoWindow,
+} from '@react-google-maps/api';
 
 const mapContainerStyle = {
   width: '100%',
@@ -11,52 +16,53 @@ const mapContainerStyle = {
 
 // Center the map on Canada
 const center = {
-  lat: 56.130366, // Approximate center latitude of Canada
-  lng: -106.346771, // Approximate center longitude of Canada
+  lat: 45.18559887007295, // Approximate center latitude of Canada ,
+  lng: -78.89327466126198, // Approximate center longitude of Canada
 };
 
 // Canadian station locations
 const stations = [
-  { 
-    id: '1', 
-    name: 'IESO', 
-    position: { lat: 43.651070, lng: -79.347015 }, // Toronto, Ontario
-    location: 'Sault Site' 
+  {
+    id: '1',
+    name: 'ECI Technology',
+    position: { lat: 43.82325417438871, lng: -79.26272904261897 }, // Toronto, Ontario
+    location:
+      'ECI Technology Group Inc. - Electronics manufacturer, 815 Middlefield Rd #1&2, Scarborough, ON M1V 2P9, Canada',
   },
-  { 
-    id: '2', 
-    name: 'Collectdev LP', 
-    position: { lat: 45.421532, lng: -75.697189 }, // Ottawa, Ontario
-    location: 'Toronto Street' 
+  {
+    id: '2',
+    name: 'GM wind Tunnel',
+    position: { lat: 43.94564374051123, lng: -78.89942651911576 }, // Ottawa, Ontario
+    location:
+      'Automotive Centre of Excellence, Founders Dr, Oshawa, ON L1G 8C4, Canada',
   },
-  { 
-    id: '3', 
-    name: '33 Isabella Street', 
-    position: { lat: 49.282729, lng: -83.697189 }, // Vancouver, British Columbia
-    location: 'Isabella Street' 
-  },
-  { 
-    id: '4', 
-    name: 'IESO', 
-    position: { lat: 53.546124, lng: -74.697189 }, // Edmonton, Alberta
-    location: 'Coalex Street' 
-  },
-  { 
-    id: '5', 
-    name: 'IESO', 
-    position: { lat: 45.501689, lng: -86.697189 }, // Montreal, Quebec
-    location: 'Green Park' 
-  },
+  // {
+  //   id: '3',
+  //   name: '33 Isabella Street',
+  //   position: { lat: 49.282729, lng: -83.697189 }, // Vancouver, British Columbia
+  //   location: 'Isabella Street',
+  // },
+  // {
+  //   id: '4',
+  //   name: 'IESO',
+  //   position: { lat: 53.546124, lng: -74.697189 }, // Edmonton, Alberta
+  //   location: 'Coalex Street',
+  // },
+  // {
+  //   id: '5',
+  //   name: 'IESO',
+  //   position: { lat: 45.501689, lng: -86.697189 }, // Montreal, Quebec
+  //   location: 'Green Park',
+  // },
 ];
 
-
 const GoogleMapComponentWithoutRouter: React.FC = () => {
-  const [isClient, setIsClient] = useState(false);
+  // const [isClient, setIsClient] = useState(false);
   const [selectedStation, setSelectedStation] = useState<any>(null);
 
-  useEffect(() => {
-    setIsClient(true); // Ensure rendering only on the client-side
-  }, []);
+  // useEffect(() => {
+  //   setIsClient(true); // Ensure rendering only on the client-side
+  // }, []);
 
   const handleMarkerClick = (station: any) => {
     setSelectedStation(station);
@@ -66,16 +72,18 @@ const GoogleMapComponentWithoutRouter: React.FC = () => {
     window.location.href = '/admin/overview'; // Redirect to the overview page
   };
 
-  if (!isClient) {
-    return null; // Avoid rendering during SSR
-  }
+  // if (!isClient) {
+  //   return null; // Avoid rendering during SSR
+  // }
 
   return (
-    <LoadScript googleMapsApiKey={`AIzaSyDVoweyAAxiBHwR9WGA-ZxDStTMXxnoo8s`}>
+    <LoadScript
+      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}
+    >
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={center}
-        zoom={3} // Adjusted to show all of Canada
+        zoom={5} // Adjusted to show all of Canada
       >
         {/* Place markers for each station */}
         {stations.map((station) => (
@@ -95,11 +103,13 @@ const GoogleMapComponentWithoutRouter: React.FC = () => {
           >
             <div>
               <h3 className="text-lg font-bold">{selectedStation.name}</h3>
-              <p className="text-md font-semibold mb-2">{selectedStation.location}</p>
+              <p className="text-md mb-2 font-semibold">
+                {selectedStation.location}
+              </p>
 
               <button
                 onClick={redirectToOverview}
-                className="bg-daketBlue text-white px-3 py-2 rounded-lg hover:bg-bg-daketBlue"
+                className="hover:bg-bg-daketBlue rounded-lg bg-daketBlue px-3 py-2 text-white"
               >
                 Go to Overview
               </button>

@@ -30,40 +30,42 @@ function CheckTable(props: { tableData: any }) {
 
   const staticData: RowObj[] = [
     {
-      turbine: 'IESO',
-      location: 'Sault Site',
+      turbine: 'ECI Technology',
+      location:
+        'ECI Technology Group Inc. - Electronics manufacturer, 815 Middlefield Rd #1&2, Scarborough, ON M1V 2P9, Canada',
       Serialnumber: '56362323',
       chargerPoint: 'Charger 1',
       status: 'online',
     },
     {
-      turbine: 'Collectdev LP',
-      location: 'Toronto Street',
+      turbine: 'GM wind Tunnel',
+      location:
+        'Automotive Centre of Excellence, Founders Dr, Oshawa, ON L1G 8C4, Canada',
       Serialnumber: '42232233',
       chargerPoint: 'Charger 2',
       status: 'offline',
     },
-    {
-      turbine: '33 Isabella Street',
-      location: 'Isabella Street',
-      Serialnumber: '67834043',
-      chargerPoint: 'Charger 3',
-      status: 'online',
-    },
-    {
-      turbine: 'IESO',
-      location: 'Coalex Street',
-      Serialnumber: '34234223',
-      chargerPoint: 'Charger 4',
-      status: 'offline',
-    },
-    {
-      turbine: 'IESO',
-      location: 'Green Park',
-      Serialnumber: '67342382',
-      chargerPoint: 'Charger 5',
-      status: 'online',
-    },
+    // {
+    //   turbine: '33 Isabella Street',
+    //   location: 'Isabella Street',
+    //   Serialnumber: '67834043',
+    //   chargerPoint: 'Charger 3',
+    //   status: 'online',
+    // },
+    // {
+    //   turbine: 'IESO',
+    //   location: 'Coalex Street',
+    //   Serialnumber: '34234223',
+    //   chargerPoint: 'Charger 4',
+    //   status: 'offline',
+    // },
+    // {
+    //   turbine: 'IESO',
+    //   location: 'Green Park',
+    //   Serialnumber: '67342382',
+    //   chargerPoint: 'Charger 5',
+    //   status: 'online',
+    // },
   ];
 
   const filteredData = staticData.filter((device) => {
@@ -100,6 +102,7 @@ function CheckTable(props: { tableData: any }) {
         );
       },
     }),
+
     columnHelper.accessor('location', {
       id: 'location',
       header: () => (
@@ -127,7 +130,12 @@ function CheckTable(props: { tableData: any }) {
           </Link>
         );
       },
+      // Apply custom width and truncate only if necessary
+      meta: {
+        className: 'w-[350px] break-words', // Increased width for location, and break long words if needed
+      },
     }),
+
     columnHelper.accessor('Serialnumber', {
       id: 'Serialnumber',
       header: () => (
@@ -155,7 +163,12 @@ function CheckTable(props: { tableData: any }) {
           </Link>
         );
       },
+      // Increase the width for Serialnumber
+      meta: {
+        className: 'w-[200px]', // Adjusted width for Serialnumber
+      },
     }),
+
     columnHelper.accessor('status', {
       id: 'status',
       header: () => (
@@ -186,6 +199,10 @@ function CheckTable(props: { tableData: any }) {
             </div>
           </Link>
         );
+      },
+      // Increase the width for Status column
+      meta: {
+        className: 'w-[180px]', // Adjusted width for Status
       },
     }),
   ];
@@ -264,7 +281,13 @@ function CheckTable(props: { tableData: any }) {
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className="min-w-[150px] border-white/0 py-3 pr-4"
+                      className={`${
+                        cell.column.id === 'location'
+                          ? 'min-w-[200px]'
+                          : cell.column.id === 'status'
+                          ? 'min-w-[120px] ps-4'
+                          : 'min-w-[120px]'
+                      } border-white/0 py-3 pr-4`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

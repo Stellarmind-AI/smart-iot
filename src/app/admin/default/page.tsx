@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import {
@@ -16,6 +16,7 @@ import tableDataCheck from 'variables/data-tables/tableDataCheck';
 // Register Chart.js elements and chartjs-plugin-datalabels
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { MdHeight, MdPadding } from 'react-icons/md';
+
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 // Dynamically import the OpenLayers map component with SSR disabled
@@ -24,6 +25,7 @@ const OpenLayersMap = dynamic(
   () => import('components/admin/default/GoogleMapComponent'),
   {
     ssr: false,
+    loading: () => <p>Loading map...</p>, // Fallback content during loading
   },
 );
 
@@ -239,6 +241,12 @@ const PieChartWidget = ({
 
 // Dashboard Component
 const Dashboard = () => {
+  const [showMap, setShowMap] = useState(false);
+
+  useEffect(() => {
+    // Trigger the map to render on mount
+    setShowMap(true);
+  }, []);
   return (
     <div className="rounded-lg p-5 dark:bg-navy-800 dark:text-white">
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -258,9 +266,9 @@ const Dashboard = () => {
           {/* Make sure the container for CheckTable is flexible */}
           <CheckTable tableData={tableDataCheck} />
         </div>
-        <div className="w-full">
-          {/* Same for WeeklyRevenue */}
-          <OpenLayersMap />
+        <div className="h-full">
+          {/* Map rendering is controlled here */}
+          {showMap ? <OpenLayersMap /> : <p>Loading map...</p>}
         </div>
       </div>
 

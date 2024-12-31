@@ -385,9 +385,9 @@ const StationManagement: React.FC = () => {
           <button className="rounded bg-daketBlue px-4 py-2 text-white">
             Export Stations
           </button>
-          <button className="rounded bg-daketBlue px-4 py-2 text-white">
+          {/* <button className="rounded bg-daketBlue px-4 py-2 text-white">
             Download QR Codes
-          </button>
+          </button> */}
         </div>
       )}
 

@@ -9,8 +9,6 @@ type ReportData = {
   city: string;
   stateProvince: string;
   stations: number;
-  connectors: number;
-  siteRating: number;
 };
 
 const LocationReportingPage: React.FC = () => {
@@ -31,8 +29,6 @@ const LocationReportingPage: React.FC = () => {
       city: 'New York',
       stateProvince: 'NY',
       stations: 5,
-      connectors: 10,
-      siteRating: 4.5,
     },
     {
       location: 'Golden Gate',
@@ -40,8 +36,6 @@ const LocationReportingPage: React.FC = () => {
       city: 'San Francisco',
       stateProvince: 'CA',
       stations: 8,
-      connectors: 15,
-      siteRating: 4.8,
     },
     {
       location: 'Lincoln Park',
@@ -49,8 +43,6 @@ const LocationReportingPage: React.FC = () => {
       city: 'Chicago',
       stateProvince: 'IL',
       stations: 6,
-      connectors: 12,
-      siteRating: 4.2,
     },
     {
       location: 'Space Needle',
@@ -58,8 +50,6 @@ const LocationReportingPage: React.FC = () => {
       city: 'Seattle',
       stateProvince: 'WA',
       stations: 4,
-      connectors: 8,
-      siteRating: 4.7,
     },
     {
       location: 'Times Square',
@@ -67,8 +57,6 @@ const LocationReportingPage: React.FC = () => {
       city: 'New York',
       stateProvince: 'NY',
       stations: 10,
-      connectors: 20,
-      siteRating: 4.9,
     },
   ];
 
@@ -288,12 +276,6 @@ const LocationReportingPage: React.FC = () => {
                 <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
                   Stations
                 </th>
-                <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                  Connectors
-                </th>
-                <th className="border-b px-6 py-3 text-left text-sm font-medium text-gray-900">
-                  Site Rating
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -316,12 +298,6 @@ const LocationReportingPage: React.FC = () => {
                   </td>
                   <td className="border-b px-6 py-4 text-sm text-gray-800">
                     {item.stations}
-                  </td>
-                  <td className="border-b px-6 py-4 text-sm text-gray-800">
-                    {item.connectors}
-                  </td>
-                  <td className="border-b px-6 py-4 text-sm text-gray-800">
-                    {item.siteRating}
                   </td>
                 </tr>
               ))}
