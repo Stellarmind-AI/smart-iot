@@ -288,11 +288,14 @@ const StationManagement: React.FC = () => {
           className="rounded border p-2"
         >
           <option value="">All Locations</option>
-          <option value="Sault Site">Sault Site</option>
-          <option value="Toronto Street">Toronto Street</option>
-          <option value="Isabella Street">Isabella Street</option>
-          <option value="Coalex Street">Coalex Street</option>
-          <option value="Green Park">Green Park</option>
+          <option value="ECI Technology">
+            ECI Technology Group Inc. - Electronics manufacturer, 815
+            Middlefield Rd #1&2, Scarborough, ON M1V 2P9, Canada
+          </option>
+          <option value="GM wind Tunnel">
+            Automotive Centre of Excellence, Founders Dr, Oshawa, ON L1G 8C4,
+            Canada
+          </option>
         </select>
         <select
           name="station"
@@ -301,14 +304,8 @@ const StationManagement: React.FC = () => {
           className="rounded border p-2"
         >
           <option value="">All Station</option>
-          <option value="D60">D60</option>
-          <option value="D90">D90</option>
-          <option value="D120">D120</option>
-          <option value="D90x">D90x</option>
-          <option value="A10 kilowatt">A10 kilowatt</option>
-          <option value="A25 kilowatt">A25 kilowatt</option>
-          <option value="A50 kilowatt">A50 kilowatt</option>
-          <option value="A100 kilowatt">A100 kilowatt</option>
+          <option value="ECI Technology">ECI Technology</option>
+          <option value="GM wind Tunnel">GM wind Tunnel</option>
         </select>
         {/* <select
           name="model"

@@ -37,27 +37,27 @@ const LocationReportingPage: React.FC = () => {
       stateProvince: 'CA',
       stations: 8,
     },
-    {
-      location: 'Lincoln Park',
-      address: '789 Park Lane',
-      city: 'Chicago',
-      stateProvince: 'IL',
-      stations: 6,
-    },
-    {
-      location: 'Space Needle',
-      address: '100 Needle St',
-      city: 'Seattle',
-      stateProvince: 'WA',
-      stations: 4,
-    },
-    {
-      location: 'Times Square',
-      address: '200 Broadway Ave',
-      city: 'New York',
-      stateProvince: 'NY',
-      stations: 10,
-    },
+    // {
+    //   location: 'Lincoln Park',
+    //   address: '789 Park Lane',
+    //   city: 'Chicago',
+    //   stateProvince: 'IL',
+    //   stations: 6,
+    // },
+    // {
+    //   location: 'Space Needle',
+    //   address: '100 Needle St',
+    //   city: 'Seattle',
+    //   stateProvince: 'WA',
+    //   stations: 4,
+    // },
+    // {
+    //   location: 'Times Square',
+    //   address: '200 Broadway Ave',
+    //   city: 'New York',
+    //   stateProvince: 'NY',
+    //   stations: 10,
+    // },
   ];
 
   // Handle filter change
@@ -196,11 +196,14 @@ const LocationReportingPage: React.FC = () => {
               className="w-full rounded-lg border border-gray-300 p-2 text-sm"
             >
               <option value="">All Locations</option>
-              <option value="Central Park">Central Park</option>
-              <option value="Golden Gate">Golden Gate</option>
-              <option value="Lincoln Park">Lincoln Park</option>
-              <option value="Space Needle">Space Needle</option>
-              <option value="Times Square">Times Square</option>
+              <option value="1">
+                ECI Technology Group Inc. - Electronics manufacturer, 815
+                Middlefield Rd #1&2, Scarborough, ON M1V 2P9, Canada
+              </option>
+              <option value="2">
+                Automotive Centre of Excellence, Founders Dr, Oshawa, ON L1G
+                8C4, Canada
+              </option>
             </select>
           </div>
           <div>
@@ -214,10 +217,9 @@ const LocationReportingPage: React.FC = () => {
               className="w-full rounded-lg border border-gray-300 p-2 text-sm"
             >
               <option value="">States/Province</option>
-              <option value="NY">NY</option>
-              <option value="CA">CA</option>
-              <option value="IL">IL</option>
-              <option value="WA">WA</option>
+              <option value="Toronto">Toronto</option>
+              <option value="Quebec">Quebec </option>
+              <option value="Manitoba">Manitoba </option>
             </select>
           </div>
           <div>
@@ -231,10 +233,7 @@ const LocationReportingPage: React.FC = () => {
               className="w-full rounded-lg border border-gray-300 p-2 text-sm"
             >
               <option value="">All Cities</option>
-              <option value="New York">New York</option>
-              <option value="San Francisco">San Francisco</option>
-              <option value="Chicago">Chicago</option>
-              <option value="Seattle">Seattle</option>
+              <option value="Caneda">Caneda</option>
             </select>
           </div>
         </div>

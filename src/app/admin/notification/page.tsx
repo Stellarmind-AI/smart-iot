@@ -5,29 +5,8 @@ import { useRouter } from 'next/navigation';
 const NotificationPage = () => {
   const [alerts, setAlerts] = useState<string[]>([]);
   const [stationOverview, setStationOverview] = useState([
-    { stationName: 'IESO', status: 'Normal', downtime: '3 hours' },
-    { stationName: 'Collectdev LP', status: 'Weather', downtime: '5 hours' },
-    {
-      stationName: '33 Isabella Street',
-      status: 'Maintenance',
-      downtime: '7 hours',
-    },
-    {
-      stationName: 'Central Park Station',
-      status: 'Normal',
-      downtime: '2 hours',
-    },
-    { stationName: 'Downtown Hub', status: 'Weather', downtime: '9 hours' },
-    {
-      stationName: 'Main Street Station',
-      status: 'Normal',
-      downtime: '7 hours',
-    },
-    {
-      stationName: 'Westside Station',
-      status: 'Maintenance',
-      downtime: '2 hours',
-    },
+    { stationName: 'ECI Technology', status: 'Normal', downtime: '3 hours' },
+    { stationName: 'GM Wind Tunnel', status: 'Weather', downtime: '5 hours' },
   ]);
 
   const addAlert = (alertMessage: string) => {
@@ -94,7 +73,6 @@ const NotificationPage = () => {
               />
             </svg>
           </button>
-          {/* <span className="ml-4 text-lg font-bold text-gray-800">Back</span> */}
         </div>
 
         {/* Additional Buttons */}
@@ -166,21 +144,20 @@ const NotificationPage = () => {
               {stationOverview.map((station, index) => (
                 <tr
                   key={index}
-                  className={`${
-                    station.status === 'Critical' ? 'bg-red-50' : 'bg-white'
-                  } transition-all hover:bg-gray-100`}
+                  className={`$
+                    {station.status === 'Critical' ? 'bg-red-50' : 'bg-white'}
+                    transition-all hover:bg-gray-100`}
                 >
                   <td className="px-4 py-2 font-medium text-gray-800">
                     {station.stationName}
                   </td>
                   <td
-                    className={`px-4 py-2 font-medium ${
-                      station.status === 'Weather'
-                        ? 'text-red-600'
-                        : station.status === 'Normal'
-                        ? 'text-green-600'
-                        : 'text-yellow-600'
-                    }`}
+                    className={`$ {station.status === 'Weather'
+                      ? 'text-red-600' :
+                        station.status ===
+                        'Normal' ? 'text-green-600' :
+                        'text-yellow-600'} px-4
+                        py-2 font-medium`}
                   >
                     {station.status}
                   </td>

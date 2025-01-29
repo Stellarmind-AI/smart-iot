@@ -23,8 +23,8 @@ const AddNewStation = () => {
   return (
     <>
       <div className="w-full ps-6 pt-6 ">
-       {/* Navigation Buttons */}
-       <div className="mb-4 flex items-center gap-4">
+        {/* Navigation Buttons */}
+        <div className="mb-4 flex items-center gap-4">
           {/* Back to Dashboard Button */}
           <div className="flex items-center">
             <button
@@ -124,8 +124,14 @@ const AddNewStation = () => {
                     className="mt-2 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-[#156082]"
                   >
                     <option>Select Location</option>
-                    <option>Location A</option>
-                    <option>Location B</option>
+                    <option>
+                      ECI Technology Group Inc. - Electronics manufacturer, 815
+                      Middlefield Rd #1&2, Scarborough, ON M1V 2P9, Canada
+                    </option>
+                    <option>
+                      Automotive Centre of Excellence, Founders Dr, Oshawa, ON
+                      L1G 8C4, Canada
+                    </option>
                   </select>
                 </div>
                 <div>
@@ -201,20 +207,6 @@ const AddNewStation = () => {
                     <option>Profile A</option>
                     <option>Profile B</option>
                   </select>
-                </div>
-                <div className="flex items-center gap-4">
-                  <input
-                    id="isRationed"
-                    type="checkbox"
-                    required
-                    className="h-5 w-5 rounded border-gray-300 focus:ring-[#156082]"
-                  />
-                  <label
-                    htmlFor="isRationed"
-                    className="text-sm font-medium text-[#505759]"
-                  >
-                    Is Rationed
-                  </label>
                 </div>
               </div>
 

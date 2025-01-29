@@ -9,15 +9,12 @@ const Logout = () => {
   const [showModal, setShowModal] = useState(true); // Controls modal visibility
 
   const handleConfirmLogout = () => {
-    // Clear the authentication token
     Cookies.remove('authToken');
 
-    // Redirect to login page
     router.push('/login');
   };
 
   const handleCancelLogout = () => {
-    // Redirect back to the dashboard or any safe route
     router.push('/admin/default');
   };
 

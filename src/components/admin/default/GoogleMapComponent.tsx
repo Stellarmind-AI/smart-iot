@@ -28,6 +28,7 @@ const stations = [
     position: { lat: 43.82325417438871, lng: -79.26272904261897 }, // Toronto, Ontario
     location:
       'ECI Technology Group Inc. - Electronics manufacturer, 815 Middlefield Rd #1&2, Scarborough, ON M1V 2P9, Canada',
+    status: 'online',
   },
   {
     id: '2',
@@ -35,6 +36,7 @@ const stations = [
     position: { lat: 43.94564374051123, lng: -78.89942651911576 }, // Ottawa, Ontario
     location:
       'Automotive Centre of Excellence, Founders Dr, Oshawa, ON L1G 8C4, Canada',
+    status: 'online',
   },
   // {
   //   id: '3',
@@ -106,6 +108,18 @@ const GoogleMapComponentWithoutRouter: React.FC = () => {
               <p className="text-md mb-2 font-semibold">
                 {selectedStation.location}
               </p>
+
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold">Status:</span>
+                {selectedStation.status === 'online' ? (
+                  <span className="h-5 w-5 rounded-full bg-green-500"></span>
+                ) : (
+                  <span className="h-5 w-5 rounded-full bg-red-500"></span>
+                )}
+                <span className="text-md font-semibold capitalize">
+                  {selectedStation.status}
+                </span>
+              </div>
 
               <button
                 onClick={redirectToOverview}

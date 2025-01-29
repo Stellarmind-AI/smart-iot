@@ -17,13 +17,29 @@ const Login = () => {
     setError('');
     setIsLoading(true); // Start loading
 
-    // Dummy authentication logic
-    if (email === 'admin@example.com' && password === 'password') {
-      Cookies.set('authToken', 'dummyToken', { expires: 1 }); // Save token in a cookie
-      router.push('/admin/default'); // Redirect to dashboard
-    } else {
-      setError('Invalid email or password.');
-      setIsLoading(false); // Stop loading on error
+    try {
+      // Make the API request
+      const response = await fetch('https://smart-iot-backend.onrender.com/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Cookies.set('authToken', data.token, { expires: 1 });
+
+        router.push('/admin/default');
+      } else {
+        setError(data.message || 'Invalid email or password.');
+      }
+    } catch (error) {
+      setError('Something went wrong. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
   };
 

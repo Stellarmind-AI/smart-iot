@@ -21,7 +21,8 @@ interface LocationFormInputs {
 }
 
 const AddLocationForm: React.FC = () => {
-  const { register, handleSubmit, setValue, reset, watch } = useForm<LocationFormInputs>();
+  const { register, handleSubmit, setValue, reset, watch } =
+    useForm<LocationFormInputs>();
   const [locationName, setLocationName] = useState<string>('');
   const [addressLine1, setAddressLine1] = useState<string>('');
   const [city, setCity] = useState<string>('');
@@ -29,10 +30,13 @@ const AddLocationForm: React.FC = () => {
   const [country, setCountry] = useState<string>('');
   const [postalCode, setPostalCode] = useState<string>('');
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [markerPosition, setMarkerPosition] = useState<{ lat: number, lng: number }>({ lat: 40.7128, lng: -74.0060 });
+  const [markerPosition, setMarkerPosition] = useState<{
+    lat: number;
+    lng: number;
+  }>({ lat: 40.7128, lng: -74.006 });
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
 
-  const defaultLocation = { lat: 40.7128, lng: -74.0060 }; // Default location (New York City)
+  const defaultLocation = { lat: 40.7128, lng: -74.006 }; // Default location (New York City)
 
   const fetchLocationName = (latitude: number, longitude: number) => {
     if (window.google && window.google.maps) {
@@ -77,7 +81,7 @@ const AddLocationForm: React.FC = () => {
         (error) => {
           console.error('Error fetching location:', error);
           alert('Could not fetch current location.');
-        }
+        },
       );
     } else {
       alert('Geolocation is not supported by your browser.');
@@ -159,7 +163,9 @@ const AddLocationForm: React.FC = () => {
 
     return () => {
       // Cleanup script from the DOM when the component is unmounted
-      const script = document.querySelector(`script[src^="https://maps.googleapis.com/maps/api/js"]`);
+      const script = document.querySelector(
+        `script[src^="https://maps.googleapis.com/maps/api/js"]`,
+      );
       if (script) {
         script.remove();
       }
@@ -195,25 +201,29 @@ const AddLocationForm: React.FC = () => {
             </svg>
           </button>
         </div>
-        {[{ label: 'Assets', onClick: navigateToAssets },
+        {[
+          { label: 'Assets', onClick: navigateToAssets },
           { label: 'Businesses', onClick: navigateToBusinesses },
-          { label: 'Administration', onClick: navigateToAdministration }].map((btn, index) => (
-            <button
-              key={index}
-              onClick={btn.onClick}
-              className="rounded-full bg-[#ECF2FF] px-6 py-2 font-bold text-[#5D90A7] shadow-sm transition-transform duration-300 hover:scale-105 hover:bg-daketBlue hover:text-white"
-              title={btn.label}
-            >
-              {btn.label}
-            </button>
-          ))}
+          { label: 'Administration', onClick: navigateToAdministration },
+        ].map((btn, index) => (
+          <button
+            key={index}
+            onClick={btn.onClick}
+            className="rounded-full bg-[#ECF2FF] px-6 py-2 font-bold text-[#5D90A7] shadow-sm transition-transform duration-300 hover:scale-105 hover:bg-daketBlue hover:text-white"
+            title={btn.label}
+          >
+            {btn.label}
+          </button>
+        ))}
       </div>
 
-      <h2 className="text-2xl font-semibold text-gray-900 mb-6">Add New Location</h2>
+      <h2 className="mb-6 text-2xl font-semibold text-gray-900">
+        Add New Location
+      </h2>
 
-      <div id="google-map" className="h-64 w-full sm:h-96 mb-4">
+      <div id="google-map" className="mb-4 h-64 w-full sm:h-96">
         <GoogleMap
-          mapContainerStyle={{ height: "400px", width: "100%" }}
+          mapContainerStyle={{ height: '400px', width: '100%' }}
           center={markerPosition}
           zoom={13}
           onLoad={initializeMap} // Ensure map is initialized properly
@@ -226,7 +236,7 @@ const AddLocationForm: React.FC = () => {
         <button
           type="button"
           onClick={getCurrentLocation}
-          className="w-full rounded-md bg-daketBlue my-2 px-4 py-2 text-white hover:bg-daketBlue"
+          className="my-2 w-full rounded-md bg-daketBlue px-4 py-2 text-white hover:bg-daketBlue"
         >
           Use Current Location
         </button>
@@ -236,89 +246,105 @@ const AddLocationForm: React.FC = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* Location Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-900">Location Name</label>
+            <label className="block text-sm font-medium text-gray-900">
+              Location Name
+            </label>
             <input
               type="text"
               {...register('locationName')}
               value={locationName}
               onChange={(e) => setLocationName(e.target.value)} // Allow manual input
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12 px-4"
+              className="mt-1 block h-12 w-full rounded-md border-gray-300 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
 
           {/* Latitude */}
           <div>
-            <label className="block text-sm font-medium text-gray-900">Latitude</label>
+            <label className="block text-sm font-medium text-gray-900">
+              Latitude
+            </label>
             <input
               type="text"
               {...register('latitude', { required: true })}
               readOnly
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12 px-4"
+              className="mt-1 block h-12 w-full rounded-md border-gray-300 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
 
           {/* Longitude */}
           <div>
-            <label className="block text-sm font-medium text-gray-900">Longitude</label>
+            <label className="block text-sm font-medium text-gray-900">
+              Longitude
+            </label>
             <input
               type="text"
               {...register('longitude', { required: true })}
               readOnly
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12 px-4"
+              className="mt-1 block h-12 w-full rounded-md border-gray-300 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-900">Address</label>
+            <label className="block text-sm font-medium text-gray-900">
+              Address
+            </label>
             <input
               type="text"
               {...register('addressLine1')}
               value={addressLine1}
               onChange={(e) => setAddressLine1(e.target.value)} // Allow manual input
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12 px-4"
+              className="mt-1 block h-12 w-full rounded-md border-gray-300 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900">City</label>
+            <label className="block text-sm font-medium text-gray-900">
+              City
+            </label>
             <input
               type="text"
               {...register('city')}
               value={city}
               onChange={(e) => setCity(e.target.value)} // Allow manual input
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12 px-4"
+              className="mt-1 block h-12 w-full rounded-md border-gray-300 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900">State/Province</label>
+            <label className="block text-sm font-medium text-gray-900">
+              State/Province
+            </label>
             <input
               type="text"
               {...register('stateProvince')}
               value={stateProvince}
               onChange={(e) => setStateProvince(e.target.value)} // Allow manual input
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12 px-4"
+              className="mt-1 block h-12 w-full rounded-md border-gray-300 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900">Country</label>
+            <label className="block text-sm font-medium text-gray-900">
+              Country
+            </label>
             <input
               type="text"
               {...register('country')}
               value={country}
               onChange={(e) => setCountry(e.target.value)} // Allow manual input
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12 px-4"
+              className="mt-1 block h-12 w-full rounded-md border-gray-300 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900">Postal Code</label>
+            <label className="block text-sm font-medium text-gray-900">
+              Postal Code
+            </label>
             <input
               type="text"
               {...register('postalCode')}
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)} // Allow manual input
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12 px-4"
+              className="mt-1 block h-12 w-full rounded-md border-gray-300 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
         </div>
@@ -330,7 +356,6 @@ const AddLocationForm: React.FC = () => {
           Submit
         </button>
       </form>
-
     </div>
   );
 };

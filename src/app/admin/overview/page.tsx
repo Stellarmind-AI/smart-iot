@@ -10,74 +10,24 @@ import { MdOutlineBolt } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import mqtt from 'mqtt';
 
-const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
+const client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt');
 
-const stationOverviewData = [
-  {
-    title: 'IESO Sault Site',
-    metrics: [
-      { label: 'Turbine Speed', value: '10 rpm' },
-      { label: 'Gear Selection', value: '3:18' },
-      { label: 'GEN Speed', value: '300 rpm' },
-    ],
-    icon: (
-      <img
-        src="/img/dashboards/DAKETIconBlue.png" // Replace with your image URL
-        alt="Wind Turbine Icon"
-        className="h-12 w-12 object-contain" // Adjust size with Tailwind classes
-      />
-    ),
-  },
-  {
-    title: 'Real Time Power-Battery',
-    metrics: [
-      { label: 'BAT Capacity', value: '8.5 kW' },
-      { label: 'BAT Voltage', value: '379 Vac' },
-      { label: 'BAT Temp.', value: '25°C' },
-    ],
-    icon: (
-      <img
-        src="/img/dashboards/BatteryIconBlue.png" // Replace with your image URL
-        alt="Wind Turbine Icon"
-        className="h-12 w-12 object-contain" // Adjust size with Tailwind classes
-      />
-    ),
-  },
-  {
-    title: 'Real Time Power-Inverter',
-    metrics: [
-      { label: 'Power', value: '8.5 kW' },
-      { label: 'Voltage', value: '379 Vac' },
-      { label: 'Current', value: '15.07 A' },
-    ],
-    icon: (
-      <img
-        src="/img/dashboards/InverterIconBlue.png" // Replace wit   h your image URL
-        alt="Wind Turbine Icon"
-        className="h-12 w-12 object-contain" // Adjust size with Tailwind classes
-      />
-    ),
-  },
-  {
-    title: 'Environment',
-    metrics: [
-      { label: 'Air Pressure', value: '1013 hPa' },
-      { label: 'Temperature', value: '25°C' },
-      { label: 'Humidity', value: '50% RH' },
-      { label: 'Air Velocity', value: '8.5 m/s' },
-    ],
-    icon: (
-      <img
-        src="/img/dashboards/Nature.png" // Replace with your image URL
-        alt="Wind Turbine Icon"
-        className="h-12 w-12 object-contain" // Adjust size with Tailwind classes
-      />
-    ),
-  },
-];
-const Dashboard = () => {
+// Define PageProps with correct types
+export interface PageProps {
+  gearSelection?: string;  // Updated to string to avoid 'any'
+  params?: Promise<SegmentParams>;
+  searchParams?: Promise<Record<string, string>>;
+}
+
+// Define SegmentParams type
+type SegmentParams<T extends Object = {}> = T extends Record<string, any>
+  ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }
+  : T;
+  
+  const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
+  
   const [louverValue, setLouverValue] = useState(40);
-  const [gearValue, setGearValue] = useState('1');
+  const [gearValue, setGearValue] = useState<string>(gearSelection);
   const gears = [
     { label: '1', position: 'left-0' },
     { label: '3', position: 'left-2/4' },
@@ -99,16 +49,223 @@ const Dashboard = () => {
   const prevLouverValue = useRef(null);
   const prevGearValue = useRef(null);
 
+  // const [stationOverviewData, setStationOverviewData] = useState([
+  //   {
+  //     title: 'IESO Sault Site',
+  //     metrics: [
+  //       { label: 'Turbine Speed', value: '10 rpm' },
+  //       { label: 'Gear Selection', value: '1' },
+  //       { label: 'GEN Speed', value: '300 rpm' },
+  //     ],
+  //     icon: (
+  //       <img
+  //         src="/img/dashboards/DAKETIconBlue.png"
+  //         alt="Wind Turbine Icon"
+  //         className="h-12 w-12 object-contain"
+  //       />
+  //     ),
+  //   },
+  //   {
+  //     title: 'Real Time Power-Battery',
+  //     metrics: [
+  //       { label: 'BAT Capacity', value: '8.5 kW' },
+  //       { label: 'BAT Voltage', value: '379 Vac' },
+  //       { label: 'BAT Temp.', value: '25°C' },
+  //     ],
+  //     icon: (
+  //       <img
+  //         src="/img/dashboards/BatteryIconBlue.png"
+  //         alt="Battery Icon"
+  //         className="h-12 w-12 object-contain"
+  //       />
+  //     ),
+  //   },
+  //   {
+  //     title: 'Real Time Power-Inverter',
+  //     metrics: [
+  //       { label: 'Power', value: '8.5 kW' },
+  //       { label: 'Voltage', value: '379 Vac' },
+  //       { label: 'Current', value: '15.07 A' },
+  //     ],
+  //     icon: (
+  //       <img
+  //         src="/img/dashboards/InverterIconBlue.png"
+  //         alt="Inverter Icon"
+  //         className="h-12 w-12 object-contain"
+  //       />
+  //     ),
+  //   },
+  //   {
+  //     title: 'Environment',
+  //     metrics: [
+  //       { label: 'Air Pressure', value: '1013 hPa' },
+  //       { label: 'Temperature', value: '25°C' },
+  //       { label: 'Humidity', value: '50% RH' },
+  //       { label: 'Air Velocity', value: '8.5 m/s' },
+  //     ],
+  //     icon: (
+  //       <img
+  //         src="/img/dashboards/Nature.png"
+  //         alt="Nature Icon"
+  //         className="h-12 w-12 object-contain"
+  //       />
+  //     ),
+  //   },
+  // ]);
+
   // MQTT client initialization
+
+  const [stationOverviewData, setStationOverviewData] = useState([]);
+  // const [gearSelection, setGearSelection] = useState('1');
+  const LOCALURL = 'https://smart-iot-backend.onrender.com/api/sensors';
+  useEffect(() => {
+    let intervalId;
+    // Fetch data from the API
+    const fetchSensorData = async () => {
+      try {
+        const response = await fetch(LOCALURL);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const latestData = data[0];
+
+        // Ensure airPressure and temperature are formatted to two decimal places
+        const airPressure = latestData?.airPressure
+          ? parseFloat(latestData.airPressure).toFixed(2)
+          : 'N/A';
+        const temperature = latestData?.temperature
+          ? parseFloat(latestData.temperature).toFixed(2)
+          : 'N/A';
+
+        // Transform the API data to match stationOverviewData structure
+        const transformedData = [
+          {
+            title: 'ECI Technology',
+            metrics: [
+              {
+                label: 'Turbine Speed',
+                value: `${latestData?.turbineSpeed || 0} rpm`,
+              },
+              { label: 'Gear Selection', value: gearSelection || 1 }, // Placeholder
+              {
+                label: 'GEN Speed',
+                value: `${latestData?.genSpeed || 0} rpm`,
+              },
+            ],
+            icon: (
+              <img
+                src="/img/dashboards/DAKETIconBlue.png"
+                alt="Wind Turbine Icon"
+                className="h-12 w-12 object-contain"
+              />
+            ),
+          },
+          {
+            title: 'Real Time Power-Battery',
+            metrics: [
+              {
+                label: 'BAT Capacity',
+                value: `${latestData?.batCapacity || 0} kW`,
+              },
+              {
+                label: 'BAT Voltage',
+                value: `${latestData?.batVoltage || 'N/A'}`,
+              },
+              {
+                label: 'BAT Temp.',
+                value: `${latestData?.batTemp || 'N/A'}`,
+              },
+            ],
+            icon: (
+              <img
+                src="/img/dashboards/BatteryIconBlue.png"
+                alt="Battery Icon"
+                className="h-12 w-12 object-contain"
+              />
+            ),
+          },
+          {
+            title: 'Real Time Power-Inverter',
+            metrics: [
+              {
+                label: 'Power',
+                value: `${latestData?.power || 0} kW`,
+              },
+              {
+                label: 'Voltage',
+                value: `${latestData?.voltage || 'N/A'}`,
+              },
+              {
+                label: 'Current',
+                value: `${latestData?.current || 0} A`,
+              },
+            ],
+            icon: (
+              <img
+                src="/img/dashboards/InverterIconBlue.png"
+                alt="Inverter Icon"
+                className="h-12 w-12 object-contain"
+              />
+            ),
+          },
+          {
+            title: 'Environment',
+            metrics: [
+              {
+                label: 'Air Pressure',
+                value: `${airPressure} atm`,
+              },
+              {
+                label: 'Temperature',
+                value: `${temperature} °C`,
+              },
+              {
+                label: 'Humidity',
+                value: `${latestData?.humidity || 'N/A'}%`,
+              },
+              {
+                label: 'Air Velocity',
+                value: `${latestData?.airVelocity || 'N/A'}`,
+              },
+            ],
+            icon: (
+              <img
+                src="/img/dashboards/Nature.png"
+                alt="Nature Icon"
+                className="h-12 w-12 object-contain"
+              />
+            ),
+          },
+        ];
+
+        // Update the state
+        setStationOverviewData(transformedData);
+      } catch (error) {
+        console.error('Failed to fetch sensor data:', error);
+      }
+    };
+
+    // Fetch data initially and start polling
+    fetchSensorData();
+    intervalId = setInterval(fetchSensorData, 60000); // Update every 60 seconds
+
+    // Cleanup the interval on component unmount
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [gearSelection]);
+
   useEffect(() => {
     // Initialize MQTT client inside useEffect
-    const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
+    const client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt');
     setMqttClient(client); // Store client in state for later use
 
     client.on('connect', () => {
       console.log('Connected to MQTT Broker');
-      client.subscribe('esp32/lovers');
-      client.subscribe('esp32/gears');
+      client.subscribe('louvers');
+      client.subscribe('commands');
     });
 
     client.on('message', (topic, message) => {
@@ -136,7 +293,7 @@ const Dashboard = () => {
       if (prevLouverValue.current !== newValue) {
         prevLouverValue.current = newValue;
         if (mqttClient) {
-          mqttClient.publish('esp32/lovers', newValue);
+          mqttClient.publish('louvers', newValue);
         }
       }
     });
@@ -153,21 +310,40 @@ const Dashboard = () => {
   };
 
   // Handle gear change and send to MQTT broker
-  const handleGearChange = (value) => {
+  const handleGearChange = (newValue, stationTitle) => {
     setGearAlertMessage(
-      `Are you sure you want to update the Gear Selection to ${value}?`,
+      `Are you sure you want to update the Gear Selection to ${newValue}?`,
     );
+
     setGearAlertAction(() => () => {
-      setGearValue(value);
+      // Update the station overview data with the new Gear Selection value
+      setStationOverviewData((prevData) =>
+        prevData.map((station) =>
+          station.title === stationTitle
+            ? {
+                ...station,
+                metrics: station.metrics.map((metric) =>
+                  metric.label === 'Gear Selection'
+                    ? { ...metric, value: newValue } // Update Gear Selection value
+                    : metric,
+                ),
+              }
+            : station,
+        ),
+      );
+
+      // Update Gear value and publish if it has changed
+      setGearValue(newValue);
 
       // Publish only if the value has changed
-      if (prevGearValue.current !== value) {
-        prevGearValue.current = value;
+      if (prevGearValue.current !== newValue) {
+        prevGearValue.current = newValue;
         if (mqttClient) {
-          mqttClient.publish('esp32/gears', value);
+          mqttClient.publish('commands', newValue);
         }
       }
     });
+
     setIsGearAlertVisible(true);
   };
 
@@ -348,7 +524,9 @@ const Dashboard = () => {
                     {gears.map((gear, index) => (
                       <button
                         key={gear.label}
-                        onClick={() => handleGearChange(gear.label)}
+                        onClick={() =>
+                          handleGearChange(gear.label, 'ECI Technology')
+                        } /* Pass both value and station title */
                         className={`absolute p-2 transition-transform ${
                           gearValue === gear.label
                             ? 'scale-125 rounded-full bg-daketBlue text-white' // Active button styles

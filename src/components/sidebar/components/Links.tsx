@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import NavLink from 'components/link/NavLink';
 import Image from 'next/image';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
+import Cookies from 'js-cookie';
 
 const SidebarLinks = (): JSX.Element => {
   const pathname = usePathname();
@@ -11,12 +12,18 @@ const SidebarLinks = (): JSX.Element => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [activeSubpage, setActiveSubpage] = useState<string | null>(null); // Track active subpage
 
+  useEffect(() => {
+    const token = Cookies.get('authToken');
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
+
   const activeRoute = useCallback(
     (routeName: string) => pathname === routeName,
     [pathname],
   );
 
-  // Routes definition
   const routes = useMemo(
     () => [
       {
@@ -109,6 +116,7 @@ const SidebarLinks = (): JSX.Element => {
     }
   };
 
+  // eslint-disable-next-line react/display-name
   const MemoizedNavLink = React.memo(({ route, isActive, isHovered }: any) => (
     <NavLink
       href={`${route.layout}/${route.path}`}
@@ -136,6 +144,7 @@ const SidebarLinks = (): JSX.Element => {
   return (
     <>
       {routes.map((route, index) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const isActive = useMemo(
           () =>
             activeRoute(route.layout + '/' + route.path) ||

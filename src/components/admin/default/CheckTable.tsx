@@ -194,7 +194,7 @@ function CheckTable(props: { tableData: any }) {
               {info.getValue() === 'online' ? (
                 <button className="h-3 w-3 rounded-full bg-green-500" />
               ) : (
-                <button className="h-3 w-3 rounded-full bg-red-500" />
+                <button className="h-3 w-3 rounded-full bg-green-500" />
               )}
             </div>
           </Link>
