@@ -10,22 +10,27 @@ import { MdOutlineBolt } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import mqtt from 'mqtt';
 
-const client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt');
+// const client = mqtt.connect(
+//   'wss://decf-2401-4900-1c5a-e1e6-ac8e-5a0b-4f37-3ac7.ngrok-free.app',
+// );
 
 // Define PageProps with correct types
 export interface PageProps {
-  gearSelection?: string;  // Updated to string to avoid 'any'
+  gearSelection?: string; // Updated to string to avoid 'any'
   params?: Promise<SegmentParams>;
   searchParams?: Promise<Record<string, string>>;
 }
 
 // Define SegmentParams type
 type SegmentParams<T extends Object = {}> = T extends Record<string, any>
-  ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }
+  ? {
+      [K in keyof T]: T[K] extends string
+        ? string | string[] | undefined
+        : never;
+    }
   : T;
-  
-  const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
-  
+
+const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
   const [louverValue, setLouverValue] = useState(40);
   const [gearValue, setGearValue] = useState<string>(gearSelection);
   const gears = [
@@ -133,10 +138,13 @@ type SegmentParams<T extends Object = {}> = T extends Record<string, any>
 
         // Ensure airPressure and temperature are formatted to two decimal places
         const airPressure = latestData?.airPressure
-          ? parseFloat(latestData.airPressure).toFixed(2)
+          ? parseFloat(latestData.airPressure).toFixed(1)
           : 'N/A';
         const temperature = latestData?.temperature
-          ? parseFloat(latestData.temperature).toFixed(2)
+          ? parseFloat(latestData.temperature).toFixed(1)
+          : 'N/A';
+        const airVelocity = latestData?.airVelocity
+          ? parseFloat(latestData.airVelocity).toFixed(1)
           : 'N/A';
 
         // Transform the API data to match stationOverviewData structure
@@ -227,7 +235,15 @@ type SegmentParams<T extends Object = {}> = T extends Record<string, any>
               },
               {
                 label: 'Air Velocity',
-                value: `${latestData?.airVelocity || 'N/A'}`,
+                value: `${airVelocity}`,
+              },
+              {
+                label: 'Outside Temp',
+                value: `${latestData?.outdoorTemperature || 'N/A'}°C`,
+              },
+              {
+                label: 'Inside Temp',
+                value: `${latestData?.indoorTemperature || 'N/A'}°C`,
               },
             ],
             icon: (
@@ -259,13 +275,15 @@ type SegmentParams<T extends Object = {}> = T extends Record<string, any>
 
   useEffect(() => {
     // Initialize MQTT client inside useEffect
-    const client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt');
+    const client = mqtt.connect(
+      'wss://decf-2401-4900-1c5a-e1e6-ac8e-5a0b-4f37-3ac7.ngrok-free.app',
+    );
     setMqttClient(client); // Store client in state for later use
 
     client.on('connect', () => {
       console.log('Connected to MQTT Broker');
-      client.subscribe('louvers');
-      client.subscribe('commands');
+      // client.subscribe('enercea/louver');
+      // client.subscribe('enercea/gears');
     });
 
     client.on('message', (topic, message) => {
@@ -293,7 +311,8 @@ type SegmentParams<T extends Object = {}> = T extends Record<string, any>
       if (prevLouverValue.current !== newValue) {
         prevLouverValue.current = newValue;
         if (mqttClient) {
-          mqttClient.publish('louvers', newValue);
+          mqttClient.publish('enercea/louver', newValue);
+          console.log('new value', newValue);
         }
       }
     });
@@ -339,7 +358,7 @@ type SegmentParams<T extends Object = {}> = T extends Record<string, any>
       if (prevGearValue.current !== newValue) {
         prevGearValue.current = newValue;
         if (mqttClient) {
-          mqttClient.publish('commands', newValue);
+          mqttClient.publish('enercea/gears', newValue);
         }
       }
     });
@@ -445,12 +464,12 @@ type SegmentParams<T extends Object = {}> = T extends Record<string, any>
               <hr className="my-2 border-t border-gray-300" /> */}
               {/* Metrics */}
               <div className="mt-2">
-                {Array.from({ length: 4 }).map((_, i) => (
+                {Array.from({ length: 6 }).map((_, i) => (
                   <div
                     key={i}
                     className={`flex justify-between text-[18px] font-bold ${
                       section.title === 'Environment'
-                        ? 'py-4' // Smaller padding for Environment box
+                        ? 'py-3' // Smaller padding for Environment box
                         : section.metrics.length === 3 && i === 3
                         ? 'hidden' // Hide the fourth row for boxes with only 3 metrics
                         : 'py-6' // Standard padding for other boxes
