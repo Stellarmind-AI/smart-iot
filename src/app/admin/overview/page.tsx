@@ -10,18 +10,12 @@ import { MdOutlineBolt } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import mqtt from 'mqtt';
 
-// const client = mqtt.connect(
-//   'wss://decf-2401-4900-1c5a-e1e6-ac8e-5a0b-4f37-3ac7.ngrok-free.app',
-// );
-
-// Define PageProps with correct types
 export interface PageProps {
-  gearSelection?: string; // Updated to string to avoid 'any'
+  gearSelection?: string;
   params?: Promise<SegmentParams>;
   searchParams?: Promise<Record<string, string>>;
 }
 
-// Define SegmentParams type
 type SegmentParams<T extends Object = {}> = T extends Record<string, any>
   ? {
       [K in keyof T]: T[K] extends string
@@ -33,6 +27,7 @@ type SegmentParams<T extends Object = {}> = T extends Record<string, any>
 const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
   const [louverValue, setLouverValue] = useState(40);
   const [gearValue, setGearValue] = useState<string>(gearSelection);
+  const [forceUpdate, setForceUpdate] = useState(0);
   const gears = [
     { label: '1', position: 'left-0' },
     { label: '3', position: 'left-2/4' },
@@ -48,84 +43,15 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
   const [gearAlertMessage, setGearAlertMessage] = useState('');
   const [gearAlertAction, setGearAlertAction] = useState(() => () => {});
 
-  // const client = useRef(null);
-  // Track previous values to avoid unnecessary publishing
   const [mqttClient, setMqttClient] = useState(null);
   const prevLouverValue = useRef(null);
   const prevGearValue = useRef(null);
 
-  // const [stationOverviewData, setStationOverviewData] = useState([
-  //   {
-  //     title: 'IESO Sault Site',
-  //     metrics: [
-  //       { label: 'Turbine Speed', value: '10 rpm' },
-  //       { label: 'Gear Selection', value: '1' },
-  //       { label: 'GEN Speed', value: '300 rpm' },
-  //     ],
-  //     icon: (
-  //       <img
-  //         src="/img/dashboards/DAKETIconBlue.png"
-  //         alt="Wind Turbine Icon"
-  //         className="h-12 w-12 object-contain"
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     title: 'Real Time Power-Battery',
-  //     metrics: [
-  //       { label: 'BAT Capacity', value: '8.5 kW' },
-  //       { label: 'BAT Voltage', value: '379 Vac' },
-  //       { label: 'BAT Temp.', value: '25°C' },
-  //     ],
-  //     icon: (
-  //       <img
-  //         src="/img/dashboards/BatteryIconBlue.png"
-  //         alt="Battery Icon"
-  //         className="h-12 w-12 object-contain"
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     title: 'Real Time Power-Inverter',
-  //     metrics: [
-  //       { label: 'Power', value: '8.5 kW' },
-  //       { label: 'Voltage', value: '379 Vac' },
-  //       { label: 'Current', value: '15.07 A' },
-  //     ],
-  //     icon: (
-  //       <img
-  //         src="/img/dashboards/InverterIconBlue.png"
-  //         alt="Inverter Icon"
-  //         className="h-12 w-12 object-contain"
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     title: 'Environment',
-  //     metrics: [
-  //       { label: 'Air Pressure', value: '1013 hPa' },
-  //       { label: 'Temperature', value: '25°C' },
-  //       { label: 'Humidity', value: '50% RH' },
-  //       { label: 'Air Velocity', value: '8.5 m/s' },
-  //     ],
-  //     icon: (
-  //       <img
-  //         src="/img/dashboards/Nature.png"
-  //         alt="Nature Icon"
-  //         className="h-12 w-12 object-contain"
-  //       />
-  //     ),
-  //   },
-  // ]);
-
-  // MQTT client initialization
-
   const [stationOverviewData, setStationOverviewData] = useState([]);
-  // const [gearSelection, setGearSelection] = useState('1');
   const LOCALURL = 'https://smart-iot-backend.onrender.com/api/sensors';
+
   useEffect(() => {
     let intervalId;
-    // Fetch data from the API
     const fetchSensorData = async () => {
       try {
         const response = await fetch(LOCALURL);
@@ -136,7 +62,6 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
         const data = await response.json();
         const latestData = data[0];
 
-        // Ensure airPressure and temperature are formatted to two decimal places
         const airPressure = latestData?.airPressure
           ? parseFloat(latestData.airPressure).toFixed(1)
           : 'N/A';
@@ -146,8 +71,12 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
         const airVelocity = latestData?.airVelocity
           ? parseFloat(latestData.airVelocity).toFixed(1)
           : 'N/A';
-
-        // Transform the API data to match stationOverviewData structure
+        const indore = latestData?.outdoorTemperature
+          ? parseFloat(latestData.outdoorTemperature).toFixed(1)
+          : 'N/A';
+        const outdore = latestData?.indoorTemperature
+          ? parseFloat(latestData.indoorTemperature).toFixed(1)
+          : 'N/A';
         const transformedData = [
           {
             title: 'ECI Technology',
@@ -156,7 +85,7 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
                 label: 'Turbine Speed',
                 value: `${latestData?.turbineSpeed || 0} rpm`,
               },
-              { label: 'Gear Selection', value: gearSelection || 1 }, // Placeholder
+              { label: 'Gear Selection', value: gearValue },
               {
                 label: 'GEN Speed',
                 value: `${latestData?.genSpeed || 0} rpm`,
@@ -174,8 +103,8 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
             title: 'Real Time Power-Battery',
             metrics: [
               {
-                label: 'BAT Capacity',
-                value: `${latestData?.batCapacity || 0} kW`,
+                label: 'BAT Lavel',
+                value: `${latestData?.batCapacity || 0} kWh`,
               },
               {
                 label: 'BAT Voltage',
@@ -226,24 +155,20 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
                 value: `${airPressure} atm`,
               },
               {
-                label: 'Temperature',
-                value: `${temperature} °C`,
-              },
-              {
                 label: 'Humidity',
                 value: `${latestData?.humidity || 'N/A'}%`,
               },
               {
                 label: 'Air Velocity',
-                value: `${airVelocity}`,
+                value: `${airVelocity}Km/hr`,
               },
               {
                 label: 'Outside Temp',
-                value: `${latestData?.outdoorTemperature || 'N/A'}°C`,
+                value: `${outdore}°C`,
               },
               {
                 label: 'Inside Temp',
-                value: `${latestData?.indoorTemperature || 'N/A'}°C`,
+                value: `${indore}°C`,
               },
             ],
             icon: (
@@ -256,64 +181,97 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
           },
         ];
 
-        // Update the state
         setStationOverviewData(transformedData);
       } catch (error) {
         console.error('Failed to fetch sensor data:', error);
       }
     };
 
-    // Fetch data initially and start polling
     fetchSensorData();
-    intervalId = setInterval(fetchSensorData, 60000); // Update every 60 seconds
+    intervalId = setInterval(fetchSensorData, 60000);
 
-    // Cleanup the interval on component unmount
     return () => {
       clearInterval(intervalId);
     };
-  }, [gearSelection]);
+  }, [gearSelection, gearValue]);
 
-  useEffect(() => {
-    // Initialize MQTT client inside useEffect
-    const client = mqtt.connect(
-      'wss://decf-2401-4900-1c5a-e1e6-ac8e-5a0b-4f37-3ac7.ngrok-free.app',
-    );
-    setMqttClient(client); // Store client in state for later use
+  // useEffect(() => {
+  //   const client = mqtt.connect(
+  //     'wss://decf-2401-4900-1c5a-e1e6-ac8e-5a0b-4f37-3ac7.ngrok-free.app',
+  //   );
+  //   setMqttClient(client);
 
-    client.on('connect', () => {
-      console.log('Connected to MQTT Broker');
-      // client.subscribe('enercea/louver');
-      // client.subscribe('enercea/gears');
-    });
+  //   client.on('connect', () => {
+  //     console.log('Connected to MQTT Broker');
+  //     // client.subscribe('enercea/louver');
+  //     // client.subscribe('enercea/gears');
+  //   });
 
-    client.on('message', (topic, message) => {
-      const value = message.toString();
-      console.log(`Received message from topic: ${topic}`);
-      console.log(`Message value: ${value}`);
-    });
+  //   client.on('message', (topic, message) => {
+  //     const value = message.toString();
+  //     console.log(`Received message from topic: ${topic}`);
+  //     console.log(`Message value: ${value}`);
+  //   });
 
-    return () => {
-      if (client) {
-        client.end(); // Cleanup on component unmount
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (client) {
+  //       client.end();
+  //     }
+  //   };
+  // }, []);
 
-  const handleLouverChange = (e) => {
+  // useEffect(() => {
+  //   console.log('MQTT actions now handled via API');
+  //   2;
+  // }, []);
+
+  // const handleLouverChange = (e) => {
+  //   const newValue = e.target.value;
+  //   setAlertMessage(
+  //     `Are you sure you want to update the Louver Control to ${newValue}?`,
+  //   );
+  //   setAlertAction(() => () => {
+  //     setLouverValue(newValue);
+
+  //     // Publish only if the value has changed
+  //     if (prevLouverValue.current !== newValue) {
+  //       prevLouverValue.current = newValue;
+  //       if (mqttClient) {
+  //         mqttClient.publish('enercea/louver', newValue);
+  //         console.log('new value', newValue);
+  //       }
+  //     }
+  //   });
+  //   setIsAlertVisible(true);
+  // };
+
+  // if (mqttClient) {
+  //   mqttClient.publish('enercea/louver', newValue);
+  // }
+
+  const handleLouverChange = async (e) => {
     const newValue = e.target.value;
     setAlertMessage(
       `Are you sure you want to update the Louver Control to ${newValue}?`,
     );
-    setAlertAction(() => () => {
-      setLouverValue(newValue);
 
-      // Publish only if the value has changed
-      if (prevLouverValue.current !== newValue) {
-        prevLouverValue.current = newValue;
-        if (mqttClient) {
-          mqttClient.publish('enercea/louver', newValue);
-          console.log('new value', newValue);
-        }
+    setAlertAction(() => async () => {
+      setLouverValue(newValue);
+      try {
+        const response = await fetch(
+          'http://localhost:5000/api/mqtt/publish/louver',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ value: Number(newValue) }),
+          },
+        );
+        const data = await response.json();
+        console.log('API Response:', data);
+      } catch (error) {
+        console.error('Failed to send data:', error);
       }
     });
     setIsAlertVisible(true);
@@ -329,40 +287,70 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
   };
 
   // Handle gear change and send to MQTT broker
-  const handleGearChange = (newValue, stationTitle) => {
+  // const handleGearChange = (newValue, stationTitle) => {
+  //   setGearAlertMessage(
+  //     `Are you sure you want to update the Gear Selection to ${newValue}?`,
+  //   );
+
+  //   setGearAlertAction(() => () => {
+  //     // Update the station overview data with the new Gear Selection value
+  //     setStationOverviewData((prevData) =>
+  //       prevData.map((station) =>
+  //         station.title === stationTitle
+  //           ? {
+  //               ...station,
+  //               metrics: station.metrics.map((metric) =>
+  //                 metric.label === 'Gear Selection'
+  //                   ? { ...metric, value: newValue } // Update Gear Selection value
+  //                   : metric,
+  //               ),
+  //             }
+  //           : station,
+  //       ),
+  //     );
+
+  //     // Update Gear value and publish if it has changed
+  //     setGearValue(newValue);
+
+  //     // Publish only if the value has changed
+  //     if (prevGearValue.current !== newValue) {
+  //       prevGearValue.current = newValue;
+  //       if (mqttClient) {
+  //         mqttClient.publish('enercea/gears', newValue);
+  //       }
+  //     }
+  //   });
+
+  //   setIsGearAlertVisible(true);
+  // };
+
+  const handleGearChange = async (newValue, p0: string) => {
+    console.log('New Gear Value:', newValue);
+    setGearValue(newValue);
+    setForceUpdate((prev) => prev + 1); // Trigger a re-render
+
     setGearAlertMessage(
       `Are you sure you want to update the Gear Selection to ${newValue}?`,
     );
-
-    setGearAlertAction(() => () => {
-      // Update the station overview data with the new Gear Selection value
-      setStationOverviewData((prevData) =>
-        prevData.map((station) =>
-          station.title === stationTitle
-            ? {
-                ...station,
-                metrics: station.metrics.map((metric) =>
-                  metric.label === 'Gear Selection'
-                    ? { ...metric, value: newValue } // Update Gear Selection value
-                    : metric,
-                ),
-              }
-            : station,
-        ),
-      );
-
-      // Update Gear value and publish if it has changed
-      setGearValue(newValue);
-
-      // Publish only if the value has changed
-      if (prevGearValue.current !== newValue) {
-        prevGearValue.current = newValue;
-        if (mqttClient) {
-          mqttClient.publish('enercea/gears', newValue);
-        }
+    setGearAlertAction(() => async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:5000/api/mqtt/publish/gears',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ value: Number(newValue) }),
+          },
+        );
+        const data = await response.json();
+        console.log('API Response:', data);
+        setGearValue(newValue);
+      } catch (error) {
+        console.error('Failed to send data:', error);
       }
     });
-
     setIsGearAlertVisible(true);
   };
 
@@ -464,7 +452,7 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
               <hr className="my-2 border-t border-gray-300" /> */}
               {/* Metrics */}
               <div className="mt-2">
-                {Array.from({ length: 6 }).map((_, i) => (
+                {Array.from({ length: 5 }).map((_, i) => (
                   <div
                     key={i}
                     className={`flex justify-between text-[18px] font-bold ${
