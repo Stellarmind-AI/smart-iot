@@ -259,7 +259,7 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
       setLouverValue(newValue);
       try {
         const response = await fetch(
-          'http://localhost:5000/api/mqtt/publish/louver',
+          'https://smart-iot-backend.onrender.com/api/mqtt/publish/louver',
           {
             method: 'POST',
             headers: {
@@ -335,7 +335,7 @@ const Dashboard: React.FC<PageProps> = ({ gearSelection = '1' }) => {
     setGearAlertAction(() => async () => {
       try {
         const response = await fetch(
-          'http://localhost:5000/api/mqtt/publish/gears',
+          'https://smart-iot-backend.onrender.com/api/mqtt/publish/gears',
           {
             method: 'POST',
             headers: {
